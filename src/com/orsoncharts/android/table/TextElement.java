@@ -185,7 +185,6 @@ public class TextElement extends AbstractTableElement
         paint.setColor(getBackgroundPaint());
         paint.setStyle(Style.FILL);
         canvas.drawRect(textBounds, paint);
-        paint.setStyle(Style.STROKE);
         paint.setColor(getForegroundPaint());
         Insets insets = getInsets();
         TextUtils.drawAlignedString(this.text, canvas, paint,
