@@ -467,6 +467,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
 //                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //        g2.setStroke(new BasicStroke(1.2f, BasicStroke.CAP_ROUND, 
 //                BasicStroke.JOIN_ROUND, 1f));
+    	paint.setStrokeWidth(1.2f);
         Dimension3D dim3D = this.plot.getDimensions();
         double w = dim3D.getWidth();
         double h = dim3D.getHeight();
