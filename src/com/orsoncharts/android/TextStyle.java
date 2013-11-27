@@ -2,6 +2,7 @@ package com.orsoncharts.android;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.Paint.Style;
 
 public class TextStyle {
 
@@ -17,6 +18,7 @@ public class TextStyle {
 	public void applyToPaint(Paint paint) {
 		paint.setTypeface(this.typeface);
 		paint.setTextSize(this.size);
+		paint.setStyle(Style.FILL);
 	}
 	
 	// TODO: implement equals()
