@@ -29,7 +29,6 @@ import com.orsoncharts.android.graphics3d.Dimension2D;
 import com.orsoncharts.android.graphics3d.Dimension3D;
 import com.orsoncharts.android.graphics3d.Drawable3D;
 import com.orsoncharts.android.graphics3d.Face;
-import com.orsoncharts.android.graphics3d.Line2D;
 import com.orsoncharts.android.graphics3d.Object3D;
 import com.orsoncharts.android.graphics3d.Offset2D;
 import com.orsoncharts.android.graphics3d.Point2D;
@@ -95,7 +94,6 @@ import com.orsoncharts.android.util.TextUtils;
  * @see Chart3DFactory
  * @see ChartPanel3D
  */
-
 public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
     
     /** A background rectangle painter, if any. */
@@ -476,13 +474,12 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         ChartBox3D chartBox = null;
         if (this.plot instanceof XYZPlot 
                 || this.plot instanceof CategoryPlot3D) {
-            chartBox = new ChartBox3D(w, h, depth, -w / 2, -h / 2, -depth / 2, 
-                    this.chartBoxColor);
             double[] tickUnits = findAxisTickUnits(paint, w, h, depth);
             List<TickData> xTicks = fetchXTickData(this.plot, tickUnits[0]);
             List<TickData> yTicks = fetchYTickData(this.plot, tickUnits[1]);
             List<TickData> zTicks = fetchZTickData(this.plot, tickUnits[2]);
-            chartBox.configureTicks(xTicks, yTicks, zTicks);
+            chartBox = new ChartBox3D(w, h, depth, -w / 2, -h / 2, -depth / 2, 
+                    this.chartBoxColor, xTicks, yTicks, zTicks);
         }
         World world = createWorld(chartBox);
         if (this.background != null) {
@@ -561,12 +558,11 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         // generate and draw the legend...
         if (this.legendBuilder != null) {
             TableElement legend = this.legendBuilder.createLegend(this.plot);
-            if (false) { // eval
+            if (true) { // eval
                 GridElement legend2 = new GridElement();
                 legend2.setElement(legend, "R1", "C1");
-                TextElement te = new TextElement("Orson Charts (evaluation) (c) 2013, by Object Refinery Limited", 
+                TextElement te = new TextElement("Orson Charts for Android (evaluation) (c) 2013, by Object Refinery Limited", 
                 		new TextStyle(Typeface.SANS_SERIF, 10));
-//                		new Font("Dialog", Font.PLAIN, 10));
                 te.setHorizontalAligment(HAlign.RIGHT);
                 legend2.setElement(te, "R2", "C1");
                 legend = legend2;         
