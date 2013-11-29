@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
@@ -42,7 +43,6 @@ public class ShapeElement extends AbstractTableElement
         super();
         this.shape = shape;
         setForegroundPaint(fillPaint);
-        //setBackgroundPaint(new Color(0, 0, 0, 0)); // transparent
     }
     
     @Override
@@ -81,16 +81,18 @@ public class ShapeElement extends AbstractTableElement
 
     @Override
     public void draw(Canvas canvas, Paint paint, RectF bounds) {
-//        Paint background = getBackgroundPaint();
-//        if (background != null) {
-//            g2.setPaint(getBackgroundPaint());
-//            g2.fill(bounds);
-//        }
-        canvas.translate(bounds.centerX(), bounds.centerY());
-        paint.setColor(getForegroundPaint());
         paint.setStyle(Style.FILL);
+        int backgroundColor = getBackgroundPaint();
+        if (backgroundColor != 0) {
+        	paint.setColor(backgroundColor);
+            canvas.drawRect(bounds, paint);
+        }
+    	float dx = bounds.centerX() - this.shape.getWidth() / 2f;
+    	float dy = bounds.centerY() - this.shape.getHeight() / 2f;
+        canvas.translate(dx, dy);
+        paint.setColor(getForegroundPaint());
         this.shape.draw(canvas, paint);
-        canvas.translate(-bounds.centerX(), -bounds.centerY());
+        canvas.translate(-dx, -dy);
     }
     
 }
