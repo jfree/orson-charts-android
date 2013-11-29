@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -12,6 +12,7 @@ import java.io.Serializable;
 
 import android.graphics.RectF;
 
+import com.orsoncharts.android.TitleAnchor;
 import com.orsoncharts.android.graphics3d.Dimension2D;
 import com.orsoncharts.android.graphics3d.Point2D;
 
@@ -24,6 +25,23 @@ import com.orsoncharts.android.graphics3d.Point2D;
  * should be aligned and scaled.
  */
 public class Fit2D implements Serializable {
+
+    /** 
+     * Center the source rectangle within the target rectangle, but do not
+     * resize it.
+     * 
+     * @since 1.1
+     */
+    public static final Fit2D CENTER_NO_SCALING = new Fit2D(TitleAnchor.CENTER, 
+            Scale2D.NONE);
+    
+    /**
+     * Scale the source rectangle to fit the target rectangle.
+     * 
+     * @since 1.1
+     */
+    public static final Fit2D SCALE_TO_FIT_TARGET 
+            = new Fit2D(TitleAnchor.CENTER, Scale2D.SCALE_BOTH);
     
     /** The anchor point for alignment. */
     private Anchor2D anchor;
@@ -43,6 +61,28 @@ public class Fit2D implements Serializable {
     }
     
     /**
+     * Returns the anchor.
+     * 
+     * @return The anchor (never <code>null</code>).
+     * 
+     * @since 1.1
+     */
+    public Anchor2D getAnchor() {
+        return this.anchor;
+    }
+    
+    /**
+     * Returns the scaling.
+     * 
+     * @return The scaling (never <code>null</code>).
+     * 
+     * @since 1.1
+     */
+    public Scale2D getScale() {
+        return this.scale;
+    }
+    
+    /**
      * Fits a rectangle of the specified dimension to the target rectangle,
      * aligning and scaling according to the attributes of this instance.
      * 
@@ -55,7 +95,7 @@ public class Fit2D implements Serializable {
     public RectF fit(Dimension2D srcDim, RectF target) {
         RectF result = new RectF();
         if (this.scale == Scale2D.SCALE_BOTH) {
-        	result.set(target);
+            result.set(target);
             return result;
         }
         double width = srcDim.getWidth();
@@ -90,7 +130,7 @@ public class Fit2D implements Serializable {
             y = pt.getY() - height;
         }
         result.set((float) x, (float) y, (float) (x + width), 
-        		(float) (y + height));
+                (float) (y + height));
         return result;
     }
     
