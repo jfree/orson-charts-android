@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
@@ -156,7 +157,7 @@ public class TextElement extends AbstractTableElement
                 x = bounds.centerX() - width / 2.0f - insets.left;
                 break;
             case RIGHT:
-                x = bounds.right - width;
+                x = bounds.right - width - insets.right;
                 break;
             default: 
                 throw new IllegalStateException("HAlign: " + this.alignment);
