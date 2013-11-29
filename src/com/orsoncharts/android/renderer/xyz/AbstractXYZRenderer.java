@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013 by Object Refinery Limited.
  * 
@@ -73,6 +73,20 @@ public class AbstractXYZRenderer extends AbstractRenderer3D {
         fireChangeEvent();
     }
   
+    /**
+     * Sets a new color source for the renderer using the specified colors and
+     * sends a {@link Renderer3DChangeEvent} to all registered listeners. This 
+     * is a convenience method that is equivalent to 
+     * <code>setColorSource(new StandardXYZColorSource(colors))</code>.
+     * 
+     * @param colors  one or more colors (<code>null</code> not permitted).
+     * 
+     * @since 1.1
+     */
+    public void setColors(int... colors) {
+        setColorSource(new StandardXYZColorSource(colors));
+    }
+    
     /**
      * Returns the range that is required on the x-axis for this renderer
      * to display all the items in the specified dataset.
