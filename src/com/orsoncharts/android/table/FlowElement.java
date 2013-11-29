@@ -182,7 +182,7 @@ public class FlowElement extends AbstractTableElement implements TableElement,
                 float dx = calculateXOffset(elementIndex, line.getWidths(), 
                         this.hgap);
                 RectF rect = new RectF(x + dx, y, 
-                        x + line.getWidths().get(elementIndex), 
+                        x + dx + line.getWidths().get(elementIndex), 
                         y + line.getHeight());
                 result.add(rect);
             }
