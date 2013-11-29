@@ -34,22 +34,13 @@ public final class StandardCategoryColorSource
     }
     
     /**
-     * Creates a new instance that always returns the same color.
-     * 
-     * @param color  the color.
-     */
-    public StandardCategoryColorSource(int color) {
-        this(new int[] { color} );
-    }
-    
-    /**
      * Creates a new instance with the supplied sequence of colors.  The
      * supplied array must have at least one entry, and all entries must be
      * non-<code>null</code>.
      * 
      * @param colors  the colors. 
      */
-    public StandardCategoryColorSource(int[] colors) {
+    public StandardCategoryColorSource(int... colors) {
         ArgChecks.nullNotPermitted(colors, "colors");
         if (colors.length == 0) {
             throw new IllegalArgumentException(
