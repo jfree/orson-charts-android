@@ -778,7 +778,7 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
         FontMetrics fm = paint.getFontMetrics();
         // the tickLabelFactor allows some control over how dense the labels
         // will be
-        float height = fm.top - fm.bottom;
+        float height = -(fm.top - fm.bottom);
         int maxTicks = (int) (length / (height * this.tickLabelFactor));
         if (maxTicks > 2 && this.tickSelector != null) {
             this.tickSelector.select(this.range.getLength() / 2.0);
