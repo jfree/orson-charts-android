@@ -461,12 +461,6 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      */
     @Override
     public void draw(Canvas canvas, Paint paint, RectF bounds) {
-//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//                RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
-//                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//        g2.setStroke(new BasicStroke(1.2f, BasicStroke.CAP_ROUND, 
-//                BasicStroke.JOIN_ROUND, 1f));
     	paint.setStrokeWidth(1.2f);
         Dimension3D dim3D = this.plot.getDimensions();
         double w = dim3D.getWidth();
