@@ -40,8 +40,16 @@ public class MainActivity extends Activity {
 	    	view.setChart(AreaChartDemo1.createChart());
 	    	return true;
 	    }
+	    case R.id.action_linechart1 : {
+	    	view.setChart(LineChartDemo1.createChart());
+	    	return true;
+	    }
 	    case R.id.action_scatterchart1 : {
 	    	view.setChart(ScatterChartDemo1.createChart());
+	    	return true;
+	    }
+	    case R.id.action_stackedbarchart1 : {
+	    	view.setChart(StackedBarChartDemo1.createChart());
 	    	return true;
 	    }
 	    }
