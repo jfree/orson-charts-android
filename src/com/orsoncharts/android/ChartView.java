@@ -51,7 +51,7 @@ public class ChartView extends View implements Chart3DChangeListener {
 		this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		this.bounds = new RectF();
 		this.chart = PieChartDemo1.createChart();
-		this.chart.getViewPoint().setRho(20);
+		this.chart.getViewPoint().setRho(16);
 		this.chart.addChangeListener(this);
 		scaleGestureDetector = new ScaleGestureDetector(context,
 		        new ScaleListener());		
