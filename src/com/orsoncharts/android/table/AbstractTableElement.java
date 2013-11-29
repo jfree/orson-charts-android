@@ -76,7 +76,7 @@ public abstract class AbstractTableElement {
      * @param paint  the paint. 
      */
     public void setForegroundPaint(int paint) {
-        ArgChecks.nullNotPermitted(paint, "paint");
+        this.foregroundPaint = paint;
     }
     
     /**
