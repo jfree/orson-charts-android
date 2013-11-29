@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -31,19 +31,7 @@ public class StandardXYZColorSource implements XYZColorSource, Serializable {
      * Creates a new instance with default colors.
      */
     public StandardXYZColorSource() {
-        this(new int[] { Color.RED, Color.BLUE, Color.YELLOW, 
-            Color.GRAY, Color.GREEN});    
-    }
-    
-    /**
-     * Creates a new instance that returns a single color for all series and
-     * items.
-     * 
-     * @param color  the color.
-     */
-    public StandardXYZColorSource(int color) {
-        ArgChecks.nullNotPermitted(color, "color");
-        this.colors = new int[] { color };
+        this(Color.RED, Color.BLUE, Color.YELLOW, Color.GRAY, Color.GREEN);    
     }
     
     /**
@@ -52,8 +40,12 @@ public class StandardXYZColorSource implements XYZColorSource, Serializable {
      * 
      * @param colors  the colors (<code>null</code> not permitted). 
      */
-    public StandardXYZColorSource(int[] colors) {
+    public StandardXYZColorSource(int... colors) {
         ArgChecks.nullNotPermitted(colors, "colors");
+        if (colors.length == 0) {
+            throw new IllegalArgumentException(
+                    "Zero length array not permitted.");
+        }
         this.colors = colors;
     }
     
