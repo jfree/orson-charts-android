@@ -488,22 +488,8 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
 
         // sort faces by z-order
         Collections.sort(facesInPaintOrder, new ZOrderComparator(eyePts));
-
         for (Face f : facesInPaintOrder) {
             boolean drawOutline = f.getOutline();
-            Path p = new Path();
-            for (int v = 0; v < f.getVertexCount(); v++) {
-                if (v == 0) {
-                    p.moveTo(pts[f.getVertexIndex(v)].getX(),
-                            pts[f.getVertexIndex(v)].getY());
-                }
-                else {
-                    p.lineTo(pts[f.getVertexIndex(v)].getX(),
-                            pts[f.getVertexIndex(v)].getY());
-                }
-            }
-            p.close();
-
             double[] plane = f.calculateNormal(eyePts);
             double inprod = plane[0] * world.getSunX() + plane[1]
                     * world.getSunY() + plane[2] * world.getSunZ();
@@ -512,6 +498,18 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
                     pts[f.getVertexIndex(1)], pts[f.getVertexIndex(2)]) > 0) {
                 int c = f.getColor();
                 if (c != 0) {
+                    Path p = new Path();
+                    for (int v = 0; v < f.getVertexCount(); v++) {
+                        if (v == 0) {
+                            p.moveTo(pts[f.getVertexIndex(v)].getX(),
+                                    pts[f.getVertexIndex(v)].getY());
+                        }
+                        else {
+                            p.lineTo(pts[f.getVertexIndex(v)].getX(),
+                                    pts[f.getVertexIndex(v)].getY());
+                        }
+                    }
+                    p.close();
                     int sc = Color.argb(
                     		Color.alpha(c),
                     		(int) (Color.red(c) * shade), 

@@ -104,14 +104,10 @@ public class DefaultDrawable3D implements Drawable3D {
     @Override
     public void draw(Canvas canvas, Paint paint, RectF bounds) {
         ArgChecks.nullNotPermitted(canvas, "canvas");
-//        g2.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND,
-//                BasicStroke.JOIN_ROUND));
         paint.setColor(Color.WHITE);
         paint.setStyle(Style.FILL);
         canvas.drawRect(bounds, paint);
         canvas.translate(bounds.width() / 2, bounds.height() / 2);
-//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//                RenderingHints.VALUE_ANTIALIAS_ON);
 
         Point3D[] eyePts = this.world.calculateEyeCoordinates(this.viewPoint);
 
@@ -124,19 +120,6 @@ public class DefaultDrawable3D implements Drawable3D {
         Collections.sort(facesInPaintOrder, new ZOrderComparator(eyePts));
 
         for (Face f : facesInPaintOrder) {
-            Path p = new Path();
-            for (int v = 0; v < f.getVertexCount(); v++) {
-                if (v == 0) {
-                    p.moveTo(pts[f.getVertexIndex(v)].getX(),
-                            pts[f.getVertexIndex(v)].getY());
-                }
-                else {
-                    p.lineTo(pts[f.getVertexIndex(v)].getX(),
-                            pts[f.getVertexIndex(v)].getY());
-                }
-            }
-            p.close();
-
             double[] plane = f.calculateNormal(eyePts);
             double inprod = plane[0] * this.world.getSunX() + plane[1]
                     * this.world.getSunY() + plane[2] * this.world.getSunZ();
@@ -145,6 +128,18 @@ public class DefaultDrawable3D implements Drawable3D {
                     pts[f.getVertexIndex(1)], pts[f.getVertexIndex(2)]) > 0) {
                 int c = f.getColor();
                 if (c != 0) {
+                    Path p = new Path();
+                    for (int v = 0; v < f.getVertexCount(); v++) {
+                        if (v == 0) {
+                            p.moveTo(pts[f.getVertexIndex(v)].getX(),
+                                    pts[f.getVertexIndex(v)].getY());
+                        }
+                        else {
+                            p.lineTo(pts[f.getVertexIndex(v)].getX(),
+                                    pts[f.getVertexIndex(v)].getY());
+                        }
+                    }
+                    p.close();
                     int sc = Color.argb(
                     		Color.alpha(c),
                     		(int) (Color.red(c) * shade), 
