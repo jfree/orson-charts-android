@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -43,8 +43,8 @@ public class GridElement extends AbstractTableElement implements TableElement,
      * @param rowKey  the row key (<code>null</code> not permitted).
      * @param columnKey  the column key (<code>null</code> not permitted).
      */
-    public void setElement(TableElement element, Comparable rowKey, 
-            Comparable columnKey) {
+    public void setElement(TableElement element, Comparable<?> rowKey, 
+            Comparable<?> columnKey) {
         // defer argument checking
         this.elements.setValue(element, rowKey, columnKey);
     }
@@ -64,7 +64,7 @@ public class GridElement extends AbstractTableElement implements TableElement,
         double[] widths = new double[columnCount];
         double[] heights = new double[rowCount];
         // calculate the maximum width for each column
-        for (int r = 0; r < elements.getXCount(); r++) {
+        for (int r = 0; r < this.elements.getXCount(); r++) {
             for (int c = 0; c < this.elements.getYCount(); c++) {
                 TableElement element = this.elements.getValue(r, c);
                 if (element == null) {
@@ -82,7 +82,8 @@ public class GridElement extends AbstractTableElement implements TableElement,
     /**
      * Returns the preferred size of the element (including insets).
      * 
-     * @param g2  the graphics target.
+     * @param canvas  the graphics target.
+     * @param paint  the paint.
      * @param bounds  the bounds.
      * @param constraints  the constraints (ignored for now).
      * 
@@ -125,7 +126,7 @@ public class GridElement extends AbstractTableElement implements TableElement,
         List<RectF> result = new ArrayList<RectF>(
                 this.elements.getXCount() * this.elements.getYCount());
         float y = bounds.top + getInsets().top;
-        for (int r = 0; r < elements.getXCount(); r++) {
+        for (int r = 0; r < this.elements.getXCount(); r++) {
             float x = bounds.left + getInsets().left;
             for (int c = 0; c < this.elements.getYCount(); c++) {
                 result.add(new RectF(x, y, x + (float) widths[c], y + (float) heights[r]));
@@ -139,27 +140,22 @@ public class GridElement extends AbstractTableElement implements TableElement,
     /**
      * Draws the element within the specified bounds.
      * 
-     * @param g2  the graphics target.
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
      * @param bounds  the bounds.
      */
     @Override
     public void draw(Canvas canvas, Paint paint, RectF bounds) {
-        double[][] cellDimensions = findCellDimensions(canvas, paint, bounds);
-        double[] widths = cellDimensions[0];
-        double[] heights = cellDimensions[1];
-        float y = bounds.top + getInsets().top;
-        for (int r = 0; r < elements.getXCount(); r++) {
-            float x = bounds.left + getInsets().left;
+        List<RectF> positions = layoutElements(canvas, paint, bounds, null);
+        for (int r = 0; r < this.elements.getXCount(); r++) {
             for (int c = 0; c < this.elements.getYCount(); c++) {
                 TableElement element = this.elements.getValue(r, c);
                 if (element == null) {
                     continue;
                 }
-                element.draw(canvas, paint, new RectF(x, y, x + (float) widths[c], 
-                        y + (float) heights[r]));
-                x += widths[c];
+                RectF pos = positions.get(r * this.elements.getYCount() + c);
+                element.draw(canvas, paint, pos);
             }
-            y = y + (float) heights[r];
         }        
     }
     

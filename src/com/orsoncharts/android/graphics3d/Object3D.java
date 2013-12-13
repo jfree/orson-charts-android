@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -35,8 +35,8 @@ public class Object3D {
      * Creates a new object, initially with no vertices or faces.
      */
     public Object3D() {
-        this.vertices = new java.util.ArrayList();
-        this.faces = new java.util.ArrayList();
+        this.vertices = new java.util.ArrayList<Point3D>();
+        this.faces = new java.util.ArrayList<Face>();
     }
 
     /**
@@ -84,10 +84,26 @@ public class Object3D {
      * 
      * @param vertices  the vertices (all should lie in a plane).
      * @param color  the color.
+     * @param outline  draw the face outline.
      */
     public void addFace(int[] vertices, int color, boolean outline) {
         // defer the arg checks...
         addFace(new Face(vertices, color, outline));
+    }
+    
+    /**
+     * Adds a double-sided face for the given vertices (specified by index 
+     * value) and color.
+     * 
+     * @param vertices  the vertices (all should lie in a plane).
+     * @param color  the color.
+     * @param outline  draw face outlines.
+     * 
+     * @since 1.1
+     */
+    public void addDoubleSidedFace(int[] vertices, int color, 
+            boolean outline) {
+        addFace(new DoubleSidedFace(vertices, color, outline));
     }
     
     /**
@@ -101,7 +117,9 @@ public class Object3D {
     }
 
     /**
-     * Returns the faces.
+     * Returns the faces.  Note that the list returned is a direct reference
+     * to the internal storage for this <code>Object3D</code> instance, so
+     * callers should take care not to modify this list unintentionally.
      *
      * @return The faces.
      */
@@ -123,7 +141,7 @@ public class Object3D {
         Point2D[] result = new Point2D[this.vertices.size()];
         int vertexCount = this.vertices.size();
         for (int i = 0; i < vertexCount; i++) {
-            Point3D p = (Point3D) this.vertices.get(i);
+            Point3D p = this.vertices.get(i);
             result[i] = viewPoint.worldToScreen(p, d);
         }
         return result;

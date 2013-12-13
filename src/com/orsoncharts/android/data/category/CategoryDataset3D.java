@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -17,6 +17,6 @@ import com.orsoncharts.android.plot.CategoryPlot3D;
  * <code>(rowKey, columnKey, value)</code>.  This is the standard data 
  * interface used by the {@link CategoryPlot3D} class. 
  */
-public interface CategoryDataset3D extends KeyedValues3D, Dataset3D {
+public interface CategoryDataset3D extends KeyedValues3D<Number>, Dataset3D {
 
 }

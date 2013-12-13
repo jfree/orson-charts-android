@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -16,10 +16,8 @@ import com.orsoncharts.android.Chart3D;
 
 /**
  * A three dimensional scene that can be viewed from an arbitrary viewpoint 
- * and rendered to any {@link Graphics2D} instance.  The {@link Chart3D} class 
+ * and rendered to any {@link Canvas} instance.  The {@link Chart3D} class 
  * implements this interface.
- * 
- * @see Panel3D
  */
 public interface Drawable3D {
 

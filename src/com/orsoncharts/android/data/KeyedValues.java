@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -11,7 +11,7 @@ package com.orsoncharts.android.data;
 import java.util.List;
 
 /**
- * A list of values that are associated with unique keys.
+ * A list of values (of type T) that are associated with unique keys.
  */
 public interface KeyedValues<T> extends Values<T> { 
 
@@ -22,7 +22,7 @@ public interface KeyedValues<T> extends Values<T> {
      * 
      * @return The key. 
      */
-    public Comparable getKey(int index);
+    public Comparable<?> getKey(int index);
   
     /**
      * Returns the index for the specified key, or <code>-1</code> if the key
@@ -32,7 +32,7 @@ public interface KeyedValues<T> extends Values<T> {
      * 
      * @return The item index, or <code>-1</code>. 
      */
-    public int getIndex(Comparable key);
+    public int getIndex(Comparable<?> key);
   
     /**
      * Returns a list of all the keys.  Note that the list will be a copy, so
@@ -40,7 +40,7 @@ public interface KeyedValues<T> extends Values<T> {
      * 
      * @return A list of keys (possibly empty, but never <code>null</code>).
      */
-    public List<Comparable> getKeys();
+    public List<Comparable<?>> getKeys();
 
     /**
      * Returns the value associated with the specified key, or 
@@ -50,6 +50,6 @@ public interface KeyedValues<T> extends Values<T> {
      * 
      * @return The value (possibly <code>null</code>). 
      */
-    public T getValue(Comparable key);
+    public T getValue(Comparable<?> key);
 
 }

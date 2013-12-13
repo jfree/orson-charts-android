@@ -1,3 +1,11 @@
+/* ========================
+ * Orson Charts for Android
+ * ========================
+ * 
+ * (C)opyright 2013, by Object Refinery Limited.
+ * 
+ */
+
 package com.orsoncharts.android.demo;
 
 import com.orsoncharts.android.Chart3D;
@@ -10,9 +18,17 @@ import com.orsoncharts.android.graphics3d.ViewPoint3D;
 import com.orsoncharts.android.plot.XYZPlot;
 import com.orsoncharts.android.renderer.xyz.ScatterXYZRenderer;
 
+/**
+ * Creates a scatter chart for the demo.
+ */
 public class ScatterChartDemo1 {
-	
-	public static Chart3D createChart() {
+    
+    /**
+     * Creates a demo chart.
+     * 
+     * @return A demo chart.
+     */
+    public static Chart3D createChart() {
         Chart3D chart = Chart3DFactory.createScatterChart("ScatterPlot3DDemo1", 
                 "Chart created with Orson Charts", createDataset(), "X", "Y", "Z");
         XYZPlot plot = (XYZPlot) chart.getPlot();
@@ -21,8 +37,8 @@ public class ScatterChartDemo1 {
         renderer.setSize(0.15);
         chart.setViewPoint(ViewPoint3D.createAboveLeftViewPoint(40));
         return chart;
-	}
-	
+    }
+    
     /**
      * Creates a sample dataset (hard-coded for the purpose of keeping the
      * demo self-contained - in practice you would normally read your data

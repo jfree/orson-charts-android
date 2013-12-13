@@ -1,27 +1,64 @@
+/* ========================
+ * Orson Charts for Android
+ * ========================
+ * 
+ * (C)opyright 2013, by Object Refinery Limited.
+ * 
+ */
+
 package com.orsoncharts.android.graphics3d;
 
+/**
+ * A point in 2D space.  Instances of this class are immutable.
+ */
 public class Point2D {
-	
-	private float x;
-	
-	private float y;
-	
-	public Point2D(float x, float y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	public float getX() {
-		return this.x;
-	}
-	
-	public float getY() {
-		return this.y;
-	}
+    
+    /** The x-coordinate. */
+    private float x;
+    
+    /** The y-coordinate. */
+    private float y;
+    
+    /**
+     * Creates a new point instance.
+     * 
+     * @param x  the x-coordinate.
+     * @param y  the y-coordinate.
+     */
+    public Point2D(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    /**
+     * Returns the x-coordinate.
+     * 
+     * @return The x-coordinate.
+     */
+    public float getX() {
+        return this.x;
+    }
+    
+    /**
+     * Returns the y-coordinate.
+     * 
+     * @return The y-coordinate.
+     */
+    public float getY() {
+        return this.y;
+    }
 
-	public float distance(Point2D p) {
-		double dx = p.x - this.x;
-		double dy = p.y - this.y;
-		return (float) Math.sqrt(dx * dx + dy * dy);
-	}
+    /**
+     * Calculates and returns the distance between this point and the supplied
+     * point.
+     * 
+     * @param p  the point (<code>null</code> not permitted).
+     * 
+     * @return The distance.
+     */
+    public float distance(Point2D p) {
+        double dx = p.x - this.x;
+        double dy = p.y - this.y;
+        return (float) Math.sqrt(dx * dx + dy * dy);
+    }
 }

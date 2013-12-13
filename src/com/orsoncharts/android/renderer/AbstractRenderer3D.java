@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -98,7 +98,7 @@ public abstract class AbstractRenderer3D implements Renderer3D {
             return;
         }
         for (Renderer3DChangeListener listener : this.listenerList) {
-        	listener.rendererChanged(event);
+            listener.rendererChanged(event);
         }
     }
 

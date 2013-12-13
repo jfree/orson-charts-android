@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -24,16 +24,14 @@ public class TitleUtils {
     
     /** The default title font. */
     public static final TextStyle DEFAULT_TITLE_FONT = new TextStyle(
-    		Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 20);
-    		//new Font("Dialog", Font.BOLD, 20);
+            Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 20);
     
     /** The default foreground paint for titles. */
     public static final int DEFAULT_TITLE_PAINT = Color.BLACK;
     
     /** The default sub-title font. */
     public static final TextStyle DEFAULT_SUBTITLE_FONT = new TextStyle(
-    		Typeface.SANS_SERIF, 12);
-        //= new Font("Dialog", Font.PLAIN, 12);
+            Typeface.SANS_SERIF, 12);
     
     private TitleUtils() {
         // no need to instantiate this class
@@ -112,7 +110,7 @@ public class TitleUtils {
         }
         GridElement compositeTitle = new GridElement();
         TextStyle stf = subtitleFont != null ? subtitleFont 
-        		: DEFAULT_SUBTITLE_FONT;
+                : DEFAULT_SUBTITLE_FONT;
         TextElement st = new TextElement(subtitle, stf);
         st.setHorizontalAligment(alignment);
         st.setForegroundPaint(DEFAULT_TITLE_PAINT);

@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -41,21 +41,12 @@ public final class StandardColorSource implements ColorSource,
     }
     
     /**
-     * Creates a new instance with a single default color.
-     * 
-     * @param color  the color.
-     */
-    public StandardColorSource(int color) {
-        this(new int[] { color });    
-    }
-    
-    /**
      * Creates a new instance with the supplied sequence of colors.  The
      * supplied array must have at least one entry.
      * 
      * @param colors  the colors (<code>null</code> not permitted). 
      */
-    public StandardColorSource(int[] colors) {
+    public StandardColorSource(int... colors) {
         ArgChecks.nullNotPermitted(colors, "colors");
         if (colors.length == 0) {
             throw new IllegalArgumentException(
@@ -73,7 +64,7 @@ public final class StandardColorSource implements ColorSource,
      * @return The color (never <code>null</code>). 
      */
     @Override
-    public int getColor(Comparable key) {
+    public int getColor(Comparable<?> key) {
         // defer argument check
         Integer c = this.colors.getValue(key);
         if (c != null) {
@@ -92,7 +83,7 @@ public final class StandardColorSource implements ColorSource,
      * @param color  the color (pass -1 to remove previous setting).
      */
     @Override
-    public void setColor(Comparable key, int color) {
+    public void setColor(Comparable<?> key, int color) {
         if (color >= 0) {
             this.colors.put(key, color);
         } else {

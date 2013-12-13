@@ -1,14 +1,12 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
  */
 
 package com.orsoncharts.android.graphics3d;
-
-import com.orsoncharts.android.util.ArgChecks;
 
 /**
  * A 3D object that is simply a dot (single vertex).

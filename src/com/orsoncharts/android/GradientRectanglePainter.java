@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -14,7 +14,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.orsoncharts.android.graphics3d.Point2D;
 import com.orsoncharts.android.util.Anchor2D;
 import com.orsoncharts.android.util.ArgChecks;
 
@@ -135,7 +134,7 @@ public final class GradientRectanglePainter implements RectanglePainter,
 //        g2.setPaint(createTransformedGradient(area));
 //        g2.fill(area);
 //        g2.setPaint(saved);
-    	//FIXME
+        //FIXME
     }
     
     /**

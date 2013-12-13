@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -116,7 +116,7 @@ public class ScatterXYZRenderer extends AbstractXYZRenderer
         }
         int color = getColorSource().getColor(series, item);
         Object3D cube = Object3D.createBox((xmax + xmin) / 2.0 + xOffset, 
-        		xmax - xmin,
+                xmax - xmin,
                 (ymax + ymin) / 2.0 + yOffset, ymax - ymin,
                 (zmax + zmin) / 2.0 + zOffset, zmax - zmin, color);
         world.add(cube);

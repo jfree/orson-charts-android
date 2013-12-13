@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -49,7 +49,7 @@ public class PiePlot3D extends AbstractPlot3D implements Serializable {
             = new TextStyle(Typeface.SANS_SERIF, 12);
     
     /** The dataset. */
-    private PieDataset3D<Number> dataset;
+    private PieDataset3D dataset;
 
     /** The radius of the pie chart. */
     private double radius; 
@@ -80,7 +80,7 @@ public class PiePlot3D extends AbstractPlot3D implements Serializable {
      * 
      * @param dataset  the dataset (<code>null</code> not permitted). 
      */
-    public PiePlot3D(PieDataset3D<Number> dataset) {
+    public PiePlot3D(PieDataset3D dataset) {
         ArgChecks.nullNotPermitted(dataset, "dataset");
         this.dataset = dataset;
         this.dataset.addChangeListener(this);
@@ -97,7 +97,7 @@ public class PiePlot3D extends AbstractPlot3D implements Serializable {
      * 
      * @return The dataset (never <code>null</code>). 
      */
-    public PieDataset3D<Number> getDataset() {
+    public PieDataset3D getDataset() {
         return this.dataset;
     }
 
@@ -107,7 +107,7 @@ public class PiePlot3D extends AbstractPlot3D implements Serializable {
      * 
      * @param dataset  the dataset (<code>null</code> not permitted). 
      */
-    public void setDataset(PieDataset3D<Number> dataset) {
+    public void setDataset(PieDataset3D dataset) {
         ArgChecks.nullNotPermitted(dataset, "dataset");
         this.dataset.removeChangeListener(this);
         this.dataset = dataset;
@@ -270,7 +270,7 @@ public class PiePlot3D extends AbstractPlot3D implements Serializable {
     @Override
     public List<LegendItemInfo> getLegendInfo() {
         List<LegendItemInfo> result = new ArrayList<LegendItemInfo>();
-        for (Comparable key : this.dataset.getKeys()) {
+        for (Comparable<?> key : this.dataset.getKeys()) {
             LegendItemInfo info = new StandardLegendItemInfo(key, 
                     key.toString(), this.sectionColorSource.getColor(key));
             result.add(info);

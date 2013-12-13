@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -27,6 +27,7 @@ import com.orsoncharts.android.axis.TickData;
 import com.orsoncharts.android.axis.ValueAxis3D;
 import com.orsoncharts.android.graphics3d.Dimension2D;
 import com.orsoncharts.android.graphics3d.Dimension3D;
+import com.orsoncharts.android.graphics3d.DoubleSidedFace;
 import com.orsoncharts.android.graphics3d.Drawable3D;
 import com.orsoncharts.android.graphics3d.Face;
 import com.orsoncharts.android.graphics3d.Object3D;
@@ -53,6 +54,7 @@ import com.orsoncharts.android.table.TextElement;
 import com.orsoncharts.android.util.Anchor2D;
 import com.orsoncharts.android.util.ArgChecks;
 import com.orsoncharts.android.util.ObjectUtils;
+import com.orsoncharts.android.util.Orientation;
 import com.orsoncharts.android.util.RefPt2D;
 import com.orsoncharts.android.util.TextAnchor;
 import com.orsoncharts.android.util.TextUtils;
@@ -61,13 +63,6 @@ import com.orsoncharts.android.util.TextUtils;
  * A chart object for 3D charts (this is the umbrella object that manages all
  * the components of the chart).  The {@link Chart3DFactory} class provides 
  * some factory methods to construct common types of charts.
- * <br><br>
- * All rendering is done via the Java2D API, so this object is able to draw to 
- * any implementation of the Graphics2D API (including 
- * <a href="http://www.jfree.org/jfreesvg/" target="JFreeSVG">JFreeSVG</a> for 
- * SVG output, and 
- * <a href="http://www.object-refinery.com/pdf/" target="OrsonPDF">OrsonPDF</a> 
- * for PDF output).
  * <br><br>
  * In the step prior to rendering, a chart is composed in a 3D model that is
  * referred to as the "world".  The dimensions of this 3D model are measured
@@ -92,7 +87,6 @@ import com.orsoncharts.android.util.TextUtils;
  * instances of this class.
  * 
  * @see Chart3DFactory
- * @see ChartPanel3D
  */
 public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
     
@@ -110,6 +104,9 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
     
     /** The anchor point for the legend (never <code>null</code>). */
     private Anchor2D legendAnchor;
+    
+    /** The orientation for the legend (never <code>null</code>). */
+    private Orientation legendOrientation;
     
     /** The plot. */
     private Plot3D plot;
@@ -155,6 +152,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         this.titleAnchor = TitleAnchor.TOP_LEFT;
         this.legendBuilder = new StandardLegendBuilder();
         this.legendAnchor = LegendAnchor.BOTTOM_RIGHT;
+        this.legendOrientation = Orientation.HORIZONTAL;
         this.plot = plot;
         this.plot.addChangeListener(this);
         Dimension3D dim = this.plot.getDimensions();
@@ -174,7 +172,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      * 
      * @return The background painter (possibly <code>null</code>).
      * 
-     * @see #setBackground(com.orsoncharts.RectanglePainter) 
+     * @see #setBackground(com.orsoncharts.android.RectanglePainter) 
      */
     public RectanglePainter getBackground() {
         return this.background;
@@ -261,7 +259,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      * 
      * @return The title anchor (never <code>null</code>).
      * 
-     * @see #setTitleAnchor(com.orsoncharts.util.Anchor2D) 
+     * @see #setTitleAnchor(com.orsoncharts.android.util.Anchor2D) 
      */
     public Anchor2D getTitleAnchor() {
         return this.titleAnchor;
@@ -301,7 +299,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      * 
      * @return The chart box color (never <code>null</code>). 
      * 
-     * @see #setChartBoxColor(java.awt.Color) 
+     * @see #setChartBoxColor(int) 
      */
     public int getChartBoxColor() {
         return this.chartBoxColor;
@@ -387,8 +385,8 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      * 
      * @return The legend builder (possibly <code>null</code>).
      * 
-     * @see #setLegendBuilder(com.orsoncharts.legend.LegendBuilder) 
-     * @see #setLegendAnchor(com.orsoncharts.util.Anchor2D) 
+     * @see #setLegendBuilder(com.orsoncharts.android.legend.LegendBuilder) 
+     * @see #setLegendAnchor(com.orsoncharts.android.util.Anchor2D) 
      */
     public LegendBuilder getLegendBuilder() {
         return this.legendBuilder;
@@ -401,7 +399,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      * 
      * @param legendBuilder  the legend builder (<code>null</code> permitted).
      * 
-     * @see #setLegendAnchor(com.orsoncharts.util.Anchor2D) 
+     * @see #setLegendAnchor(com.orsoncharts.android.util.Anchor2D) 
      */
     public void setLegendBuilder(LegendBuilder legendBuilder) {
         this.legendBuilder = legendBuilder;
@@ -413,7 +411,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      * 
      * @return The legend anchor (never <code>null</code>).
      * 
-     * @see #setLegendAnchor(com.orsoncharts.util.Anchor2D) 
+     * @see #setLegendAnchor(com.orsoncharts.android.util.Anchor2D) 
      */
     public Anchor2D getLegendAnchor() {
         return this.legendAnchor;
@@ -434,6 +432,51 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         fireChangeEvent();
     }
 
+    /**
+     * Returns the orientation for the legend.
+     * 
+     * @return The orientation (never <code>null</code>). 
+     * 
+     * @since 1.1
+     */
+    public Orientation getLegendOrientation() {
+        return this.legendOrientation;
+    }
+
+    /**
+     * Sets the legend orientation and sends a {@link Chart3DChangeEvent}
+     * to all registered listeners.
+     * 
+     * @param orientation  the orientation (<code>null</code> not permitted).
+     * 
+     * @since 1.1
+     */
+    public void setLegendOrientation(Orientation orientation) {
+        ArgChecks.nullNotPermitted(orientation, "orientation");
+        this.legendOrientation = orientation;
+        fireChangeEvent();
+    }
+    
+    /**
+     * Sets the legend position (both the anchor point and the orientation) and
+     * sends a {@link Chart3DChangeEvent} to all registered listeners. 
+     * This is a convenience method that calls both the 
+     * {@link #setLegendAnchor(com.orsoncharts.android.util.Anchor2D)} and 
+     * {@link #setLegendOrientation(com.orsoncharts.android.util.Orientation)}
+     * methods.
+     * 
+     * @param anchor  the anchor (<code>null</code> not permitted).
+     * @param orientation  the orientation (<code>null</code> not permitted).
+     * 
+     * @since 1.1
+     */
+    public void setLegendPosition(Anchor2D anchor, Orientation orientation) {
+        setNotify(false);
+        setLegendAnchor(anchor);
+        setLegendOrientation(orientation);
+        setNotify(true);
+    }
+    
     /**
      * Creates a world containing the chart and the supplied chart box.
      * 
@@ -461,7 +504,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      */
     @Override
     public void draw(Canvas canvas, Paint paint, RectF bounds) {
-    	paint.setStrokeWidth(1.2f);
+        paint.setStrokeWidth(1.2f);
         Dimension3D dim3D = this.plot.getDimensions();
         double w = dim3D.getWidth();
         double h = dim3D.getHeight();
@@ -494,7 +537,8 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             double inprod = plane[0] * world.getSunX() + plane[1]
                     * world.getSunY() + plane[2] * world.getSunZ();
             double shade = (inprod + 1) / 2.0;
-            if (Utils2D.area2(pts[f.getVertexIndex(0)],
+            if (f instanceof DoubleSidedFace 
+                    || Utils2D.area2(pts[f.getVertexIndex(0)],
                     pts[f.getVertexIndex(1)], pts[f.getVertexIndex(2)]) > 0) {
                 int c = f.getColor();
                 if (c != 0) {
@@ -511,15 +555,15 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
                     }
                     p.close();
                     int sc = Color.argb(
-                    		Color.alpha(c),
-                    		(int) (Color.red(c) * shade), 
-                    		(int) (Color.green(c) * shade), 
-                    		(int) (Color.blue(c) * shade));
-                	paint.setColor(sc);
+                            Color.alpha(c),
+                            (int) (Color.red(c) * shade), 
+                            (int) (Color.green(c) * shade), 
+                            (int) (Color.blue(c) * shade));
+                    paint.setColor(sc);
                     if (drawOutline) {
-                    	paint.setStyle(Style.FILL_AND_STROKE);
+                        paint.setStyle(Style.FILL_AND_STROKE);
                     } else {
-                    	paint.setStyle(Style.FILL);
+                        paint.setStyle(Style.FILL);
                     }
                     canvas.drawPath(p, paint);
                 }
@@ -550,12 +594,13 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         
         // generate and draw the legend...
         if (this.legendBuilder != null) {
-            TableElement legend = this.legendBuilder.createLegend(this.plot);
+            TableElement legend = this.legendBuilder.createLegend(this.plot,
+                    this.legendAnchor, this.legendOrientation);
             if (true) { // eval
                 GridElement legend2 = new GridElement();
                 legend2.setElement(legend, "R1", "C1");
                 TextElement te = new TextElement("Orson Charts for Android (evaluation) (c) 2013, by Object Refinery Limited", 
-                		new TextStyle(Typeface.SANS_SERIF, 10));
+                        new TextStyle(Typeface.SANS_SERIF, 10));
                 te.setHorizontalAligment(HAlign.RIGHT);
                 legend2.setElement(te, "R2", "C1");
                 legend = legend2;         
@@ -655,46 +700,46 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
      * @param pts  the projection points.
      */
     private void drawGridlines(Canvas canvas, Paint paint, CBFace face, 
-    		Point2D[] pts) {
+            Point2D[] pts) {
         if (isGridlinesVisibleForX(this.plot)) {
-        	paint.setColor(fetchGridlinePaintX(this.plot));
-        	LineStyle ls = fetchGridlineStrokeX(this.plot);
-        	ls.applyToPaint(paint);
+            paint.setColor(fetchGridlinePaintX(this.plot));
+            LineStyle ls = fetchGridlineStrokeX(this.plot);
+            ls.applyToPaint(paint);
             List<TickData> xA = face.getXTicksA();
             List<TickData> xB = face.getXTicksB();
             for (int i = 0; i < xA.size(); i++) {
-            	Point2D pt1 = pts[face.getOffset() + xA.get(i).getVertexIndex()];
-            	Point2D pt2 = pts[face.getOffset() + xB.get(i).getVertexIndex()];
+                Point2D pt1 = pts[face.getOffset() + xA.get(i).getVertexIndex()];
+                Point2D pt2 = pts[face.getOffset() + xB.get(i).getVertexIndex()];
                 canvas.drawLine(pt1.getX(), pt1.getY(), pt2.getX(), pt2.getY(), 
-                		paint);
+                        paint);
             }
         }
                     
         if (isGridlinesVisibleForY(this.plot)) {
-        	paint.setColor(fetchGridlinePaintY(this.plot));
-        	LineStyle ls = fetchGridlineStrokeY(this.plot);
-        	ls.applyToPaint(paint);
+            paint.setColor(fetchGridlinePaintY(this.plot));
+            LineStyle ls = fetchGridlineStrokeY(this.plot);
+            ls.applyToPaint(paint);
             List<TickData> yA = face.getYTicksA();
             List<TickData> yB = face.getYTicksB();
             for (int i = 0; i < yA.size(); i++) {
-            	Point2D pt1 = pts[face.getOffset() + yA.get(i).getVertexIndex()];
-            	Point2D pt2 = pts[face.getOffset() + yB.get(i).getVertexIndex()];
+                Point2D pt1 = pts[face.getOffset() + yA.get(i).getVertexIndex()];
+                Point2D pt2 = pts[face.getOffset() + yB.get(i).getVertexIndex()];
                 canvas.drawLine(pt1.getX(), pt1.getY(), pt2.getX(), pt2.getY(), 
-                		paint);
+                        paint);
             }
         }
                     
         if (isGridlinesVisibleForZ(this.plot)) {
-        	paint.setColor(fetchGridlinePaintZ(this.plot));
-        	LineStyle ls = fetchGridlineStrokeZ(this.plot);
-        	ls.applyToPaint(paint);
+            paint.setColor(fetchGridlinePaintZ(this.plot));
+            LineStyle ls = fetchGridlineStrokeZ(this.plot);
+            ls.applyToPaint(paint);
             List<TickData> zA = face.getZTicksA();
             List<TickData> zB = face.getZTicksB();
             for (int i = 0; i < zA.size(); i++) {
-            	Point2D pt1 = pts[face.getOffset() + zA.get(i).getVertexIndex()];
-            	Point2D pt2 = pts[face.getOffset() + zB.get(i).getVertexIndex()];
+                Point2D pt1 = pts[face.getOffset() + zA.get(i).getVertexIndex()];
+                Point2D pt2 = pts[face.getOffset() + zB.get(i).getVertexIndex()];
                 canvas.drawLine(pt1.getX(), pt1.getY(), pt2.getX(), pt2.getY(), 
-                		paint);
+                        paint);
             }
         }
     }
@@ -908,7 +953,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             if (Utils2D.area2(ppts[f.getVertexIndex(0)], 
                     ppts[f.getVertexIndex(1)], 
                     ppts[f.getVertexIndex(2)]) > 0) {
-                Comparable key = p.getDataset().getKey(i / 2);
+                Comparable<?> key = p.getDataset().getKey(i / 2);
                 paint.setColor(p.getSectionLabelColorSource().getColor(key));
                 TextStyle textStyle = p.getSectionLabelFontSource().getFont(key);
                 textStyle.applyToPaint(paint);
@@ -916,8 +961,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
                         ppts[f.getVertexIndex(1)], ppts[f.getVertexIndex(2)],
                         ppts[f.getVertexIndex(3)]);
                 TextUtils.drawAlignedString(key.toString(), canvas, paint,
-                        (float) pt.getX(), (float) pt.getY(), 
-                        TextAnchor.CENTER);
+                        pt.getX(), pt.getY(), TextAnchor.CENTER);
             }
         }
     }
@@ -1011,16 +1055,16 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             }
 
             if (count(b, e) == 1 && longest(be, bf, df, de)) {
-                ytick = ((ValueAxis3D) yAxis).selectTick(paint, v0, v3, v7);
+                ytick = yAxis.selectTick(paint, v0, v3, v7);
             }
             if (count(b, f) == 1 && longest(bf, be, df, de)) {
-                ytick = ((ValueAxis3D) yAxis).selectTick(paint, v1, v2, v4);
+                ytick = yAxis.selectTick(paint, v1, v2, v4);
             }
             if (count(d, f) == 1 && longest(df, be, bf, de)) {
-                ytick = ((ValueAxis3D) yAxis).selectTick(paint, v6, v7, v0);
+                ytick = yAxis.selectTick(paint, v6, v7, v0);
             }
             if (count(d, e) == 1 && longest(de, be, bf, df)) {
-                ytick = ((ValueAxis3D) yAxis).selectTick(paint, v5, v4, v1);
+                ytick = yAxis.selectTick(paint, v5, v4, v1);
             }
 
             if (count(a, e) == 1 && longest(ae, af, cf, ce)) {
@@ -1217,35 +1261,35 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         ArgChecks.nullNotPermitted(anchor, "anchor");
         ArgChecks.nullNotPermitted(bounds, "bounds");
         float x, y;
-        float w = (float) Math.min(dim.getWidth(), bounds.width());
-        float h = (float) Math.min(dim.getHeight(), bounds.height());
+        float w = Math.min(dim.getWidth(), bounds.width());
+        float h = Math.min(dim.getHeight(), bounds.height());
         if (anchor.getRefPt().equals(RefPt2D.CENTER)) {
             x = bounds.centerX() - w / 2.0f;
             y = bounds.centerY() - h / 2.0f;
         } else if (anchor.getRefPt().equals(RefPt2D.CENTER_LEFT)) {
-            x = bounds.left + (float) anchor.getOffset().getDX();
+            x = bounds.left + anchor.getOffset().getDX();
             y = bounds.centerY() - h / 2.0f;
         } else if (anchor.getRefPt().equals(RefPt2D.CENTER_RIGHT)) {
-            x = bounds.right - (float) anchor.getOffset().getDX() - (float) dim.getWidth();
+            x = bounds.right - anchor.getOffset().getDX() - dim.getWidth();
             y = bounds.centerY() - h / 2.0f;
         } else if (anchor.getRefPt().equals(RefPt2D.TOP_CENTER)) {
             x = bounds.centerX() - w / 2.0f;
-            y = bounds.top + (float) anchor.getOffset().getDY();
+            y = bounds.top + anchor.getOffset().getDY();
         } else if (anchor.getRefPt().equals(RefPt2D.TOP_LEFT)) {
-            x = bounds.left + (float) anchor.getOffset().getDX();
-            y = bounds.top + (float) anchor.getOffset().getDY();
+            x = bounds.left + anchor.getOffset().getDX();
+            y = bounds.top + anchor.getOffset().getDY();
         } else if (anchor.getRefPt().equals(RefPt2D.TOP_RIGHT)) {
-            x = bounds.right - (float) anchor.getOffset().getDX() - (float) dim.getWidth();
-            y = bounds.top + (float) anchor.getOffset().getDY();
+            x = bounds.right - anchor.getOffset().getDX() - dim.getWidth();
+            y = bounds.top + anchor.getOffset().getDY();
         } else if (anchor.getRefPt().equals(RefPt2D.BOTTOM_CENTER)) {
             x = bounds.centerX() - w / 2.0f;
-            y = bounds.bottom - (float) anchor.getOffset().getDY() - (float) dim.getHeight();
+            y = bounds.bottom - anchor.getOffset().getDY() - dim.getHeight();
         } else if (anchor.getRefPt().equals(RefPt2D.BOTTOM_RIGHT)) {
-            x = bounds.right - (float) anchor.getOffset().getDX() - (float) dim.getWidth();
-            y = bounds.bottom - (float) anchor.getOffset().getDY() - (float) dim.getHeight();
+            x = bounds.right - anchor.getOffset().getDX() - dim.getWidth();
+            y = bounds.bottom - anchor.getOffset().getDY() - dim.getHeight();
         } else if (anchor.getRefPt().equals(RefPt2D.BOTTOM_LEFT)) {
-            x = bounds.left + (float) anchor.getOffset().getDX();
-            y = bounds.bottom - (float) anchor.getOffset().getDY() - (float) dim.getHeight();
+            x = bounds.left + anchor.getOffset().getDX();
+            y = bounds.bottom - anchor.getOffset().getDY() - dim.getHeight();
         } else {
             x = 0.0f;
             y = 0.0f;
@@ -1335,7 +1379,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             return;
         }
         for (Chart3DChangeListener listener : this.listenerList) {
-        	listener.chartChanged(event);
+            listener.chartChanged(event);
         }        
     }
   

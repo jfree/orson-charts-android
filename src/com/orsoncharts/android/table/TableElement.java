@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -50,9 +50,10 @@ public interface TableElement {
      * Returns the preferred size of the element, subject to the supplied
      * constraints.
      * 
-     * @param canvas  the graphics target.
-     * @param bounds  the bounds.
-     * @param constraints  the constraints.
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
+     * @param bounds  the bounds (<code>null</code> not permitted).
+     * @param constraints  the constraints (<code>null</code> permitted).
      * 
      * @return The preferred size. 
      */
@@ -76,9 +77,10 @@ public interface TableElement {
     /**
      * Draws the element within the specified bounds.
      * 
-     * @param g2  the graphics target.
-     * @param bounds  the bounds.
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
+     * @param bounds  the bounds (<code>null</code> not permitted).
      */
-    void draw(Canvas g2, Paint paint, RectF bounds);
+    void draw(Canvas canvas, Paint paint, RectF bounds);
     
 }

@@ -11,8 +11,11 @@ package com.orsoncharts.android.renderer.xyz;
 import com.orsoncharts.android.Range;
 import com.orsoncharts.android.data.DataUtils;
 import com.orsoncharts.android.data.xyz.XYZDataset;
+import com.orsoncharts.android.graphics3d.Dimension3D;
+import com.orsoncharts.android.graphics3d.World;
 import com.orsoncharts.android.plot.XYZPlot;
 import com.orsoncharts.android.renderer.AbstractRenderer3D;
+import com.orsoncharts.android.renderer.ComposeType;
 import com.orsoncharts.android.renderer.Renderer3DChangeEvent;
 import com.orsoncharts.android.util.ArgChecks;
 
@@ -51,6 +54,41 @@ public class AbstractXYZRenderer extends AbstractRenderer3D {
         this.plot = plot;
     }
 
+    /**
+     * Returns the type of composition performed by this renderer.  The default
+     * is <code>PER_ITEM</code> which means the plot will ask the renderer
+     * to compose one data item at a time into the 3D model.  Some renderers
+     * will override this method to return <code>ALL</code>, which means the
+     * renderer will compose all of the data items in one go (the plot calls
+     * the {@link #composeAll(XYZPlot, World, Dimension3D, double, double, double)} 
+     * method to trigger this).
+     * 
+     * @return The compose type (never <code>null</code>).
+     * 
+     * @since 1.1
+     */
+    public ComposeType getComposeType() {
+        return ComposeType.PER_ITEM;
+    }
+    
+    /**
+     * Adds objects to the <code>world</code> to represent all the data items
+     * that this renderer is responsible for.  This method is only called for
+     * renderers that return {@link ComposeType#ALL} from the 
+     * {@link #getComposeType()} method.
+     * 
+     * @param plot  the plot.
+     * @param world  the 3D model.
+     * @param dimensions  the dimensions of the plot.
+     * @param xOffset  the x-offset.
+     * @param yOffset  the y-offset.
+     * @param zOffset  the z-offset.
+     */
+    public void composeAll(XYZPlot plot, World world, Dimension3D dimensions, 
+            double xOffset, double yOffset, double zOffset) {
+        throw new UnsupportedOperationException();
+    }
+    
     /**
      * Returns the object that provides the color instances for items drawn
      * by the renderer.

@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013 by Object Refinery Limited.
  * 
@@ -19,7 +19,7 @@ public class TickData {
     private double pos;
     
     /** The key for the tick (used for CategoryAxis3D, null otherwise). */
-    private Comparable key;
+    private Comparable<?> key;
     
     /** The data value (used for ValueAxis3D). */
     private double dataValue;
@@ -36,7 +36,7 @@ public class TickData {
      * @param pos  the position along the axis as a percentage of the range.
      * @param key  the key.
      */
-    public TickData(double pos, Comparable key) {
+    public TickData(double pos, Comparable<?> key) {
         this.pos = pos;
         this.key = key;
         this.dataValue = Double.NaN;
@@ -86,7 +86,7 @@ public class TickData {
      * 
      * @return The key. 
      */
-    public Comparable getKey() {
+    public Comparable<?> getKey() {
         return this.key;
     }
     

@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -100,26 +100,28 @@ public abstract class AbstractTableElement {
     /**
      * Returns the preferred size of the element (including insets).
      * 
-     * @param g2  the graphics target.
-     * @param bounds  the bounds.
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
+     * @param bounds  the bounds (<code>null</code> not permitted).
      * 
      * @return The preferred size. 
      */
-    public Dimension2D preferredSize(Canvas g2, Paint paint, RectF bounds) {
-        return preferredSize(g2, paint, bounds, null);
+    public Dimension2D preferredSize(Canvas canvas, Paint paint, RectF bounds) {
+        return preferredSize(canvas, paint, bounds, null);
     }
 
     /**
      * Returns the preferred size of the element (including insets).
      * 
-     * @param g2  the graphics target.
-     * @param bounds  the bounds.
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
+     * @param bounds  the bounds (<code>null</code> not permitted).
      * @param constraints  the constraints (ignored for now).
      * 
      * @return The preferred size. 
      */
-    public abstract Dimension2D preferredSize(Canvas g2, Paint paint, RectF bounds, 
-            Map<String, Object> constraints);
+    public abstract Dimension2D preferredSize(Canvas canvas, Paint paint, 
+            RectF bounds, Map<String, Object> constraints);
     
     /**
      * Tests this instance for equality with an arbitrary object.

@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -20,17 +20,22 @@ import com.orsoncharts.android.plot.CategoryPlot3D;
 import com.orsoncharts.android.plot.PiePlot3D;
 import com.orsoncharts.android.plot.Plot3D;
 import com.orsoncharts.android.plot.XYZPlot;
+import com.orsoncharts.android.table.ContainerElement;
 import com.orsoncharts.android.table.FlowElement;
 import com.orsoncharts.android.table.GridElement;
 import com.orsoncharts.android.table.HAlign;
 import com.orsoncharts.android.table.ShapeElement;
 import com.orsoncharts.android.table.TableElement;
 import com.orsoncharts.android.table.TextElement;
+import com.orsoncharts.android.table.VAlign;
+import com.orsoncharts.android.table.VerticalFlowElement;
+import com.orsoncharts.android.util.Anchor2D;
 import com.orsoncharts.android.util.ArgChecks;
 import com.orsoncharts.android.util.ObjectUtils;
+import com.orsoncharts.android.util.Orientation;
 
 /**
- * The standard legend builder, which creates a simple horizontal legend
+ * The standard legend builder, which creates a simple legend
  * with a flow layout and optional header and footer text.
  * <br><br>
  * NOTE: This class is serializable, but the serialization format is subject 
@@ -42,15 +47,15 @@ public final class StandardLegendBuilder implements LegendBuilder,
 
     /** The default header font. */
     public static final TextStyle DEFAULT_HEADER_FONT = new TextStyle(
-    		Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 14);
+            Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD), 14);
     
     /** The default footer font. */
     public static final TextStyle DEFAULT_FOOTER_FONT = new TextStyle(
-    		Typeface.SANS_SERIF, 10);
+            Typeface.SANS_SERIF, 10);
     
     /** The default font for legend items. */
     public static final TextStyle DEFAULT_ITEM_FONT = new TextStyle(
-    		Typeface.SANS_SERIF, 12);
+            Typeface.SANS_SERIF, 12);
     
     /** An optional header/title for the legend (can be <code>null</code>). */
     private String header;
@@ -74,6 +79,18 @@ public final class StandardLegendBuilder implements LegendBuilder,
     private TextStyle itemFont;
     
     /**
+     * The row alignment (if <code>null</code>, the row alignment will be
+     * derived from the anchor point).
+     */
+    private HAlign rowAlignment;
+    
+    /**
+     * The column alignment (if <code>null</code>, the column alignment will
+     * be derived from the anchor point).
+     */
+    private VAlign columnAlignment;
+    
+    /**
      * Creates a builder for a simple legend with no header and no footer.
      */
     public StandardLegendBuilder() {
@@ -88,13 +105,15 @@ public final class StandardLegendBuilder implements LegendBuilder,
      * @param footer  the legend footer (<code>null</code> permitted).
      */
     public StandardLegendBuilder(String header, String footer) {
-        this.header = null;
+        this.header = header;
         this.headerFont = DEFAULT_HEADER_FONT;
         this.headerAlignment = HAlign.LEFT;
-        this.footer = null;
+        this.footer = footer;
         this.footerFont = DEFAULT_FOOTER_FONT;
         this.footerAlignment = HAlign.RIGHT;
         this.itemFont = DEFAULT_ITEM_FONT;
+        this.rowAlignment = null;
+        this.columnAlignment = null;
     }
     
     /**
@@ -232,21 +251,81 @@ public final class StandardLegendBuilder implements LegendBuilder,
     }
     
     /**
+     * Returns the row alignment.  The default value is <code>null</code> 
+     * which means that the row alignment is derived from the anchor point 
+     * (left aligned for anchors on the left side, center alignment for 
+     * anchors in the middle, and right aligned for anchors on the right side).
+     * 
+     * @return The row alignment (possibly <code>null</code>). 
+     * 
+     * @since 1.1
+     */
+    public HAlign getRowAlignment() {
+        return this.rowAlignment;
+    }
+    
+    /**
+     * Sets the row alignment (to override the default alignment that is
+     * derived from the legend anchor point).  In most circumstances you 
+     * should be able to rely on the default behaviour, so leave this
+     * attribute set to <code>null</code>.
+     * 
+     * @param alignment  the row alignment (<code>null</code> permitted).
+     * 
+     * @since 1.1
+     */
+    public void setRowAlignment(HAlign alignment) {
+        this.rowAlignment = alignment;    
+    }
+    
+    /**
+     * Returns the column alignment.  The default value is <code>null</code> 
+     * which means that the column alignment is derived from the anchor point 
+     * (top aligned for anchors at the top, center alignment for 
+     * anchors in the middle, and bottom aligned for anchors at the bottom).
+     * 
+     * @return The column alignment (possibly <code>null</code>). 
+     * 
+     * @since 1.1
+     */
+    public VAlign getColumnAlignment() {
+        return this.columnAlignment;
+    }
+    
+    /**
+     * Sets the column alignment (to override the default alignment that is
+     * derived from the legend anchor point).  In most circumstances you 
+     * should be able to rely on the default behaviour, so leave this
+     * attribute set to <code>null</code>.
+     * 
+     * @param alignment  the column alignment (<code>null</code> permitted).
+     * 
+     * @since 1.1
+     */
+    public void setColumnAlignment(VAlign alignment) {
+        this.columnAlignment = alignment;
+    }
+    
+    /**
      * Creates and returns a legend (instance of {@link TableElement}) that
      * provides a visual key for the data series in the specified plot.  The
      * plot can be any of the built-in plot types: {@link PiePlot3D}, 
      * {@link CategoryPlot3D} or {@link XYZPlot}.
      * 
      * @param plot  the plot (<code>null</code> not permitted).
+     * @param anchor  the anchor (<code>null</code> not permitted).
+     * @param orientation  the orientation (<code>null</code> not permitted).
      * 
      * @return The legend. 
      */
     @Override
-    public TableElement createLegend(Plot3D plot) {
-        TableElement legend = createSimpleLegend(plot.getLegendInfo());
+    public TableElement createLegend(Plot3D plot, Anchor2D anchor,
+            Orientation orientation) {
+        TableElement legend = createSimpleLegend(plot.getLegendInfo(), anchor,
+                orientation);
         if (this.header != null || this.footer != null) {
             GridElement compositeLegend = new GridElement();
-            if (header != null) {
+            if (this.header != null) {
                 TextElement he = new TextElement(this.header, this.headerFont);
                 he.setHorizontalAligment(this.headerAlignment);
                 compositeLegend.setElement(he, "R0", "C1");                
@@ -268,12 +347,21 @@ public final class StandardLegendBuilder implements LegendBuilder,
      * individual legend items.
      * 
      * @param plot  the plot (<code>null</code> not permitted).
+     * @param anchor  the anchor point (<code>null</code> not permitted).
+     * @param orientation  the orientation (<code>null</code> not permitted).
      * 
      * @return The simple legend. 
      */
-    private TableElement createSimpleLegend(List<LegendItemInfo> items) {
+    private TableElement createSimpleLegend(List<LegendItemInfo> items,
+            Anchor2D anchor, Orientation orientation) {
         ArgChecks.nullNotPermitted(items, "items");
-        FlowElement legend = new FlowElement();
+        ArgChecks.nullNotPermitted(orientation, "orientation");
+        ContainerElement legend;
+        if (orientation == Orientation.HORIZONTAL) {
+            legend = new FlowElement(horizontalAlignment(anchor), 2);
+        } else {
+            legend = new VerticalFlowElement(verticalAlignment(anchor), 2);        
+        }
         for (LegendItemInfo item : items) {
             Shape shape = item.getShape();
             if (shape == null) {
@@ -284,6 +372,46 @@ public final class StandardLegendBuilder implements LegendBuilder,
                     shape, item.getPaint()));
         }
         return legend;
+    }
+    
+    /**
+     * Returns the horizontal alignment that should be used.
+     * 
+     * @param anchor  the anchor (<code>null</code> not permitted).
+     * 
+     * @return The horizontal alignment. 
+     */
+    private HAlign horizontalAlignment(Anchor2D anchor) {
+        if (this.rowAlignment != null) {
+            return this.rowAlignment;
+        }
+        if (anchor.getRefPt().isLeft()) {
+            return HAlign.LEFT;
+        }
+        if (anchor.getRefPt().isRight()) {
+            return HAlign.RIGHT;
+        }
+        return HAlign.CENTER;
+    }
+    
+    /**
+     * Returns the vertical alignment that should be used.
+     * 
+     * @param anchor  the anchor (<code>null</code> not permitted).
+     * 
+     * @return The vertical alignment. 
+     */
+    private VAlign verticalAlignment(Anchor2D anchor) {
+        if (this.columnAlignment != null) {
+            return this.columnAlignment;
+        }
+        if (anchor.getRefPt().isTop()) {
+            return VAlign.TOP;
+        }
+        if (anchor.getRefPt().isBottom()) {
+            return VAlign.BOTTOM;
+        }
+        return VAlign.MIDDLE;
     }
     
     /**

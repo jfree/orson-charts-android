@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -76,9 +76,9 @@ public class Rotate3D implements Serializable {
      */
     public void setAngle(double angle) {
         this.angle = angle;
-        double v1 = b.x - a.x;
-        double v2 = b.y - a.y;
-        double v3 = b.z - a.z;
+        double v1 = this.b.x - this.a.x;
+        double v2 = this.b.y - this.a.y;
+        double v3 = this.b.z - this.a.z;
         double theta = Math.atan2(v2, v1);
         double phi = Math.atan2(Math.sqrt(v1 * v1 + v2 * v2), v3);
         initRotate(this.a, theta, phi, angle);

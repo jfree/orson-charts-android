@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -27,7 +27,7 @@ public interface LegendItemInfo {
      * 
      * @return The series key (never <code>null</code>). 
      */
-    Comparable getSeriesKey();
+    Comparable<?> getSeriesKey();
     
     /**
      * Returns the series label that will be displayed in the legend.  Very
@@ -68,6 +68,6 @@ public interface LegendItemInfo {
      * 
      * @return A map (never <code>null</code>). 
      */
-    Map<Comparable, Object> getProperties();
+    Map<Comparable<?>, Object> getProperties();
     
 }

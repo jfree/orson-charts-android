@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -11,10 +11,11 @@ package com.orsoncharts.android.data.xyz;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import com.orsoncharts.android.util.ArgChecks;
+
 import com.orsoncharts.android.data.AbstractDataset3D;
-//import com.orsoncharts.android.plot.XYZPlot;
-//import com.orsoncharts.android.renderer.xyz.XYZRenderer;
+import com.orsoncharts.android.plot.XYZPlot;
+import com.orsoncharts.android.renderer.xyz.XYZRenderer;
+import com.orsoncharts.android.util.ArgChecks;
 
 /**
  * A collection of {@link XYZSeries} objects (implements the {@link XYZDataset}
@@ -53,7 +54,7 @@ public class XYZSeriesCollection extends AbstractDataset3D
      * @return The series index or <code>-1</code>. 
      */
     @Override
-    public int getSeriesIndex(Comparable key) {
+    public int getSeriesIndex(Comparable<?> key) {
         ArgChecks.nullNotPermitted(key, "key");
         return getSeriesKeys().indexOf(key);
     }
@@ -66,8 +67,8 @@ public class XYZSeriesCollection extends AbstractDataset3D
      *     <code>null</code>).
      */
     @Override
-    public List<Comparable> getSeriesKeys() {
-        List<Comparable> result = new ArrayList();
+    public List<Comparable<?>> getSeriesKeys() {
+        List<Comparable<?>> result = new ArrayList<Comparable<?>>();
         for (XYZSeries s : this.series) {
             result.add(s.getKey());
         }

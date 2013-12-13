@@ -1,3 +1,11 @@
+/* ========================
+ * Orson Charts for Android
+ * ========================
+ * 
+ * (C)opyright 2013, by Object Refinery Limited.
+ * 
+ */
+
 package com.orsoncharts.android.demo;
 
 import com.orsoncharts.android.Chart3D;
@@ -14,13 +22,21 @@ import com.orsoncharts.android.graphics3d.ViewPoint3D;
 import com.orsoncharts.android.plot.CategoryPlot3D;
 import com.orsoncharts.android.renderer.category.StandardCategoryColorSource;
 
+/**
+ * Creates a line chart instance for the demo.
+ */
 public class LineChartDemo1 {
-	
-	public static Chart3D createChart() {
+
+    /**
+     * Creates a demo chart.
+     * 
+     * @return A demo chart.
+     */
+    public static Chart3D createChart() {
         Chart3D chart = Chart3DFactory.createLineChart(
                 "Web Browser Market Share", 
-                "Source: http://gs.statcounter.com", createDataset(), null, null, 
-                "Market Share (%)");
+                "Source: http://gs.statcounter.com", createDataset(), null, 
+                null, "Market Share (%)");
         CategoryPlot3D plot = (CategoryPlot3D) chart.getPlot();
         plot.setDimensions(new Dimension3D(18, 8, 4));
         plot.getRowAxis().setVisible(false);
@@ -30,8 +46,8 @@ public class LineChartDemo1 {
                 Colors.getColors1()));
         chart.setViewPoint(ViewPoint3D.createAboveViewPoint(30)); 
         return chart;
-	}
-	
+    }
+    
     /**
      * Creates a sample dataset (hard-coded for the purpose of keeping the
      * demo self-contained - in practice you would normally read your data
@@ -43,13 +59,14 @@ public class LineChartDemo1 {
         StandardCategoryDataset3D dataset = new StandardCategoryDataset3D();
         dataset.addSeriesAsRow("Safari", createSafariData());
         dataset.addSeriesAsRow("Firefox", createFirefoxData());
-        dataset.addSeriesAsRow("Internet Explorer", createInternetExplorerData());
+        dataset.addSeriesAsRow("Internet Explorer", 
+                createInternetExplorerData());
         dataset.addSeriesAsRow("Chrome", createChromeData());
         return dataset;
     }
 
-    private static KeyedValues createChromeData() {
-        DefaultKeyedValues series = new DefaultKeyedValues();
+    private static KeyedValues<Number> createChromeData() {
+        DefaultKeyedValues<Number> series = new DefaultKeyedValues<Number>();
         series.put("Jan-12", 0.2840);
         series.put("Feb-12", 0.2984);
         series.put("Mar-12", 0.3087);
@@ -72,8 +89,8 @@ public class LineChartDemo1 {
         return series;
     }
 
-    private static KeyedValues createFirefoxData() {
-        DefaultKeyedValues series = new DefaultKeyedValues();
+    private static KeyedValues<Number> createFirefoxData() {
+        DefaultKeyedValues<Number> series = new DefaultKeyedValues<Number>();
         series.put("Jan-12", 0.2478);
         series.put("Feb-12", 0.2488);
         series.put("Mar-12", 0.2498);
@@ -95,8 +112,8 @@ public class LineChartDemo1 {
         return series;
     }
 
-    private static KeyedValues createInternetExplorerData() {
-        DefaultKeyedValues series = new DefaultKeyedValues();
+    private static KeyedValues<Number> createInternetExplorerData() {
+        DefaultKeyedValues<Number> series = new DefaultKeyedValues<Number>();
         series.put("Jan-12", 0.3745);
         series.put("Feb-12", 0.3575);
         series.put("Mar-12", 0.3481);
@@ -117,9 +134,9 @@ public class LineChartDemo1 {
         series.put("Apr-13", 0.2971);
         return series;
     }
-//
-    private static KeyedValues createSafariData() {
-        DefaultKeyedValues series = new DefaultKeyedValues();
+
+    private static KeyedValues<Number> createSafariData() {
+        DefaultKeyedValues<Number> series = new DefaultKeyedValues<Number>();
         series.put("Jan-12", 0.0662);
         series.put("Feb-12", 0.0677);
         series.put("Mar-12", 0.0672);

@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -71,17 +71,17 @@ public class NumberTickSelector implements TickSelector, Serializable {
      */
     @Override
     public boolean next() {
-        if (factor == 1) {
-            factor = 2;
+        if (this.factor == 1) {
+            this.factor = 2;
             return true;
         } 
-        if (factor == 2) {
-            factor = 5;
+        if (this.factor == 2) {
+            this.factor = 5;
             return true;  
         } 
-        if (factor == 5) {
-            power++;
-            factor = 1;
+        if (this.factor == 5) {
+            this.power++;
+            this.factor = 1;
             return true;
         } 
         throw new IllegalStateException("We should never get here.");
@@ -95,17 +95,17 @@ public class NumberTickSelector implements TickSelector, Serializable {
      */
     @Override
     public boolean previous() {
-        if (factor == 1) {
-            factor = 5;
-            power--;
+        if (this.factor == 1) {
+            this.factor = 5;
+            this.power--;
             return true;
         } 
-        if (factor == 2) {
-            factor = 1;
+        if (this.factor == 2) {
+            this.factor = 1;
             return true;  
         } 
-        if (factor == 5) {
-            factor = 2;
+        if (this.factor == 5) {
+            this.factor = 2;
             return true;
         } 
         throw new IllegalStateException("We should never get here.");
@@ -129,20 +129,20 @@ public class NumberTickSelector implements TickSelector, Serializable {
 
     @Override
     public Format getCurrentTickLabelFormat() {
-        if (power == -4) {
-            return this.percentage ? dfNeg4P : dfNeg4;
+        if (this.power == -4) {
+            return this.percentage ? this.dfNeg4P : this.dfNeg4;
         }
-        if (power == -3) {
-            return this.percentage ? dfNeg3P : dfNeg3;
+        if (this.power == -3) {
+            return this.percentage ? this.dfNeg3P : this.dfNeg3;
         }
-        if (power == -2) {
-            return this.percentage ? dfNeg2P : dfNeg2;
+        if (this.power == -2) {
+            return this.percentage ? this.dfNeg2P : this.dfNeg2;
         }
-        if (power == -1) {
-            return this.percentage ? dfNeg1P : dfNeg1;
+        if (this.power == -1) {
+            return this.percentage ? this.dfNeg1P : this.dfNeg1;
         }
-        if (power >= 0 && power <= 6) {
-            return this.percentage ? df0P : df0;
+        if (this.power >= 0 && this.power <= 6) {
+            return this.percentage ? this.df0P : this.df0;
         }
         return this.percentage ? new DecimalFormat("0.0000E0%") 
                 : new DecimalFormat("0.0000E0");

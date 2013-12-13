@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -27,7 +27,7 @@ public interface Axis3D {
      * 
      * @return The font (never <code>null</code>). 
      */
-	TextStyle getLabelFont();
+    TextStyle getLabelFont();
     
     /**
      * Sets the font for the axis label (the main label, not the tick labels)
@@ -100,9 +100,10 @@ public interface Axis3D {
      * @param endPt  the end point (<code>null</code> not permitted)
      * @param opposingPt  an opposing point (<code>null</code> not permitted).
      * @param labels  draw labels?
+     * @param tickData  the tick data.
      */
     void draw(Canvas canvas, Paint paint, Point2D startPt, Point2D endPt, 
-    		Point2D opposingPt, boolean labels, List<TickData> tickData);
+            Point2D opposingPt, boolean labels, List<TickData> tickData);
 
     /**
      * Registers a listener so that it receives notification of changes to the

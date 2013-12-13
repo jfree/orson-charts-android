@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -70,7 +70,7 @@ public interface ValueAxis3D extends Axis3D {
      * Selects an appropriate tick size and format for the axis based on
      * the axis being rendered from <code>pt0</code> to <code>pt1</code>.
      * 
-     * @param g2  the graphics target.
+     * @param paint  the graphics attributes.
      * @param pt0  the starting point.
      * @param pt1  the ending point.
      * @param opposingPt  a point on the opposite side of the axis from the 

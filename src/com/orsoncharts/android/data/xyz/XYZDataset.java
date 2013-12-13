@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -9,8 +9,9 @@
 package com.orsoncharts.android.data.xyz;
 
 import java.util.List;
+
 import com.orsoncharts.android.data.Dataset3D;
-//import com.orsoncharts.android.plot.XYZPlot;
+import com.orsoncharts.android.plot.XYZPlot;
 
 /**
  * Defines the methods used to access data in the form of multiple series
@@ -33,7 +34,7 @@ public interface XYZDataset extends Dataset3D {
      * @return A list of the series-keys (possibly empty, but never 
      *     <code>null</code>). 
      */
-    List<Comparable> getSeriesKeys();
+    List<Comparable<?>> getSeriesKeys();
     
     /**
      * Returns the index of the specified series key, or <code>-1</code> if
@@ -43,7 +44,7 @@ public interface XYZDataset extends Dataset3D {
      * 
      * @return The index of the key, or <code>-1</code>. 
      */
-    int getSeriesIndex(Comparable key);
+    int getSeriesIndex(Comparable<?> key);
     
     /**
      * Returns the number of items in a given series.

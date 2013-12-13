@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -20,7 +20,7 @@ public interface KeyedValue<T> {
      * 
      * @return The key (never <code>null</code>). 
      */
-    public Comparable getKey();
+    public Comparable<?> getKey();
   
     /**
      * Returns the value.

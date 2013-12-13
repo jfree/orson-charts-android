@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -15,10 +15,10 @@ import com.orsoncharts.android.util.ObjectUtils;
 /**
  * A data item where a key is associated with a value (typically numerical).
  */
-public final class DefaultKeyedValue<T> implements KeyedValue, Serializable {
+public final class DefaultKeyedValue<T> implements KeyedValue<T>, Serializable {
 
     /** The key. */
-    private Comparable key;
+    private Comparable<?> key;
 
     /** The value. */
     private T value;
@@ -29,7 +29,7 @@ public final class DefaultKeyedValue<T> implements KeyedValue, Serializable {
      * @param key  the key (<code>null</code> not permitted).
      * @param value  the value.
      */
-    public DefaultKeyedValue(Comparable key, T value) {
+    public DefaultKeyedValue(Comparable<?> key, T value) {
         ArgChecks.nullNotPermitted(key, "key");
         this.key = key;
         this.value = value;
@@ -41,7 +41,7 @@ public final class DefaultKeyedValue<T> implements KeyedValue, Serializable {
      * @return The key (never <code>null</code>). 
      */
     @Override
-    public Comparable getKey() {
+    public Comparable<?> getKey() {
         return this.key;
     }
 
@@ -76,10 +76,10 @@ public final class DefaultKeyedValue<T> implements KeyedValue, Serializable {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof DefaultKeyedValue)) {
+        if (!(obj instanceof DefaultKeyedValue<?>)) {
             return false;
         }
-        DefaultKeyedValue that = (DefaultKeyedValue) obj;
+        DefaultKeyedValue<?> that = (DefaultKeyedValue<?>) obj;
         if (!this.key.equals(that.key)) {
             return false;
         }
@@ -91,6 +91,6 @@ public final class DefaultKeyedValue<T> implements KeyedValue, Serializable {
   
     @Override
     public String toString() {
-        return "(" + this.key.toString() + ", " + value + ")";
+        return "(" + this.key.toString() + ", " + this.value + ")";
     }
 }

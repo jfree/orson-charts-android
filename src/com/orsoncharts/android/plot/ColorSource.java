@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -26,7 +26,7 @@ public interface ColorSource {
      * 
      * @return The color.
      */
-    int getColor(Comparable key);
+    int getColor(Comparable<?> key);
     
     /**
      * Sets the color associated with the specified key.  If the supplied
@@ -36,7 +36,7 @@ public interface ColorSource {
      * @param key  the key (<code>null</code> not permitted).
      * @param color  the color (<code>null</code> permitted).
      */
-    void setColor(Comparable key, int color);
+    void setColor(Comparable<?> key, int color);
     
 }
 

@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -41,7 +41,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
     private boolean visible;
     
     /** The categories. */
-    private List<Comparable> categories;
+    private List<Comparable<?>> categories;
   
     /** 
      * The axis range (never <code>null</code>). 
@@ -69,7 +69,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
     private boolean lastCategoryHalfWidth = false;
         
     /** 
-     * The tick mark length (in Java2D units).  When this is 0.0, no tick
+     * The tick mark length.  When this is 0.0, no tick
      * marks will be drawn.
      */
     private double tickMarkLength;
@@ -81,7 +81,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
     private int tickMarkPaint;
     
     /** 
-     * The tick label offset (in Java2D units).  This is the gap between the
+     * The tick label offset.  This is the gap between the
      * tick marks and their associated labels.
      */
     private double tickLabelOffset;
@@ -101,7 +101,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
     public StandardCategoryAxis3D(String label) {
         super(label);
         this.visible = true;
-        this.categories = new ArrayList<Comparable>();
+        this.categories = new ArrayList<Comparable<?>>();
         this.range = new Range(0.0, 1.0);
         this.lowerMargin = 0.05;
         this.upperMargin = 0.05;
@@ -276,7 +276,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
     }
 
     /**
-     * Returns the tick mark length (in Java2D units).  The default value
+     * Returns the tick mark length.  The default value
      * is <code>3.0</code>.
      * 
      * @return The tick mark length. 
@@ -286,12 +286,12 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
     }
     
     /**
-     * Sets the tick mark length (in Java2D units) and sends an 
+     * Sets the tick mark length and sends an 
      * {@link Axis3DChangeEvent} to all registered listeners.  You can set
      * the length to <code>0.0</code> if you don't want any tick marks on the
      * axis.
      * 
-     * @param length  the length (in Java2D units).
+     * @param length  the length.
      */
     public void setTickMarkLength(double length) {
         this.tickMarkLength = length;
@@ -345,8 +345,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
      * Returns the offset between the tick marks and the tick labels.  The
      * default value is <code>5.0</code>.
      * 
-     * @return The offset between the tick marks and the tick labels (in Java2D
-     *     units).
+     * @return The offset between the tick marks and the tick labels.
      */
     public double getTickLabelOffset() {
         return this.tickLabelOffset;
@@ -412,7 +411,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
      * @return The value.
      */
     @Override
-    public double getCategoryValue(Comparable category) {
+    public double getCategoryValue(Comparable<?> category) {
         int index = this.categories.indexOf(category);
         if (index < 0) {
             return Double.NaN;
@@ -452,9 +451,10 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
 
     /**
      * Draws the axis between the two points <code>pt0</code> and 
-     * <code>pt1</code> in Java2D space.
+     * <code>pt1</code> in Canvas space.
      * 
-     * @param g2  the graphics target (<code>null</code> not permitted).
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
      * @param pt0  the starting point for the axis.
      * @param pt1  the ending point for the axis.
      * @param opposingPt  a point on the opposite side of the line from the 
@@ -488,7 +488,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
                 paint.setColor(this.tickMarkPaint);
                 this.tickMarkStroke.applyToPaint(paint);
                 canvas.drawLine(tickLine.getX1(), tickLine.getY1(), 
-                		tickLine.getX2(), tickLine.getY2(), paint);
+                        tickLine.getX2(), tickLine.getY2(), paint);
             }
 
             if (getTickLabelsVisible()) {
@@ -507,15 +507,15 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
                 maxTickLabelWidth = Math.max(maxTickLabelWidth, 
                         paint.measureText(tickLabel));
                 TextUtils.drawRotatedString(tickLabel, canvas, paint,
-                        (float) perpLine.getX2(), (float) perpLine.getY2(), 
+                        perpLine.getX2(), perpLine.getY2(), 
                         textAnchor, perpTheta, textAnchor);
             }
         }        
 
         // draw the axis label if there is one
         if (getLabel() != null) {
-        	getLabelFont().applyToPaint(paint);
-        	paint.setColor(getLabelPaint());
+            getLabelFont().applyToPaint(paint);
+            paint.setColor(getLabelPaint());
             Line2D labelPosLine = Utils2D.createPerpendicularLine(axisLine, 0.5, 
                     this.tickMarkLength + this.tickLabelOffset 
                     + maxTickLabelWidth + 10.0, 
@@ -528,7 +528,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
                 theta = theta - Math.PI;
             }
             TextUtils.drawRotatedString(getLabel(), canvas, paint, 
-                    (float) labelPosLine.getX2(), (float) labelPosLine.getY2(), 
+                    labelPosLine.getX2(), labelPosLine.getY2(), 
                     TextAnchor.CENTER, theta, TextAnchor.CENTER);
         }
     }
@@ -583,8 +583,8 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
      */
     @Override
     public List<TickData> generateTickData() {
-        List<TickData> result = new ArrayList(this.categories.size());
-        for (Comparable key : this.categories) {
+        List<TickData> result = new ArrayList<TickData>(this.categories.size());
+        for (Comparable<?> key : this.categories) {
             double pos = this.range.percent(getCategoryValue(key));
             result.add(new TickData(pos, key));
         }

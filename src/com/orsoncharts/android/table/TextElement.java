@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
@@ -121,7 +120,7 @@ public class TextElement extends AbstractTableElement
     @Override
     public Dimension2D preferredSize(Canvas g2, Paint paint, RectF bounds, 
             Map<String, Object> constraints) {
-    	this.font.applyToPaint(paint);
+        this.font.applyToPaint(paint);
         RectF textBounds = TextUtils.getTextBounds(this.text, paint);
         Insets insets = getInsets();
         float w = Math.min(textBounds.width() + insets.left + insets.right, 
@@ -144,7 +143,7 @@ public class TextElement extends AbstractTableElement
     @Override
     public List<RectF> layoutElements(Canvas g2, Paint paint, RectF bounds, 
             Map<String, Object> constraints) {
-    	this.font.applyToPaint(paint);
+        this.font.applyToPaint(paint);
         RectF textBounds = TextUtils.getTextBounds(this.text, paint);
         Insets insets = getInsets();
         float width = textBounds.width() + insets.left + insets.right;
@@ -180,7 +179,7 @@ public class TextElement extends AbstractTableElement
      */
     @Override
     public void draw(Canvas canvas, Paint paint, RectF bounds) {
-    	this.font.applyToPaint(paint);
+        this.font.applyToPaint(paint);
         List<RectF> layout = layoutElements(canvas, paint, bounds, null);
         RectF textBounds = layout.get(0);
         paint.setColor(getBackgroundPaint());

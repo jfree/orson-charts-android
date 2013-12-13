@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -98,7 +98,8 @@ public class DefaultDrawable3D implements Drawable3D {
     /**
      * Draws the current view to a <code>Graphics2D</code> instance.
      * 
-     * @param g2  the graphics target (<code>null</code> not permitted).
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
      * @param bounds  the bounds.
      */
     @Override
@@ -141,12 +142,12 @@ public class DefaultDrawable3D implements Drawable3D {
                     }
                     p.close();
                     int sc = Color.argb(
-                    		Color.alpha(c),
-                    		(int) (Color.red(c) * shade), 
-                    		(int) (Color.green(c) * shade), 
-                    		(int) (Color.blue(c) * shade));
-                	paint.setColor(sc);
-                	paint.setStyle(Style.FILL_AND_STROKE);
+                            Color.alpha(c),
+                            (int) (Color.red(c) * shade), 
+                            (int) (Color.green(c) * shade), 
+                            (int) (Color.blue(c) * shade));
+                    paint.setColor(sc);
+                    paint.setStyle(Style.FILL_AND_STROKE);
                     canvas.drawPath(p, paint);
                 }
             } 

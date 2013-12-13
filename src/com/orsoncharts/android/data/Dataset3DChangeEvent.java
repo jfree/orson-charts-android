@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -35,8 +35,8 @@ public class Dataset3DChangeEvent extends EventObject {
     /**
      * Returns the dataset that this event is associated with.  This will
      * normally be an instance of {@link PieDataset3D}, 
-     * {@link com.orsoncharts.data.category.CategoryDataset3D} or 
-     * {@link com.orsoncharts.data.xyz.XYZDataset}.
+     * {@link com.orsoncharts.android.data.category.CategoryDataset3D} or 
+     * {@link com.orsoncharts.android.data.xyz.XYZDataset}.
      * 
      * @return The dataset. 
      */

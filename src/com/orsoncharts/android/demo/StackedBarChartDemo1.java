@@ -1,3 +1,11 @@
+/* ========================
+ * Orson Charts for Android
+ * ========================
+ * 
+ * (C)opyright 2013, by Object Refinery Limited.
+ * 
+ */
+
 package com.orsoncharts.android.demo;
 
 import com.orsoncharts.android.Chart3D;
@@ -6,14 +14,22 @@ import com.orsoncharts.android.data.DefaultKeyedValues;
 import com.orsoncharts.android.data.category.CategoryDataset3D;
 import com.orsoncharts.android.data.category.StandardCategoryDataset3D;
 
+/**
+ * Creates a stacked bar chart for the demo.
+ */
 public class StackedBarChartDemo1 {
-	
-	public static Chart3D createChart() {
+    
+    /**
+     * Creates a demo chart.
+     * 
+     * @return A demo chart.
+     */
+    public static Chart3D createChart() {
         Chart3D chart = Chart3DFactory.createStackedBarChart(
                 "Stacked Bar Chart", "Put the data source here", createDataset(), null, 
                 null, "Value");
         return chart;
-	}
+    }
 
     /**
      * Creates a sample dataset (hard-coded for the purpose of keeping the
@@ -26,28 +42,28 @@ public class StackedBarChartDemo1 {
         
         StandardCategoryDataset3D dataset = new StandardCategoryDataset3D();
 
-        DefaultKeyedValues s1 = new DefaultKeyedValues();
+        DefaultKeyedValues<Number> s1 = new DefaultKeyedValues<Number>();
         s1.put("A", 4);
         s1.put("B", 2);
         s1.put("C", 3);
         s1.put("D", 5);
         s1.put("E", 2);
         s1.put("F", 1);
-        DefaultKeyedValues s2 = new DefaultKeyedValues();
+        DefaultKeyedValues<Number> s2 = new DefaultKeyedValues<Number>();
         s2.put("A", 1);
         s2.put("B", 2);
         s2.put("C", 3);
         s2.put("D", 2);
         s2.put("E", 3);
         s2.put("F", 1);
-        DefaultKeyedValues s3 = new DefaultKeyedValues();
+        DefaultKeyedValues<Number> s3 = new DefaultKeyedValues<Number>();
         s3.put("A", 6);
         s3.put("B", 6);
         s3.put("C", 6);
         s3.put("D", 4);
         s3.put("E", 4);
         s3.put("F", 4);
-        DefaultKeyedValues s4 = new DefaultKeyedValues();
+        DefaultKeyedValues<Number> s4 = new DefaultKeyedValues<Number>();
         s4.put("A", 9);
         s4.put("B", 8);
         s4.put("C", 7);
@@ -55,7 +71,7 @@ public class StackedBarChartDemo1 {
         s4.put("D", 3);
         s4.put("E", 4);
         s4.put("F", 6);
-        DefaultKeyedValues s5 = new DefaultKeyedValues();
+        DefaultKeyedValues<Number> s5 = new DefaultKeyedValues<Number>();
         s5.put("A", 9);
         s5.put("B", 8);
         s5.put("C", 7);

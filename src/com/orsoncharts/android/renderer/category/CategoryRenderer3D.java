@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -65,7 +65,7 @@ public interface CategoryRenderer3D extends Renderer3D {
      * 
      * @return The data range. 
      */
-    Range findValueRange(Values3D data);
+    Range findValueRange(Values3D<? extends Number> data);
     
     /**
      * Constructs and places one item from the specified dataset into the given 

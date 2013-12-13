@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -62,8 +62,13 @@ public interface CategoryAxis3D extends Axis3D {
      * 
      * @return The axis value. 
      */
-    double getCategoryValue(Comparable category);
+    double getCategoryValue(Comparable<?> category);
     
+    /** 
+     * Returns the tick data for the axis.
+     * 
+     * @return The tick data for the axis.
+     */
     List<TickData> generateTickData();
 
 }

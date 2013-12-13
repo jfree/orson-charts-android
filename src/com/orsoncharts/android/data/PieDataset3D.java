@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013 by Object Refinery Limited.
  * 
@@ -16,6 +16,6 @@ import com.orsoncharts.android.plot.PiePlot3D;
  * updating the data (however, classes that implement the interface will
  * typically provide their own methods for updating the dataset).
  */
-public interface PieDataset3D<T> extends KeyedValues<T>, Dataset3D {
+public interface PieDataset3D extends KeyedValues<Number>, Dataset3D {
 
 }

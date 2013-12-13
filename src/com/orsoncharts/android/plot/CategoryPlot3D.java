@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -53,10 +53,7 @@ public class CategoryPlot3D extends AbstractPlot3D
         Serializable {
 
     private static LineStyle DEFAULT_GRIDLINE_STROKE = 
-    		new LineStyle(0.5f, Paint.Cap.ROUND, Paint.Join.ROUND);
-    		//new BasicStroke(0.5f, 
-            //BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, 
-            //new float[] { 3f, 3f }, 0f);
+            new LineStyle(0.5f, Paint.Cap.ROUND, Paint.Join.ROUND);
 
     /** The dataset. */
     private CategoryDataset3D dataset;
@@ -245,8 +242,8 @@ public class CategoryPlot3D extends AbstractPlot3D
      * 
      * @param axis  the new axis (<code>null</code> not permitted).
      * 
-     * @see #setRowAxis(com.orsoncharts.axis.CategoryAxis3D) 
-     * @see #setValueAxis(com.orsoncharts.axis.ValueAxis3D) 
+     * @see #setRowAxis(com.orsoncharts.android.axis.CategoryAxis3D) 
+     * @see #setValueAxis(com.orsoncharts.android.axis.ValueAxis3D) 
      * 
      */
     public void setColumnAxis(CategoryAxis3D axis) {
@@ -303,6 +300,11 @@ public class CategoryPlot3D extends AbstractPlot3D
         fireChangeEvent();
     }
 
+    /**
+     * Returns the color used to draw the gridlines for the row axis.
+     * 
+     * @return The color.
+     */
     public int getGridlinePaintForRows() {
         return this.gridlinePaintForRows;
     }
@@ -328,6 +330,11 @@ public class CategoryPlot3D extends AbstractPlot3D
         return this.gridlineStrokeForRows;
     }
 
+    /**
+     * Sets the line style for the gridlines for the row axis.
+     * 
+     * @param stroke  the line style (<code>null</code> not permitted).
+     */
     public void setGridlineStrokeForRows(LineStyle stroke) {
         ArgChecks.nullNotPermitted(stroke, "stroke");
         this.gridlineStrokeForRows = stroke;
@@ -409,17 +416,32 @@ public class CategoryPlot3D extends AbstractPlot3D
         return this.gridlineStrokeForValues;
     }
     
+    /**
+     * Sets the line style for the gridlines for the value axis.
+     * 
+     * @param stroke  the line style (<code>null</code> not permitted).
+     */
     public void setGridlineStrokeForValues(LineStyle stroke) {
         ArgChecks.nullNotPermitted(stroke, "stroke");
         this.gridlineStrokeForValues = stroke;
     }
     
+    /**
+     * Returns the color for the gridlines for the column axis.
+     * 
+     * @return The color.
+     */
     public int getGridlinePaintForColumns() {
         return this.gridlinePaintForColumns;
     }
     
-    public void setGridlinePaintForColumns(int paint) {
-        this.gridlinePaintForColumns = paint;
+    /**
+     * Sets the color for the gridlines for the column axis.
+     * 
+     * @param color  the color.
+     */
+    public void setGridlinePaintForColumns(int color) {
+        this.gridlinePaintForColumns = color;
         fireChangeEvent();
     }
 
@@ -434,6 +456,11 @@ public class CategoryPlot3D extends AbstractPlot3D
         return this.gridlineStrokeForColumns;
     }
     
+    /**
+     * Sets the line style for the gridlines for the column axis.
+     * 
+     * @param stroke  the line style (<code>null</code> not permitted).
+     */
     public void setGridlineStrokeForColumns(LineStyle stroke) {
         ArgChecks.nullNotPermitted(stroke, "stroke");
         this.gridlineStrokeForColumns = stroke;
@@ -450,8 +477,8 @@ public class CategoryPlot3D extends AbstractPlot3D
     @Override
     public List<LegendItemInfo> getLegendInfo() {
         List<LegendItemInfo> result = new ArrayList<LegendItemInfo>();
-        List<Comparable> keys = this.dataset.getSeriesKeys();
-        for (Comparable key : keys) {
+        List<Comparable<?>> keys = this.dataset.getSeriesKeys();
+        for (Comparable<?> key : keys) {
             int series = this.dataset.getSeriesIndex(key);
             int paint = this.renderer.getColorSource().getLegendColor(series);
             LegendItemInfo info = new StandardLegendItemInfo(key, 

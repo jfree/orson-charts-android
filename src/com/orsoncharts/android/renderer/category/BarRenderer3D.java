@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -97,7 +97,7 @@ public class BarRenderer3D extends AbstractCategoryRenderer3D
     
     /**
      * Sets the base value for the bars and fires a 
-     * {@link com.orsoncharts.renderer.Renderer3DChangeEvent}.
+     * {@link com.orsoncharts.android.renderer.Renderer3DChangeEvent}.
      * 
      * @param base  the new base value.
      * 
@@ -143,7 +143,7 @@ public class BarRenderer3D extends AbstractCategoryRenderer3D
     
     /**
      * Sets the the bar width as a percentage of the row width and
-     * fires a {@link com.orsoncharts.renderer.Renderer3DChangeEvent}.
+     * fires a {@link com.orsoncharts.android.renderer.Renderer3DChangeEvent}.
      * 
      * @param barZWidth  the new width.
      */
@@ -224,7 +224,7 @@ public class BarRenderer3D extends AbstractCategoryRenderer3D
      * @return The range (possibly <code>null</code>) 
      */
     @Override
-    public Range findValueRange(Values3D data) {
+    public Range findValueRange(Values3D<? extends Number> data) {
         return DataUtils.findValueRange(data, this.base);
     }
 
@@ -296,8 +296,8 @@ public class BarRenderer3D extends AbstractCategoryRenderer3D
         double vtop = range.peggedValue(vhigh);
         boolean inverted = barBase > value;
         
-        Comparable rowKey = dataset.getRowKey(row);
-        Comparable columnKey = dataset.getColumnKey(column);
+        Comparable<?> rowKey = dataset.getRowKey(row);
+        Comparable<?> columnKey = dataset.getColumnKey(column);
         double rowValue = rowAxis.getCategoryValue(rowKey);
         double columnValue = columnAxis.getCategoryValue(columnKey);
 

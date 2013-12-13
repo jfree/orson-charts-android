@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -180,7 +180,7 @@ public abstract class AbstractPlot3D implements Plot3D,
             return;
         }
         for (Plot3DChangeListener listener : this.listenerList) {
-        	listener.plotChanged(event);
+            listener.plotChanged(event);
         }
     }
 

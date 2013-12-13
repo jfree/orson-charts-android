@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -186,15 +186,21 @@ public class ChartBox3D {
      */
     private Object3D createObject3D() {
         Object3D box = new Object3D();
-        Point3D v0 = new Point3D(xOffset, yOffset, zOffset);
-        Point3D v1 = new Point3D(xLength + xOffset, yOffset, zOffset);
-        Point3D v2 = new Point3D(xLength + xOffset, yLength + yOffset, zOffset);
-        Point3D v3 = new Point3D(xOffset, yLength + yOffset, zOffset);
-        Point3D v4 = new Point3D(xOffset, yLength + yOffset, zLength + zOffset);
-        Point3D v5 = new Point3D(xOffset, yOffset, zLength + zOffset);
-        Point3D v6 = new Point3D(xLength + xOffset, yOffset, zLength + zOffset);
-        Point3D v7 = new Point3D(xLength + xOffset, yLength + yOffset, zLength 
-                + zOffset);
+        Point3D v0 = new Point3D(this.xOffset, this.yOffset, this.zOffset);
+        Point3D v1 = new Point3D(this.xLength + this.xOffset, this.yOffset, 
+                this.zOffset);
+        Point3D v2 = new Point3D(this.xLength + this.xOffset, 
+                this.yLength + this.yOffset, this.zOffset);
+        Point3D v3 = new Point3D(this.xOffset, this.yLength + this.yOffset, 
+                this.zOffset);
+        Point3D v4 = new Point3D(this.xOffset, this.yLength + this.yOffset, 
+                this.zLength + this.zOffset);
+        Point3D v5 = new Point3D(this.xOffset, this.yOffset, 
+                this.zLength + this.zOffset);
+        Point3D v6 = new Point3D(this.xLength + this.xOffset, this.yOffset, 
+                this.zLength + this.zOffset);
+        Point3D v7 = new Point3D(this.xLength + this.xOffset, 
+                this.yLength + this.yOffset, this.zLength + this.zOffset);
 
         box.addVertex(v0);   // 0, 0, 0
         box.addVertex(v1);   // 1, 0, 0
@@ -212,21 +218,22 @@ public class ChartBox3D {
         this.faceD = new CBFace(new int[] {5, 4, 7, 6}, this.color);  // XY
         this.faceE = new CBFace(new int[] {0, 3, 4, 5}, this.color);  // YZ
         this.faceF = new CBFace(new int[] {6, 7, 2, 1}, this.color);  // YZ
-        box.addFace(faceA);
-        box.addFace(faceB);
-        box.addFace(faceC);
-        box.addFace(faceD);
-        box.addFace(faceE);
-        box.addFace(faceF);
+        box.addFace(this.faceA);
+        box.addFace(this.faceB);
+        box.addFace(this.faceC);
+        box.addFace(this.faceD);
+        box.addFace(this.faceE);
+        box.addFace(this.faceF);
 
         // add vertices for the x-grid lines (ABCD)
         int base = 8;
         for (TickData t : this.xTicks) {
             double xx = this.xOffset + this.xLength * t.getPos();
-            box.addVertex(xx, yOffset, zOffset);
-            box.addVertex(xx, yOffset, zOffset + zLength);
-            box.addVertex(xx, yOffset + yLength,  zOffset + zLength);
-            box.addVertex(xx, yOffset + yLength, zOffset);
+            box.addVertex(xx, this.yOffset, this.zOffset);
+            box.addVertex(xx, this.yOffset, this.zOffset + this.zLength);
+            box.addVertex(xx, this.yOffset + this.yLength,  
+                    this.zOffset + this.zLength);
+            box.addVertex(xx, this.yOffset + this.yLength, this.zOffset);
             TickData td0 = new TickData(t, base);
             TickData td1 = new TickData(t, base + 1);
             TickData td2 = new TickData(t, base + 2);
@@ -241,10 +248,11 @@ public class ChartBox3D {
         // add vertices for the y-grid lines (BDEF)
         for (TickData t : this.yTicks) {
             double yy = this.yOffset + this.yLength * t.getPos();
-            box.addVertex(xOffset, yy, zOffset);
-            box.addVertex(xOffset + xLength, yy, zOffset);
-            box.addVertex(xOffset + xLength, yy, zOffset + zLength);
-            box.addVertex(xOffset, yy, zOffset + zLength);
+            box.addVertex(this.xOffset, yy, this.zOffset);
+            box.addVertex(this.xOffset + this.xLength, yy, this.zOffset);
+            box.addVertex(this.xOffset + this.xLength, yy, 
+                    this.zOffset + this.zLength);
+            box.addVertex(this.xOffset, yy, this.zOffset + this.zLength);
             TickData td0 = new TickData(t, base);
             TickData td1 = new TickData(t, base + 1);
             TickData td2 = new TickData(t, base + 2);
@@ -258,10 +266,11 @@ public class ChartBox3D {
 
         for (TickData t : this.zTicks) {
             double zz = this.zOffset + this.zLength * t.getPos();
-            box.addVertex(xOffset, yOffset, zz);
-            box.addVertex(xOffset + xLength, yOffset, zz);
-            box.addVertex(xOffset + xLength, yOffset + yLength, zz);
-            box.addVertex(xOffset, yOffset + yLength, zz);
+            box.addVertex(this.xOffset, this.yOffset, zz);
+            box.addVertex(this.xOffset + this.xLength, this.yOffset, zz);
+            box.addVertex(this.xOffset + this.xLength, 
+                    this.yOffset + this.yLength, zz);
+            box.addVertex(this.xOffset, this.yOffset + this.yLength, zz);
             TickData td0 = new TickData(t, base);
             TickData td1 = new TickData(t, base + 1);
             TickData td2 = new TickData(t, base + 2);
@@ -303,7 +312,7 @@ public class ChartBox3D {
         private List<TickData> zTicksB;
         
         /**
-         * Creates a new face for a {@link ChartBox}.
+         * Creates a new face for a {@link ChartBox3D}.
          * 
          * @param vertices  the indices of the vertices.
          * @param color  the color.

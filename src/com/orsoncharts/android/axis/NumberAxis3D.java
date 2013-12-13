@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -96,10 +96,10 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
     /** The tick label factor (defaults to 1.4). */
     private double tickLabelFactor;    
 
-    /** The tick label offset (number of Java2D units). */
+    /** The tick label offset. */
     private double tickLabelOffset;
     
-    /** The length of tick marks (in Java2D units).  Can be set to 0.0. */
+    /** The length of tick marks.  Can be set to 0.0. */
     private double tickMarkLength;
     
     /** The tick mark stroke (never <code>null</code>). */
@@ -197,6 +197,7 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
                     "Requires a range with length > 0");
         }
         this.range = range;
+        this.autoAdjustRange = false;
         fireChangeEvent();
     }
     
@@ -346,7 +347,7 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
      * 
      * @return The default range (never <code>null</code>).
      * 
-     * @see #setDefaultAutoRange(com.orsoncharts.Range) 
+     * @see #setDefaultAutoRange(com.orsoncharts.android.Range) 
      */
     public Range getDefaultAutoRange() {
         return this.defaultAutoRange;
@@ -459,7 +460,7 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
     
     /**
      * Returns the tick label offset, the gap between the tick marks and the
-     * tick labels (in Java2D units).  The default value is <code>5.0</code>.
+     * tick labels.  The default value is <code>5.0</code>.
      * 
      * @return The tick label offset.
      */
@@ -478,7 +479,7 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
     }
     
     /**
-     * Returns the length of the tick marks (in Java2D units).  The default
+     * Returns the length of the tick marks.  The default
      * value is <code>3.0</code>.
      * 
      * @return The length of the tick marks. 
@@ -492,7 +493,7 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
      * to all registered listeners.  You can set this to <code>0.0</code> if
      * you prefer no tick marks to be displayed on the axis.
      * 
-     * @param length  the length (in Java2D units). 
+     * @param length  the length. 
      */
     public void setTickMarkLength(double length) {
         this.tickMarkLength = length;
@@ -687,7 +688,7 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
                 paint.setColor(this.tickMarkPaint);
                 this.tickMarkStroke.applyToPaint(paint);
                 canvas.drawLine(tickLine.getX1(), tickLine.getY1(), 
-                		tickLine.getX2(), tickLine.getY2(), paint);
+                        tickLine.getX2(), tickLine.getY2(), paint);
             }
             
             if (getTickLabelsVisible()) {
@@ -712,15 +713,15 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
                 maxTickLabelWidth = Math.max(maxTickLabelWidth, 
                         paint.measureText(tickLabel));
                 TextUtils.drawRotatedString(tickLabel, canvas, paint, 
-                        (float) perpLine.getX2(), (float) perpLine.getY2(), 
+                        perpLine.getX2(), perpLine.getY2(), 
                         textAnchor, thetaAdj, textAnchor);
             }
         }
 
         // draw the axis label (if any)...
         if (getLabel() != null) {
-        	getLabelFont().applyToPaint(paint);
-        	paint.setColor(getLabelPaint());
+            getLabelFont().applyToPaint(paint);
+            paint.setColor(getLabelPaint());
             Line2D labelPosLine = Utils2D.createPerpendicularLine(axisLine, 0.5, 
                     this.tickMarkLength + this.tickLabelOffset 
                     + maxTickLabelWidth + 10.0, 
@@ -733,8 +734,8 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
                 theta = theta - Math.PI;
             }
             TextUtils.drawRotatedString(getLabel(), canvas, paint, 
-                    (float) labelPosLine.getX2(), 
-                    (float) labelPosLine.getY2(), TextAnchor.CENTER, theta, 
+                    labelPosLine.getX2(), 
+                    labelPosLine.getY2(), TextAnchor.CENTER, theta, 
                     TextAnchor.CENTER);
         }
     }
@@ -758,10 +759,11 @@ public class NumberAxis3D extends AbstractAxis3D implements ValueAxis3D,
      * Selects a tick size that is appropriate for drawing the axis from
      * <code>pt0</code> to <code>pt1</code>.
      * 
-     * @param g2
-     * @param pt0
-     * @param pt1
-     * @param opposingPt 
+     * @param paint  the paint (<code>null</code> not permitted).
+     * @param pt0  the axis starting point.
+     * @param pt1  the axis ending point.
+     * @param opposingPt  an opposing point (to determine on which side of the
+     *     axis line the tick labels will be drawn).
      */
     @Override
     public double selectTick(Paint paint, Point2D pt0, Point2D pt1, 

@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -28,6 +28,7 @@ public interface RectanglePainter {
      * operation defined by the class that implements this interface).
      * 
      * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted)
      * @param bounds  the rectangle (<code>null</code> not permitted).
      */
     public void fill(Canvas canvas, Paint paint, RectF bounds);

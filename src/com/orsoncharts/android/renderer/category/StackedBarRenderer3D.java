@@ -52,7 +52,7 @@ public class StackedBarRenderer3D extends BarRenderer3D {
      * @return The range (possibly <code>null</code>) 
      */
     @Override
-    public Range findValueRange(Values3D data) {
+    public Range findValueRange(Values3D<? extends Number> data) {
         return DataUtils.findStackedValueRange(data);
     }
     

@@ -146,7 +146,7 @@ public class AreaRenderer3D extends AbstractCategoryRenderer3D
      * @return The range. 
      */
     @Override
-    public Range findValueRange(Values3D data) {
+    public Range findValueRange(Values3D<? extends Number> data) {
         return DataUtils.findValueRange(data, this.base);
     }
 
@@ -266,9 +266,9 @@ public class AreaRenderer3D extends AbstractCategoryRenderer3D
         CategoryAxis3D rowAxis = plot.getRowAxis();
         CategoryAxis3D columnAxis = plot.getColumnAxis();
         Axis3D valueAxis = plot.getValueAxis();
-        Comparable rowKey = dataset.getRowKey(row);
-        Comparable columnKey = dataset.getColumnKey(column);
-        Comparable nextColumnKey = dataset.getColumnKey(column + 1);
+        Comparable<?> rowKey = dataset.getRowKey(row);
+        Comparable<?> columnKey = dataset.getColumnKey(column);
+        Comparable<?> nextColumnKey = dataset.getColumnKey(column + 1);
        
         double x0 = columnAxis.getCategoryValue(columnKey);
         double x1 = columnAxis.getCategoryValue(nextColumnKey);

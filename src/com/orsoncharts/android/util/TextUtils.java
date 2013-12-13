@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -28,6 +28,7 @@ public class TextUtils {
      *
      * @param text  the text.
      * @param canvas  the graphics device.
+     * @param paint  the paint.
      * @param x  the x coordinate (Java 2D).
      * @param y  the y coordinate (Java 2D).
      * @param anchor  the anchor location.
@@ -39,7 +40,7 @@ public class TextUtils {
 
         RectF textBounds = new RectF();
         float[] adjust = deriveTextBoundsAnchorOffsets(canvas, paint, text, 
-        		anchor, textBounds);
+                anchor, textBounds);
         // adjust text bounds to match string position
         textBounds.set(x + adjust[0], y + adjust[1] + adjust[2],
             x + textBounds.width(), x + textBounds.height());
@@ -74,14 +75,14 @@ public class TextUtils {
         float yAdj = 0.0f;
 
         if (anchor.isHorizontalCenter()) {
-            xAdj = (float) -bounds.width() / 2.0f;
+            xAdj = -bounds.width() / 2.0f;
         }
         else if (anchor.isRight()) {
-            xAdj = (float) -bounds.width();
+            xAdj = -bounds.width();
         }
 
         if (anchor.isTop()) {
-            yAdj = -descent - leading + (float) bounds.height();
+            yAdj = -descent - leading + bounds.height();
         }
         else if (anchor.isHalfAscent()) {
             yAdj = halfAscent;
@@ -165,8 +166,7 @@ public class TextUtils {
      * Returns the bounds for the specified text.
      *
      * @param text  the text (<code>null</code> permitted).
-     * @param g2  the graphics context (not <code>null</code>).
-     * @param fm  the font metrics (not <code>null</code>).
+     * @param paint  the paint (not <code>null</code>).
      *
      * @return The text bounds (<code>null</code> if the <code>text</code>
      *         argument is <code>null</code>).
@@ -183,6 +183,7 @@ public class TextUtils {
      *
      * @param text  the text.
      * @param canvas  the graphics device.
+     * @param paint  the paint.
      * @param x  the x-coordinate for positioning the text.
      * @param y  the y-coordinate for positioning the text.
      * @param textAnchor  the text anchor.
@@ -190,8 +191,8 @@ public class TextUtils {
      * @param rotationX  the x-coordinate for the rotation anchor point.
      * @param rotationY  the y-coordinate for the rotation anchor point.
      */
-    public static void drawRotatedString(String text, Canvas canvas, Paint paint, float x,
-            float y, TextAnchor textAnchor, double angle,
+    public static void drawRotatedString(String text, Canvas canvas, 
+            Paint paint, float x, float y, TextAnchor textAnchor, double angle,
             float rotationX, float rotationY) {
 
         if (text == null || text.equals("")) {
@@ -208,14 +209,15 @@ public class TextUtils {
      *
      * @param text  the text.
      * @param canvas  the graphics device.
+     * @param paint  the paint.
      * @param x  the x-coordinate for positioning the text.
      * @param y  the y-coordinate for positioning the text.
      * @param textAnchor  the text anchor.
      * @param angle  the rotation angle (in radians).
      * @param rotationAnchor  the rotation anchor.
      */
-    public static void drawRotatedString(String text, Canvas canvas, Paint paint,
-            float x, float y, TextAnchor textAnchor,
+    public static void drawRotatedString(String text, Canvas canvas, 
+            Paint paint, float x, float y, TextAnchor textAnchor,
             double angle, TextAnchor rotationAnchor) {
 
         if (text == null || text.equals("")) {
@@ -241,7 +243,7 @@ public class TextUtils {
      * @return  The offsets.
      */
     private static float[] deriveRotationAnchorOffsets(Canvas canvas, 
-    		Paint paint, String text, TextAnchor anchor) {
+            Paint paint, String text, TextAnchor anchor) {
 
         float[] result = new float[2];
         FontMetrics fm = paint.getFontMetrics();
@@ -292,12 +294,13 @@ public class TextUtils {
      *
      * @param text  the text.
      * @param canvas  the graphics device.
+     * @param paint  the paint.
      * @param angle  the angle of the (clockwise) rotation (in radians).
      * @param x  the x-coordinate.
      * @param y  the y-coordinate.
      */
-    public static void drawRotatedString(String text, Canvas canvas, Paint paint,
-            double angle, float x, float y) {
+    public static void drawRotatedString(String text, Canvas canvas, 
+            Paint paint, double angle, float x, float y) {
         drawRotatedString(text, canvas, paint, x, y, angle, x, y);
     }
 
@@ -309,14 +312,15 @@ public class TextUtils {
      *
      * @param text  the text.
      * @param canvas  the graphics device.
+     * @param paint  the paint.
      * @param textX  the x-coordinate for the text (before rotation).
      * @param textY  the y-coordinate for the text (before rotation).
      * @param angle  the angle of the (clockwise) rotation (in radians).
      * @param rotateX  the point about which the text is rotated.
      * @param rotateY  the point about which the text is rotated.
      */
-    public static void drawRotatedString(String text, Canvas canvas, Paint paint,
-            float textX, float textY, double angle,
+    public static void drawRotatedString(String text, Canvas canvas, 
+            Paint paint, float textX, float textY, double angle,
             float rotateX, float rotateY) {
 
         if ((text == null) || (text.equals(""))) {

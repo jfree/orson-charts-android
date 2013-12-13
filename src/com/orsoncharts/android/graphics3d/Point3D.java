@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -99,7 +99,7 @@ public final class Point3D implements Serializable {
      * @return Theta.
      */
     public double getTheta() {
-        return Math.atan2(y, x);
+        return Math.atan2(this.y, this.x);
     }
     
     /**
@@ -108,7 +108,7 @@ public final class Point3D implements Serializable {
      * @return phi.
      */
     public double getPhi() {
-        return Math.acos(z / getRho());        
+        return Math.acos(this.z / getRho());        
     }
     
     /**
@@ -117,7 +117,7 @@ public final class Point3D implements Serializable {
      * @return rho.
      */
     public double getRho() {
-        return Math.sqrt(x * x + y * y + z * z);
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
     
     /**

@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts 
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -9,23 +9,27 @@
 package com.orsoncharts.android;
 
 import com.orsoncharts.android.axis.CategoryAxis3D;
-import com.orsoncharts.android.axis.StandardCategoryAxis3D;
 import com.orsoncharts.android.axis.NumberAxis3D;
+import com.orsoncharts.android.axis.StandardCategoryAxis3D;
 import com.orsoncharts.android.axis.ValueAxis3D;
-import com.orsoncharts.android.data.category.CategoryDataset3D;
 import com.orsoncharts.android.data.PieDataset3D;
+import com.orsoncharts.android.data.category.CategoryDataset3D;
+import com.orsoncharts.android.data.function.Function3D;
 import com.orsoncharts.android.data.xyz.XYZDataset;
+import com.orsoncharts.android.data.xyz.XYZSeriesCollection;
+import com.orsoncharts.android.legend.ColorScaleLegendBuilder;
 import com.orsoncharts.android.plot.CategoryPlot3D;
 import com.orsoncharts.android.plot.PiePlot3D;
 import com.orsoncharts.android.plot.XYZPlot;
-import com.orsoncharts.android.renderer.xyz.BarXYZRenderer;
-import com.orsoncharts.android.renderer.xyz.XYZRenderer;
 import com.orsoncharts.android.renderer.category.AreaRenderer3D;
 import com.orsoncharts.android.renderer.category.BarRenderer3D;
 import com.orsoncharts.android.renderer.category.CategoryRenderer3D;
 import com.orsoncharts.android.renderer.category.LineRenderer3D;
 import com.orsoncharts.android.renderer.category.StackedBarRenderer3D;
+import com.orsoncharts.android.renderer.xyz.BarXYZRenderer;
 import com.orsoncharts.android.renderer.xyz.ScatterXYZRenderer;
+import com.orsoncharts.android.renderer.xyz.SurfaceRenderer;
+import com.orsoncharts.android.renderer.xyz.XYZRenderer;
 
 /**
  * Utility methods for constructing common chart types.  Charts can be 
@@ -258,6 +262,37 @@ public class Chart3DFactory {
         XYZRenderer renderer = new ScatterXYZRenderer();
         XYZPlot plot = new XYZPlot(dataset, renderer, xAxis, yAxis, zAxis);
         return new Chart3D(title, subtitle, plot);
+    }
+    
+    /**
+     * Creates a surface chart for the specified function.
+     * 
+     * @param title  the chart title (<code>null</code> permitted).
+     * @param subtitle  the chart subtitle (<code>null</code> permitted).
+     * @param function  the function (<code>null</code> not permitted).
+     * @param xAxisLabel  the x-axis label (<code>null</code> permitted).
+     * @param yAxisLabel  the y-axis label (<code>null</code> permitted).
+     * @param zAxisLabel  the z-axis label (<code>null</code> permitted).
+     * 
+     * @return The chart.
+     * 
+     * @since 1.1
+     */
+    public static Chart3D createSurfaceChart(String title, String subtitle, 
+            Function3D function, String xAxisLabel, String yAxisLabel, 
+            String zAxisLabel) {
+        ValueAxis3D xAxis = new NumberAxis3D(xAxisLabel);
+        ValueAxis3D yAxis = new NumberAxis3D(yAxisLabel);
+        ValueAxis3D zAxis = new NumberAxis3D(zAxisLabel);
+        XYZRenderer renderer = new SurfaceRenderer(function);
+        // we pass an empty dataset because the plot must have a non-null
+        // dataset, but the renderer never looks at it...
+        XYZPlot plot = new XYZPlot(new XYZSeriesCollection(), renderer, xAxis, 
+                yAxis, zAxis);
+        
+        Chart3D chart = new Chart3D(title, subtitle, plot);
+        chart.setLegendBuilder(new ColorScaleLegendBuilder());
+        return chart;
     }
     
     /**

@@ -1,3 +1,11 @@
+/* ========================
+ * Orson Charts for Android
+ * ========================
+ * 
+ * (C)opyright 2013, by Object Refinery Limited.
+ * 
+ */
+
 package com.orsoncharts.android.demo;
 
 import com.orsoncharts.android.Chart3D;
@@ -6,16 +14,24 @@ import com.orsoncharts.android.data.DefaultKeyedValues;
 import com.orsoncharts.android.data.category.CategoryDataset3D;
 import com.orsoncharts.android.data.category.StandardCategoryDataset3D;
 
+/**
+ * Creates a bar chart instance for the demo.
+ */
 public class BarChartDemo1 {
-	
-	public static Chart3D createChart() {
+    
+    /**
+     * Creates a bar chart instance.
+     * 
+     * @return A bar chart instance.
+     */
+    public static Chart3D createChart() {
         Chart3D chart = Chart3DFactory.createBarChart(
             "Average Maximum Temperature", 
             "http://www.worldclimateguide.co.uk/climateguides/", createDataset(), 
             null, null, "Temp deg C");
         chart.getViewPoint().panLeftRight(-Math.PI / 60);
-	    return chart;
-	}
+        return chart;
+    }
 
     /**
      * Creates a sample dataset (hard-coded for the purpose of keeping the

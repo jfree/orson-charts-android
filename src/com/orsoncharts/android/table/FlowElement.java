@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -24,31 +24,47 @@ import com.orsoncharts.android.util.ArgChecks;
  * A table element that displays a list of sub-elements in a flow layout.
  */
 public class FlowElement extends AbstractTableElement implements TableElement,
-        Serializable {
+        ContainerElement, Serializable {
 
     /** The sub-elements in this flow. */
     private List<TableElement> elements;
     
-    /** The horizontal alignment. */
+    /** The horizontal alignment of each row. */
     private HAlign horizontalAlignment;
 
     /** 
-     * The horizontal gap between elements on the same line, specified in 
-     * Java2D units. 
+     * The horizontal gap between elements on the same line. 
      */
     private int hgap;
     
     /**
-     * Creates a new instance.
+     * Creates a new instance (equivalent to 
+     * <code>new FlowElement(HAlign.CENTER, 2)</code>).
      */
     public FlowElement() {
-        this.elements = new ArrayList<TableElement>();
-        this.horizontalAlignment = HAlign.CENTER;
-        this.hgap = 2;
+        this(HAlign.CENTER, 2);
     }
     
     /**
-     * Returns the horizontal gap between elements, specified in Java2D units.
+     * Creates a new instance with the specified attributes.
+     * 
+     * @param alignment  the horizontal alignment of the elements within
+     *     each row (<code>null</code> not permitted).
+     * @param hgap  the gap between elements.
+     * 
+     * @since 1.1
+     */
+    public FlowElement(HAlign alignment, int hgap) {
+        super();
+        ArgChecks.nullNotPermitted(alignment, "alignment");
+        this.elements = new ArrayList<TableElement>();
+        this.horizontalAlignment = alignment;
+        this.hgap = hgap;
+    }
+    
+    /**
+     * Returns the horizontal gap between elements.
+     * The default value is <code>2</code>.
      * 
      * @return The horizontal gap. 
      */
@@ -59,10 +75,34 @@ public class FlowElement extends AbstractTableElement implements TableElement,
     /**
      * Sets the horizontal gap between elements.
      * 
-     * @param gap  the gap (in Java2D units). 
+     * @param gap  the gap. 
      */
     public void setHGap(int gap) {
         this.hgap = gap;
+    }
+    
+    /**
+     * Returns the horizontal alignment of items within rows.  The default
+     * value is {@link HAlign#CENTER}.
+     * 
+     * @return The horizontal alignment (never <code>null</code>).
+     * 
+     * @since 1.1
+     */
+    public HAlign getHorizontalAlignment() {
+        return this.horizontalAlignment;
+    }
+    
+    /**
+     * Sets the horizontal alignment.
+     * 
+     * @param alignment  the alignment (<code>null</code> not permitted).
+     * 
+     * @since 1.1
+     */
+    public void setHorizontalAlignment(HAlign alignment) {
+        ArgChecks.nullNotPermitted(alignment, "alignment");
+        this.horizontalAlignment = alignment;
     }
     
     /**
@@ -80,9 +120,75 @@ public class FlowElement extends AbstractTableElement implements TableElement,
      * 
      * @param element  the element (<code>null</code> not permitted).
      */
+    @Override
     public void addElement(TableElement element) {
         ArgChecks.nullNotPermitted(element, "element");
         this.elements.add(element);
+    }
+    
+    /**
+     * Returns info for as many elements as we can fit into one row.
+     * 
+     * @param first  the index of the first element.
+     * @param g2  the graphics target.
+     * @param bounds  the bounds.
+     * 
+     * @return A list of elements and dimensions. 
+     */
+    private List<ElementInfo> rowOfElements(int first, 
+            Canvas g2, Paint paint, RectF bounds) {
+        List<ElementInfo> result = new ArrayList<ElementInfo>();
+        int index = first;
+        boolean full = false;
+        double w = getInsets().left + getInsets().right;
+        while (index < this.elements.size() && !full) {
+            TableElement element = this.elements.get(index);
+            Dimension2D dim = element.preferredSize(g2, paint, bounds);
+            if (w + dim.getWidth() <= bounds.width() || index == first) {
+                result.add(new ElementInfo(element, dim));
+                w += dim.getWidth() + this.hgap;
+                index++;
+            } else {
+                full = true;
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Returns the height of the tallest element in the list.
+     * 
+     * @param elementInfoList  element info list
+     * 
+     * @return The height. 
+     */
+    private float calcRowHeight(List<ElementInfo> elementInfoList) {
+        float result = 0.0f;
+        for (ElementInfo elementInfo : elementInfoList) {
+            result = Math.max(result, elementInfo.getDimension().getHeight());
+        }
+        return result;
+    }
+    
+    /**
+     * Calculates the total width of the elements that will form one row.
+     * 
+     * @param elementInfoList  the elements in the column.
+     * @param hgap  the gap between elements.
+     * 
+     * @return The total height. 
+     */
+    private float calcRowWidth(List<ElementInfo> elementInfoList, 
+            float hgap) {
+        float result = 0.0f;
+        for (ElementInfo elementInfo : elementInfoList) {
+            result += elementInfo.getDimension().getWidth();
+        }
+        int count = elementInfoList.size();
+        if (count > 1) {
+            result += (count - 1) * hgap;
+        }
+        return result;
     }
     
     /**
@@ -95,113 +201,69 @@ public class FlowElement extends AbstractTableElement implements TableElement,
      * @return The preferred size. 
      */
     @Override
-    public Dimension2D preferredSize(Canvas canvas, Paint paint, RectF bounds, 
+    public Dimension2D preferredSize(Canvas g2, Paint paint, RectF bounds, 
             Map<String, Object> constraints) {
-        double maxWidth = bounds.width();
         Insets insets = getInsets();
         float width = insets.left + insets.right;
         float height = insets.top + insets.bottom;
-        float rowWidth = insets.left + insets.right;
-        float rowHeight = 0.0f;
-        boolean first = true;
-        for (TableElement e : this.elements) {
-            Dimension2D dim = e.preferredSize(canvas, paint, bounds, constraints);
-            if (rowWidth + dim.getWidth() <= maxWidth) {
-                rowWidth += dim.getWidth();
-                if (first) {
-                    first = false;
-                } else {
-                    rowWidth += this.hgap;
-                }
-                rowHeight = Math.max(dim.getHeight(), rowHeight);
-            } else {
-                width = Math.max(width, rowWidth);
-                rowWidth = insets.left + insets.right + dim.getWidth();
-                height += rowHeight;
-                rowHeight = dim.getHeight();
-            }
-            width = Math.max(width, rowWidth);
+        float maxRowWidth = 0.f;
+        int elementCount = this.elements.size();
+        int i = 0;
+        while (i < elementCount) {
+            // get one row of elements...
+            List<ElementInfo> elementsInRow = rowOfElements(i, g2, 
+                    paint, bounds);
+            float rowHeight = calcRowHeight(elementsInRow);
+            float rowWidth = calcRowWidth(elementsInRow, this.hgap);
+            maxRowWidth = Math.max(rowWidth, maxRowWidth);
+            height += rowHeight;
+            i = i + elementsInRow.size();
         }
-        height += rowHeight;
-        return new Dimension2D(width, height);
-    }
-
-    /**
-     * Extracts a line of elements.
-     * 
-     * @param firstElement  the index of the first element.
-     * @param g2  the graphics target.
-     * @param bounds  the bounds.
-     * 
-     * @return A line of elements. 
-     */
-    private ElementLine lineOfElements(int firstElement, Canvas g2, Paint paint,
-            RectF bounds) {
-        List<TableElement> elementsInLine = new ArrayList<TableElement>();
-        List<Float> elementWidths = new ArrayList<Float>();
-        float x = getInsets().left;
-        float w = 0.0f;
-        float h = 0.0f;
-        for (int i = firstElement; i < this.elements.size(); i++) {
-            TableElement e = this.elements.get(i);
-            Dimension2D dim = e.preferredSize(g2, paint, bounds);
-            if (x + dim.getWidth() < bounds.width() + 10) {
-                elementsInLine.add(this.elements.get(i));
-                elementWidths.add(dim.getWidth());
-                w = dim.getWidth();
-                if (i > firstElement) {
-                    w += this.hgap;
-                }
-                h = Math.max(h, dim.getHeight());
-            }
-            x += dim.getWidth() + this.hgap;
-        }
-        if (elementsInLine.isEmpty()) {
-            elementsInLine.add(this.elements.get(firstElement));
-            w = bounds.width() - getInsets().left - getInsets().right;
-            elementWidths.add(w);
-        }
-        return new ElementLine(elementsInLine, elementWidths, w, h);
+        width += maxRowWidth;
+        return new Dimension2D(width, height);        
     }
     
+    /**
+     * Calculates the layout of the elements for the given bounds and 
+     * constraints.
+     * 
+     * @param g2  the graphics target (<code>null</code> not permitted).
+     * @param bounds  the bounds (<code>null</code> not permitted).
+     * @param constraints  the constraints (not used here).
+     * 
+     * @return A list of positions for the sub-elements. 
+     */
     @Override
-    public List<RectF> layoutElements(Canvas canvas, Paint paint, RectF bounds, 
+    public List<RectF> layoutElements(Canvas g2, Paint paint, RectF bounds, 
             Map<String, Object> constraints) {
-        List<RectF> result = new ArrayList<RectF>(
-                this.elements.size());
+        int elementCount = this.elements.size();
+        List<RectF> result = new ArrayList<RectF>(elementCount);
+        int i = 0;
         float x = bounds.left + getInsets().left;
         float y = bounds.top + getInsets().top;
-        int i = 0;
-        while (i < this.elements.size()) {
-            ElementLine line = lineOfElements(i, canvas, paint, bounds);
-            for (int elementIndex = 0; elementIndex < line.getElements().size();
-                    elementIndex++) {
-                // x will depend on horizontal alignment, the gap and the 
-                // element index
-                // y is already known
-                float dx = calculateXOffset(elementIndex, line.getWidths(), 
-                        this.hgap);
-                RectF rect = new RectF(x + dx, y, 
-                        x + dx + line.getWidths().get(elementIndex), 
-                        y + line.getHeight());
-                result.add(rect);
+        while (i < elementCount) {
+            // get one row of elements...
+            List<ElementInfo> elementsInRow = rowOfElements(i, g2, paint,
+                    bounds);
+            float height = calcRowHeight(elementsInRow);
+            float width = calcRowWidth(elementsInRow, this.hgap);  
+            if (this.horizontalAlignment == HAlign.CENTER) {
+                x = bounds.centerX() - (width / 2.0f);
+            } else if (this.horizontalAlignment == HAlign.RIGHT) {
+                x = bounds.right - getInsets().right - width;
             }
-            i += line.getElements().size();
-            y += line.getHeight();
+            for (ElementInfo elementInfo : elementsInRow) {
+                Dimension2D dim = elementInfo.getDimension();
+                RectF position = new RectF(x, y, x + dim.getWidth(), y + height);
+                result.add(position);
+                x += position.width() + this.hgap;
+            }
+            i = i + elementsInRow.size();
+            x = bounds.left + getInsets().left;
+            y += height;
         }
         return result;
-    }
 
-    private float calculateXOffset(int elementIndex, List<Float> widths, 
-            int gap) {
-        float x = 0.0f;
-        for (int i = 0; i < elementIndex; i++) {
-            x += widths.get(i).doubleValue();
-        }
-        if (elementIndex > 1) {
-            x += gap * (elementIndex - 1);
-        }
-        return x;    
     }
     
     @Override
@@ -233,87 +295,13 @@ public class FlowElement extends AbstractTableElement implements TableElement,
         if (this.hgap != that.hgap) {
             return false;
         }
+        if (this.horizontalAlignment != that.horizontalAlignment) {
+            return false;
+        }
         if (!this.elements.equals(that.elements)) {
             return false;
         }
         return super.equals(obj);
     }
     
-    /** 
-     * A line of elements in the {@link FlowElement}.
-     */
-    private static class ElementLine {
-        
-        /** The line width. */
-        private float width;
-        
-        /** The line height. */
-        private float height;
-        
-        /** The elements in the line. */
-        private List<TableElement> elements;
-        
-        /** The widths of the elements in the line. */
-        private List<Float> widths;
-        
-        /**
-         * Creates a new (empty) line.
-         */
-        public ElementLine() {
-            this(new ArrayList<TableElement>(), new ArrayList<Float>(), 0.0f, 
-                    0.0f);
-        }
-        
-        /**
-         * Creates a new line with...
-         * 
-         * @param elements
-         * @param elementWidths
-         * @param width
-         * @param height 
-         */
-        public ElementLine(List<TableElement> elements, 
-                List<Float> elementWidths, float width, float height) {
-            this.elements = elements;
-            this.widths = elementWidths;
-            this.width = width;
-            this.height = height;
-        }
-        
-        /**
-         * Returns the elements in the line.
-         * 
-         * @return The elements. 
-         */
-        public List<TableElement> getElements() {
-            return this.elements;
-        }
-        
-        /**
-         * Returns the widths of the elements in the line.
-         * 
-         * @return The widths.
-         */
-        public List<Float> getWidths() {
-            return this.widths;
-        }
-        
-        /**
-         * Returns the width of the line.
-         * 
-         * @return The width. 
-         */
-        public float getWidth() {
-            return this.width;
-        }
-        
-        /**
-         * Returns the height of the line.
-         * 
-         * @return The height.
-         */
-        public float getHeight() {
-            return this.height;
-        }
-    }
 }

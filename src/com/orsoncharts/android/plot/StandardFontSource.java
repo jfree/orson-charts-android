@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -78,8 +78,8 @@ public final class StandardFontSource implements FontSource, Serializable {
      * @return The font (never <code>null</code>). 
      */
     @Override
-    public TextStyle getFont(Comparable key) {
-    	TextStyle result = this.fonts.getValue(key);
+    public TextStyle getFont(Comparable<?> key) {
+        TextStyle result = this.fonts.getValue(key);
         if (result != null) {
             return result;
         } else {
@@ -94,7 +94,7 @@ public final class StandardFontSource implements FontSource, Serializable {
      * @param font  the font (<code>null</code> permitted).
      */
     @Override
-    public void setFont(Comparable key, TextStyle font) {
+    public void setFont(Comparable<?> key, TextStyle font) {
         if (font != null) {
             this.fonts.put(key, font);
         } else {

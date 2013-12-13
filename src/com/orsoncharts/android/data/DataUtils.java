@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -50,7 +50,7 @@ public class DataUtils {
      * 
      * @return The range of data values (possibly <code>null</code>).
      */
-    public static Range findValueRange(Values3D data) {
+    public static Range findValueRange(Values3D<? extends Number> data) {
         return findValueRange(data, Double.NaN);
     }
 
@@ -66,7 +66,8 @@ public class DataUtils {
      * 
      * @return The range (possibly <code>null</code>). 
      */
-    public static Range findValueRange(Values3D data, double base) {
+    public static Range findValueRange(Values3D<? extends Number> data, 
+            double base) {
         ArgChecks.nullNotPermitted(data, "data");
         double min = Double.POSITIVE_INFINITY;
         double max = Double.NEGATIVE_INFINITY;
@@ -101,7 +102,7 @@ public class DataUtils {
      * 
      * @return The range.
      */
-    public static Range findStackedValueRange(Values3D data) {
+    public static Range findStackedValueRange(Values3D<? extends Number> data) {
         return findStackedValueRange(data, 0.0);
     }
     
@@ -114,7 +115,8 @@ public class DataUtils {
      * 
      * @return The range.
      */
-    public static Range findStackedValueRange(Values3D data, double base) {
+    public static Range findStackedValueRange(Values3D<? extends Number> data, 
+            double base) {
         ArgChecks.nullNotPermitted(data, "data");
         double min = base;
         double max = base;
@@ -153,8 +155,8 @@ public class DataUtils {
      *     the negative data items, and <code>result[1]</code> is the subtotal
      *     of the positive data items.
      */
-    public static double[] stackSubTotal(Values3D data, double base, int series, 
-            int row, int column) {
+    public static double[] stackSubTotal(Values3D<? extends Number> data, 
+            double base, int series, int row, int column) {
         double neg = base;
         double pos = base;
         for (int s = 0; s < series; s++) {

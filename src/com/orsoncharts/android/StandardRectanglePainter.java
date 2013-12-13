@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -16,7 +16,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 
-import com.orsoncharts.android.util.ArgChecks;
 import com.orsoncharts.android.util.Fit2D;
 import com.orsoncharts.android.util.Scale2D;
 

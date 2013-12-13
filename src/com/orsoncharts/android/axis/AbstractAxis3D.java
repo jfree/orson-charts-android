@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -63,7 +63,7 @@ public abstract class AbstractAxis3D implements Axis3D, Serializable {
     public AbstractAxis3D(String label) {
         this.label = label;
         this.labelFont = new TextStyle(Typeface.create(Typeface.SANS_SERIF, 
-        		Typeface.BOLD), 12);
+                Typeface.BOLD), 12);
         this.labelColor = Color.BLACK;
         this.lineStroke = new LineStyle(1.0f);
         this.lineColor = Color.GRAY;
@@ -304,9 +304,9 @@ public abstract class AbstractAxis3D implements Axis3D, Serializable {
      * @param event  information about the change event.
      */
     public void notifyListeners(Axis3DChangeEvent event) {
-    	for (Axis3DChangeListener listener : this.listenerList) {
-    		listener.axisChanged(event);
-    	}
+        for (Axis3DChangeListener listener : this.listenerList) {
+            listener.axisChanged(event);
+        }
     }
   
     /**

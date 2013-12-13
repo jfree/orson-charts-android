@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -17,7 +17,7 @@ import java.util.EventListener;
  * event, then pass on the change event to the chart.  The chart in turn will
  * pass on the event and this can result in the chart being repainted (for
  * example, if the chart is displayed in a
- * {@link com.orsoncharts.ChartPanel3D}).
+ * {@link com.orsoncharts.android.ChartSurfaceView}).
  */
 public interface Dataset3D {
 

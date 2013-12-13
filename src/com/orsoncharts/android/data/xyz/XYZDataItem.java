@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013 by Object Refinery Limited.
  * 
@@ -44,7 +44,7 @@ public class XYZDataItem implements Serializable {
      * @return The x-value. 
      */
     public double getX() {
-        return x;
+        return this.x;
     }
 
     /**
@@ -53,7 +53,7 @@ public class XYZDataItem implements Serializable {
      * @return The y-value.
      */
     public double getY() {
-        return y;
+        return this.y;
     }
 
     /**
@@ -62,7 +62,7 @@ public class XYZDataItem implements Serializable {
      * @return The z-value. 
      */
     public double getZ() {
-        return z;
+        return this.z;
     }
     
     /**

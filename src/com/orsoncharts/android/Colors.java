@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -62,7 +62,7 @@ public class Colors {
      */
     public static int[] getColors1() {
         return new int[] { Color.rgb(0, 55, 122),  
-        		Color.rgb(24, 123, 58), Color.RED, Color.YELLOW };
+                Color.rgb(24, 123, 58), Color.RED, Color.YELLOW };
     }
     
     /**
@@ -72,8 +72,8 @@ public class Colors {
      */
     public static int[] getColors2() {
         return new int[] {
-        		Color.rgb(0x1A, 0x96, 0x41), Color.rgb(0xA6, 0xD9, 0x6A), 
-        		Color.rgb(0xFD, 0xAE, 0x61), Color.rgb(0xFF, 0xFF, 0xBF)};
+                Color.rgb(0x1A, 0x96, 0x41), Color.rgb(0xA6, 0xD9, 0x6A), 
+                Color.rgb(0xFD, 0xAE, 0x61), Color.rgb(0xFF, 0xFF, 0xBF)};
     }
         
     /**
@@ -84,12 +84,12 @@ public class Colors {
      */
     public static int[] getDesignSeedsShells() {
         return new int[] {
-        		Color.rgb(228, 233, 239),
-        		Color.rgb(184, 197, 219),
-        		Color.rgb(111, 122, 143),
-        		Color.rgb(95, 89, 89),
-        		Color.rgb(206, 167, 145),
-        		Color.rgb(188, 182, 173)
+                Color.rgb(228, 233, 239),
+                Color.rgb(184, 197, 219),
+                Color.rgb(111, 122, 143),
+                Color.rgb(95, 89, 89),
+                Color.rgb(206, 167, 145),
+                Color.rgb(188, 182, 173)
         };
     }
     
@@ -101,12 +101,12 @@ public class Colors {
      */
     public static int[] getDesignSeedsPepper() {
         return new int[] {
-        		Color.rgb(255, 219, 142),
-        		Color.rgb(220, 21, 20),
-        		Color.rgb(149, 0, 1),
-        		Color.rgb(82, 102, 41),
-        		Color.rgb(142, 101, 72),
-        		Color.rgb(199, 169, 128)
+                Color.rgb(255, 219, 142),
+                Color.rgb(220, 21, 20),
+                Color.rgb(149, 0, 1),
+                Color.rgb(82, 102, 41),
+                Color.rgb(142, 101, 72),
+                Color.rgb(199, 169, 128)
         };
     }
 }

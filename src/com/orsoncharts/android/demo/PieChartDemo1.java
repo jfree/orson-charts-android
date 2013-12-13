@@ -1,3 +1,11 @@
+/* ========================
+ * Orson Charts for Android
+ * ========================
+ * 
+ * (C)opyright 2013, by Object Refinery Limited.
+ * 
+ */
+
 package com.orsoncharts.android.demo;
 
 import com.orsoncharts.android.Chart3D;
@@ -7,22 +15,25 @@ import com.orsoncharts.android.data.PieDataset3D;
 import com.orsoncharts.android.data.StandardPieDataset3D;
 import com.orsoncharts.android.legend.LegendAnchor;
 
+/**
+ * Creates a demo pie chart.
+ */
 public class PieChartDemo1 {
 
-	/**
-	 * Creates and returns a demo chart.
-	 * 
-	 * @return A demo chart.
-	 */
-	public static Chart3D createChart() {
-		Chart3D chart = Chart3DFactory.createPieChart(
+    /**
+     * Creates and returns a demo chart.
+     * 
+     * @return A demo chart.
+     */
+    public static Chart3D createChart() {
+        Chart3D chart = Chart3DFactory.createPieChart(
                 "New Zealand Exports 2012", 
                 "http://www.stats.govt.nz/browse_for_stats/snapshots-of-nz/nz-in-profile-2013.aspx", createDataset());
         chart.setTitleAnchor(TitleAnchor.TOP_LEFT);
         chart.setLegendAnchor(LegendAnchor.BOTTOM_RIGHT);
         return chart;
-	}
-	
+    }
+    
     /**
      * Creates a sample dataset (hard-coded for the purpose of keeping the
      * demo self-contained - in practice you would normally read your data

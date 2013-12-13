@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
@@ -57,7 +56,7 @@ public class ShapeElement extends AbstractTableElement
         float w = this.shape.getWidth();
         float h = this.shape.getHeight();
         return new ElementDimension(
-        		Math.min(w + insets.left + insets.right, bounds.width()), 
+                Math.min(w + insets.left + insets.right, bounds.width()), 
                 Math.min(h + insets.top + insets.bottom, bounds.height()));
     }
 
@@ -68,10 +67,8 @@ public class ShapeElement extends AbstractTableElement
         Insets insets = getInsets();
         float sw = this.shape.getWidth();
         float sh = this.shape.getHeight();
-        float w = (float) Math.min(sw + insets.left + insets.right,
-                bounds.width());
-        float h = (float) Math.min(sh + insets.top 
-                + insets.bottom, bounds.height());
+        float w = Math.min(sw + insets.left + insets.right, bounds.width());
+        float h = Math.min(sh + insets.top + insets.bottom, bounds.height());
         float x = bounds.centerX() - w / 2f;
         float y = bounds.centerY() - h / 2f;
         RectF pos = new RectF(x, y, x + w, y + h);
@@ -84,11 +81,11 @@ public class ShapeElement extends AbstractTableElement
         paint.setStyle(Style.FILL);
         int backgroundColor = getBackgroundPaint();
         if (backgroundColor != 0) {
-        	paint.setColor(backgroundColor);
+            paint.setColor(backgroundColor);
             canvas.drawRect(bounds, paint);
         }
-    	float dx = bounds.centerX() - this.shape.getWidth() / 2f;
-    	float dy = bounds.centerY() - this.shape.getHeight() / 2f;
+        float dx = bounds.centerX() - this.shape.getWidth() / 2f;
+        float dy = bounds.centerY() - this.shape.getHeight() / 2f;
         canvas.translate(dx, dy);
         paint.setColor(getForegroundPaint());
         this.shape.draw(canvas, paint);

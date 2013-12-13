@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -21,7 +21,7 @@ import com.orsoncharts.android.util.ArgChecks;
 public class StandardLegendItemInfo implements LegendItemInfo {
 
     /** The series key. */
-    private Comparable seriesKey;
+    private Comparable<?> seriesKey;
     
     /** The series label. */
     private String label;
@@ -36,7 +36,7 @@ public class StandardLegendItemInfo implements LegendItemInfo {
     private Shape shape;
     
     /** Storage for other properties. */
-    private Map<Comparable, Object> properties;
+    private Map<Comparable<?>, Object> properties;
     
     /**
      * Creates a new instance.
@@ -45,7 +45,7 @@ public class StandardLegendItemInfo implements LegendItemInfo {
      * @param label  the label (<code>null</code> not permitted).
      * @param paint  the paint.
      */
-    public StandardLegendItemInfo(Comparable seriesKey, String label, 
+    public StandardLegendItemInfo(Comparable<?> seriesKey, String label, 
             int paint) {
         this(seriesKey, label, null, paint, null);
     }
@@ -59,7 +59,7 @@ public class StandardLegendItemInfo implements LegendItemInfo {
      * @param paint  the paint.
      * @param shape the shape (<code>null</code> permitted).
      */
-    public StandardLegendItemInfo(Comparable seriesKey, String label, 
+    public StandardLegendItemInfo(Comparable<?> seriesKey, String label, 
             String description, int paint, Shape shape) {
         ArgChecks.nullNotPermitted(seriesKey, "seriesKey");
         ArgChecks.nullNotPermitted(label, "label");
@@ -69,7 +69,7 @@ public class StandardLegendItemInfo implements LegendItemInfo {
         this.description = description;
         this.paint = paint;
         this.shape = shape;
-        this.properties = new HashMap<Comparable, Object>();
+        this.properties = new HashMap<Comparable<?>, Object>();
     }
     
     /**
@@ -78,7 +78,7 @@ public class StandardLegendItemInfo implements LegendItemInfo {
      * @return The series key (never <code>null</code>). 
      */
     @Override
-    public Comparable getSeriesKey() {
+    public Comparable<?> getSeriesKey() {
         return this.seriesKey;
     }
 
@@ -128,7 +128,7 @@ public class StandardLegendItemInfo implements LegendItemInfo {
      * @return The properties for the legend item. 
      */
     @Override
-    public Map<Comparable, Object> getProperties() {
+    public Map<Comparable<?>, Object> getProperties() {
         return this.properties;
     }
     

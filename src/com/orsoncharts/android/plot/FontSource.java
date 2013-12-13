@@ -1,6 +1,6 @@
-/* ============
- * Orson Charts
- * ============
+/* ========================
+ * Orson Charts for Android
+ * ========================
  * 
  * (C)opyright 2013, by Object Refinery Limited.
  * 
@@ -9,7 +9,6 @@
 package com.orsoncharts.android.plot;
 
 import com.orsoncharts.android.TextStyle;
-
 
 /**
  * An object that supplies <code>Font</code> instances associated with
@@ -26,7 +25,7 @@ public interface FontSource {
      * 
      * @return A typeface (never <code>null</code>). 
      */
-    TextStyle getFont(Comparable key);
+    TextStyle getFont(Comparable<?> key);
     
     /**
      * Sets the font associated with a key.
@@ -34,6 +33,6 @@ public interface FontSource {
      * @param key  the key (<code>null</code> not permitted).
      * @param font  the font (<code>null</code> not permitted).
      */
-    void setFont(Comparable key, TextStyle font);
+    void setFont(Comparable<?> key, TextStyle font);
  
 }
