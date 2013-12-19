@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<body>
+<b>Orson Charts for Android</b> is a chart library for the Android(tm) platform that can 
+generate a wide variety of 3D charts for use in mobile apps.  The key features include:
+<p><ol>
+<li>multiple chart types: pie charts, bar charts (regular and 
+        stacked), line charts, area charts and scatter plots;</li>
+<li>a built-in lightweight 3D rendering engine - no additional or complex 
+        dependencies, resulting in easy deployment;</li>
+<li>touch-enabled chart viewer provides 360 degree rotation, zooming, and 
+    excellent end-user view control;
+<li>auto-adaptive axis labeling;</li>
+<li>a clean and well-documented API, with a high degree of chart 
+    configurability;</li></ol>
+
+Here are some samples (which may not be visible if your browser does not 
+support SVG, in which case you should get a new browser):
+
+<table>
+    <tr>
+      <td><object id="BarChart3DDemo1" data="doc-files/BarChart3DDemo1.svg"  
+        type="image/svg+xml" width="500" height="359"> 
+         </object>
+      </td>
+      <td><object id="ScatterPlot3DDemo2" data="doc-files/ScatterPlot3DDemo2.svg"  
+        type="image/svg+xml" width="500" height="359"> 
+        </object>
+      </td>
+    </tr>
+    <tr>
+      <td><object id="PieChart3DDemo1" data="doc-files/PieChart3DDemo1.svg"  
+        type="image/svg+xml" width="500" height="359"> 
+         </object>
+      </td>
+      <td><object id="AreaChart3DDemo1" data="doc-files/AreaChart3DDemo1.svg"  
+        type="image/svg+xml" width="500" height="359"> 
+</object></td></tr>
+</table>
+
+<br><br>
+Orson Charts for Android includes only 3D charts, there is currently no support for 2D charts.
+
+<h4>Getting Started</h4>
+To get started with Orson Charts for Android, you simply need to add the 
+<code>orson-charts-android-1.x.jar</code> file to your classpath and begin coding.  Your 
+first step is to set up some data that you want to display.  Orson Charts reads
+data through a dataset interface - there are three key interfaces, one that is
+used for pie charts (<code>PieDataset3D</code>), one that is used for bar charts
+and other category based charts (<code>CategoryDataset3D</code>) and one for 
+plots that use numerical data (<code>XYZDataset</code>).  There are standard
+implementations of these interfaces includes in the library, making it 
+straightforward to create a new dataset. Here is an example for a pie chart:
+<br><br>
+<code>&nbsp;&nbsp;StandardPieDataset3D dataset = new StandardPieDataset3D();<br></code>
+<code>&nbsp;&nbsp;dataset.add("Milk Products", 625);<br></code>
+<code>&nbsp;&nbsp;dataset.add("Meat", 114);<br></code>
+<br><br>
+Once your dataset is ready, the next step is to create a chart object - here the 
+<code>Chart3DFactory</code> class can help, as it has utility methods to create 
+some standard chart types:
+<br><br>
+<code>&nbsp;&nbsp;Chart3D chart = Chart3DFactory.createPieChart("Title", "Subtitle", dataset);</code>
+<br><br>
+Finally, to display your chart in your UI you can use the <code>ChartSurfaceView</code> class.
+
+<h4>More Information</h4>
+Please visit <a href="http://www.object-refinery.com/orsoncharts/index.html" target="_blank">
+  http://www.object-refinery.com/orsoncharts/index.html
+</a>
+for the latest information about Orson Charts for Android.
+
+</body>
+</html>
