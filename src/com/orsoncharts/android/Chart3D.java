@@ -599,7 +599,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             if (true) { // eval
                 GridElement legend2 = new GridElement();
                 legend2.setElement(legend, "R1", "C1");
-                TextElement te = new TextElement("Orson Charts for Android (evaluation) (c) 2013, by Object Refinery Limited", 
+                TextElement te = new TextElement("Orson Charts for Android (c) 2013, by Object Refinery Limited", 
                         new TextStyle(Typeface.SANS_SERIF, 10));
                 te.setHorizontalAligment(HAlign.RIGHT);
                 legend2.setElement(te, "R2", "C1");
