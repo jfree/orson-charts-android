@@ -45,7 +45,7 @@ import com.orsoncharts.android.util.ArgChecks;
 public class PiePlot3D extends AbstractPlot3D implements Serializable {
 
     /** The default font for section labels on the chart. */
-    public TextStyle DEFAULT_SECTION_LABEL_FONT 
+    public static final TextStyle DEFAULT_SECTION_LABEL_FONT 
             = new TextStyle(Typeface.SANS_SERIF, 12);
     
     /** The dataset. */
@@ -88,7 +88,7 @@ public class PiePlot3D extends AbstractPlot3D implements Serializable {
         this.depth = 0.5;
         this.sectionColorSource = new StandardColorSource();
         this.sectionLabelFontSource = new StandardFontSource(
-                DEFAULT_SECTION_LABEL_FONT);
+                PiePlot3D.DEFAULT_SECTION_LABEL_FONT);
         this.sectionLabelColorSource = new StandardColorSource(Color.BLACK);
     }
 
