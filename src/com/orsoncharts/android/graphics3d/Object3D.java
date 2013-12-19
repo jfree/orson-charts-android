@@ -132,7 +132,7 @@ public class Object3D {
      * given viewpoint.
      *
      * @param viewPoint  the view point (<code>null</code> not permitted).
-     * @param d
+     * @param d  the distance.
      *
      * @return The projected points.
      */
@@ -199,10 +199,10 @@ public class Object3D {
      * Creates a square flat surface in the x-y plane (constant z).
      * 
      * @param size  the sheet size.
-     * @param x
-     * @param y
-     * @param z
-     * @param color
+     * @param x  the x-coordinate of a point on the surface.
+     * @param y  the y-coordinate of a point on the surface.
+     * @param z  the z-coordinate of a point on the surface.
+     * @param color  the color.
      * 
      * @return The sheet. 
      */
@@ -465,8 +465,6 @@ public class Object3D {
 
         // closing side
         segment.addFace(new Face(new int[] {1, 0, vc-2, vc-1}, color, false));
-
-        double j = angle1;
         return segment;
     }
 
