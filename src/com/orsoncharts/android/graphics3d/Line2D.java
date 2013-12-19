@@ -38,10 +38,10 @@ public class Line2D {
     /**
      * Creates a new line from <code>(x1, y1)</code> to <code>(x2, y2)</code>.
      * 
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
+     * @param x1  the x-coordinate for the starting point.
+     * @param y1  the y-coordinate for the starting point.
+     * @param x2  the x-coordinate for the ending point.
+     * @param y2  the y coordinate for the ending point.
      */
     public Line2D(float x1, float y1, float x2, float y2) {
         this.x1 = x1;
