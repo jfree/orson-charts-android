@@ -9,6 +9,8 @@
 package com.orsoncharts.android.demo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +41,20 @@ public class MainActivity extends Activity {
         super.onOptionsItemSelected(item);
         ChartSurfaceView view = (ChartSurfaceView) this.findViewById(R.id.chartView);
         switch (item.getItemId()) {
+        case R.id.action_about : {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Orson Charts for Android")
+                .setMessage("For more info please visit:\n\nhttp://www.object-refinery.com")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                   // nothing
+              }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
+        }
         case R.id.action_barchart1 : {
             view.setChart(BarChartDemo1.createChart());
             return true;
