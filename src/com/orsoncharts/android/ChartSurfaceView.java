@@ -17,9 +17,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -37,6 +35,12 @@ public class ChartSurfaceView extends SurfaceView
     /** The chart displayed in the view. */
     private Chart3D chart;
     
+    
+    /** 
+     * The minimum viewing distance (zooming in will not go closer than this).
+     */
+    private float minViewingDistance;
+    
     /** Margin for chart resizing. */
     private float margin = 0.15f;
 
@@ -52,8 +56,7 @@ public class ChartSurfaceView extends SurfaceView
     /** Coordinates of the last motion event ACTION_DOWN. */
     private float lastX, lastY;
     
-    /** A gesture detector. */
-    private ScaleGestureDetector scaleGestureDetector;
+    private ScaleAndRotateHandler scaleAndRotateHandler;
     
     /** An executor service that executes chart repaints. */
     private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -68,7 +71,7 @@ public class ChartSurfaceView extends SurfaceView
     /**
      * Creates a new instance.
      * 
-     * @param context
+     * @param context  the app context.
      */
     public ChartSurfaceView(Context context) {
         super(context);
@@ -78,8 +81,8 @@ public class ChartSurfaceView extends SurfaceView
     /**
      * Creates a new instance.
      * 
-     * @param context
-     * @param attrs
+     * @param context  the context.
+     * @param attrs  the attributes.
      */
     public ChartSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -89,9 +92,9 @@ public class ChartSurfaceView extends SurfaceView
     /**
      * Creates a new instance.
      * 
-     * @param context
-     * @param attrs
-     * @param defStyle
+     * @param context  the context.
+     * @param attrs  the attributes.
+     * @param defStyle  style.
      */
     public ChartSurfaceView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -99,9 +102,9 @@ public class ChartSurfaceView extends SurfaceView
     }
     
     /**
-     * Initialises the view.
+     * Initialises the view (this method is called by each of the constructors).
      * 
-     * @param context
+     * @param context  the context.
      */
     private void init(Context context) {
         TextStyle.density = context.getResources().getDisplayMetrics().density;
@@ -109,10 +112,11 @@ public class ChartSurfaceView extends SurfaceView
         this.bounds = new RectF();
         getHolder().addCallback(this);
         this.chart = PieChartDemo1.createChart();
+        this.minViewingDistance 
+            = (float) (this.chart.getDimensions().getDiagonalLength() * 0.75);
         this.chart.getViewPoint().setRho(16);
         this.chart.addChangeListener(this);
-        this.scaleGestureDetector = new ScaleGestureDetector(context,
-                new ScaleListener());        
+        this.scaleAndRotateHandler = new ScaleAndRotateHandler();
     }
     
     /**
@@ -133,11 +137,36 @@ public class ChartSurfaceView extends SurfaceView
         this.chart.removeChangeListener(this);
         this.chart = chart;
         this.chart.addChangeListener(this);
+        this.minViewingDistance 
+            = (float) (chart.getDimensions().getDiagonalLength() * 0.75);        
         Dimension2D size = new Dimension2D(getWidth(), getHeight());
         zoomToFit(size);
         submitChartRedraw();
     }
     
+    /**
+     * Returns the minimum viewing distance.
+     * 
+     * @return The minimum viewing distance.
+     */
+    public float getMinViewingDistance() {
+        return this.minViewingDistance;    
+    }
+    
+    /**
+     * Returns the margin.
+     * 
+     * @return The margin.
+     */
+    public float getMargin() {
+        return this.margin;
+    }
+    
+    /**
+     * Draws the chart to the supplied canvas.
+     * 
+     * @param canvas  the canvas.
+     */
     @Override 
     public void onDraw(Canvas canvas) { 
         int height = getMeasuredHeight();
@@ -148,25 +177,48 @@ public class ChartSurfaceView extends SurfaceView
         }
     } 
     
+    /**
+     * Sets the <code>surfaceExists</code> flag.
+     * 
+     * @param holder  ignored.
+     */
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         this.surfaceExists = true;
     }
 
+    /**
+     * Receives notification of a surface change and submits a redraw.
+     * 
+     * @param holder  the surface holder.
+     * @param format  the format.
+     * @param width  the width.
+     * @param height  the height.
+     */
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
             int height) {
         submitChartRedraw();    
     }
 
+    /**
+     * Receives notification that the surface has been destroyed.
+     * 
+     * @param holder  ignored.
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         this.surfaceExists = false;
     }
 
+    /**
+     * Receives notification of a chart change event and responds by scheduling
+     * a repaint.
+     * 
+     * @param event  the change event.
+     */
     @Override
     public void chartChanged(Chart3DChangeEvent event) {
-        // submit chart redraw
         submitChartRedraw();
     }
     
@@ -187,38 +239,53 @@ public class ChartSurfaceView extends SurfaceView
     
     @Override
     public boolean onTouchEvent(MotionEvent event)  {
-        this.scaleGestureDetector.onTouchEvent(event);
-        if (this.scaleGestureDetector.isInProgress()) {
-            invalidate();
+        this.scaleAndRotateHandler.update(event);
+        if (this.scaleAndRotateHandler.getTrackingCount() == 2) {
+            double distance = this.chart.getViewPoint().getRho();
+            distance = distance 
+                    * 1 / this.scaleAndRotateHandler.getPinchScaleFactor();
+            this.chart.getViewPoint().setRho(
+                    Math.max(distance, this.minViewingDistance));
+            this.chart.getViewPoint().roll(
+                    -this.scaleAndRotateHandler.getRotation());
+            this.lastX = Float.NaN;
+            this.lastY = Float.NaN;
+            submitChartRedraw();
             return true;
-        }
-        int action = event.getActionMasked();
-        switch (action) {
-        case MotionEvent.ACTION_DOWN: {
-            this.lastX = event.getX();
-            this.lastY = event.getY();
-            return true;
-        }
-        case MotionEvent.ACTION_MOVE: {
-            int historySize = event.getHistorySize();
-            this.chart.setNotify(false);
-            for (int i = 0; i < historySize; i++) {
-                float x = event.getHistoricalX(i);
-                float y = event.getHistoricalY(i);
-                processMovement(x, y);
+ 
+        } else {
+            int action = event.getActionMasked();
+        
+            switch (action) {
+            case MotionEvent.ACTION_DOWN: {
+                this.lastX = event.getX();
+                this.lastY = event.getY();
+                return true;
             }
-            this.chart.setNotify(true);
-            return true;
-        }
-        case MotionEvent.ACTION_UP: {
-            invalidate();
-            return true;
-        }
+            case MotionEvent.ACTION_MOVE: {
+                int historySize = event.getHistorySize();
+                this.chart.setNotify(false);
+                for (int i = 0; i < historySize; i++) {
+                    float x = event.getHistoricalX(i);
+                    float y = event.getHistoricalY(i);
+                    processMovement(x, y);
+                }
+                this.chart.setNotify(true);
+                return true;
+            }
+            case MotionEvent.ACTION_UP: {
+                invalidate();
+                return true;
+            }
+            }
         }
         return super.onTouchEvent(event);
     }
 
     private void processMovement(float x, float y) {
+        if (Float.isNaN(this.lastX) || Float.isNaN(this.lastY)) {
+            return;
+        }
         float dx = x - this.lastX;
         float dy = y - this.lastY;
         this.lastX = x;
@@ -245,35 +312,6 @@ public class ChartSurfaceView extends SurfaceView
                 d3d);
         this.chart.getViewPoint().setRho(distance);
         submitChartRedraw();        
-    }
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            double distance = chart.getViewPoint().getRho();
-            distance = distance * 1 / detector.getScaleFactor();
-            chart.getViewPoint().setRho(distance);
-            submitChartRedraw();
-            return true;
-        }
-        
-    }
-    
-    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onDoubleTapEvent(MotionEvent e) {
-            // TODO Auto-generated method stub
-            return super.onDoubleTapEvent(e);
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-            // TODO Auto-generated method stub
-            super.onLongPress(e);
-        }
-        
     }
 
 }
