@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -30,7 +34,7 @@ import com.orsoncharts.android.util.ObjectUtils;
  * A renderer for creating 3D bar charts from a {@link CategoryDataset3D} (for 
  * use with a {@link CategoryPlot3D}).  For example:
  * <div>
- * <object id="ABC" data="../../../../doc-files/BarChart3DDemo1.svg"  type="image/svg+xml" 
+ * <object id="BarChart3DDemo1" data="../../../../doc-files/BarChart3DDemo1.svg"  type="image/svg+xml" 
  * width="500" height="359"> 
  * </object>
  * </div>

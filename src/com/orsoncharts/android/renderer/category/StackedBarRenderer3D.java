@@ -2,7 +2,11 @@
  * Orson Charts
  * ============
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -23,7 +27,7 @@ import com.orsoncharts.android.Chart3DFactory;
  * <code>createStackedBarChart()</code> method in the {@link Chart3DFactory} 
  * class will construct a chart that uses this renderer.  Here is a sample:
  * <div>
- * <object id="ABC" data="../../../../doc-files/StackedBarChart3DDemo1.svg"  
+ * <object id="StackedBarChart3DDemo1" data="../../../../doc-files/StackedBarChart3DDemo1.svg"  
  * type="image/svg+xml" width="500" height="359"></object>
  * </div>
  * (refer to <code>StackedBarChart3DDemo1.java</code> for the code to generate 
