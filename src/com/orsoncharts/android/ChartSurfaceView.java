@@ -319,17 +319,31 @@ public class ChartSurfaceView extends SurfaceView
     /**
      * Adjusts the viewing distance so that the chart fits the specified
      * size.  A margin is left (see {@link #getMargin()} around the edges to 
-     * leave room for labels etc.
+     * leave room for labels etc.)
      * 
      * @param size  the target size (<code>null</code> not permitted).
      */    
     public void zoomToFit(Dimension2D size) {
-        int w = (int) (size.getWidth() * (1.0 - this.margin));
-        int h = (int) (size.getHeight() * (1.0 - this.margin));
+        zoomToFit(size.getWidth(), size.getHeight());
+    }
+    
+    /**
+     * Adjusts the viewing distance so that the chart fits the specified
+     * size.  A margin is left (see {@link #getMargin()} around the edges to 
+     * leave room for labels etc.)
+     * 
+     * @param width  the target width.
+     * @param height  the target height.
+     * 
+     * @since 1.1
+     */    
+    public void zoomToFit(double width, double height) {
+        int w = (int) (width * (1.0 - this.margin));
+        int h = (int) (height * (1.0 - this.margin));
         Dimension2D target = new Dimension2D(w, h);
         Dimension3D d3d = this.chart.getDimensions();
         float distance = this.chart.getViewPoint().optimalDistance(target, 
-                d3d);
+                d3d, this.chart.getProjDistance());
         this.chart.getViewPoint().setRho(distance);
         submitChartRedraw();        
     }

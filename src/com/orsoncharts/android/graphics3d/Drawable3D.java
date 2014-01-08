@@ -50,6 +50,26 @@ public interface Drawable3D {
     void setViewPoint(ViewPoint3D viewPoint);
     
     /**
+     * Returns the projection distance.  The default value is 1500, higher 
+     * numbers flatten out the perspective and reduce distortion in the
+     * projected image.
+     * 
+     * @return The projection distance.
+     * 
+     * @since 1.1
+     */
+    float getProjDistance();
+    
+    /**
+     * Sets the projection distance.  
+     * 
+     * @param dist  the distance.
+     * 
+     * @since 1.1
+     */
+    void setProjDistance(float dist);
+    
+    /**
      * Returns the 2D offset for the scene.
      * 
      * @return The translation (never <code>null</code>). 

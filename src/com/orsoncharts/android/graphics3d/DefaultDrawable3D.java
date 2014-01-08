@@ -35,9 +35,19 @@ import com.orsoncharts.android.util.ArgChecks;
  */
 public class DefaultDrawable3D implements Drawable3D {
 
+    /** 
+     * The default projection distance. 
+     * 
+     * @since 1.1
+     */
+    public static final float DEFAULT_PROJ_DIST = 1500f;
+
     /** The viewing point. */
     private ViewPoint3D viewPoint;
     
+    /** The projection distance. */
+    private float projDist;    
+
     /** The 3D world being drawn. */
     private World world;
 
@@ -54,6 +64,7 @@ public class DefaultDrawable3D implements Drawable3D {
         this.viewPoint = new ViewPoint3D((float) (3 * Math.PI / 2.0), 
                 (float) Math.PI / 6, 40.0f, 0.0);
         this.world = world;
+        this.projDist = DEFAULT_PROJ_DIST;
         this.offset = new Offset2D();
     }
     
@@ -88,6 +99,32 @@ public class DefaultDrawable3D implements Drawable3D {
         this.viewPoint = viewPoint;
     }
 
+    /** 
+     * Returns the projection distance.  The default value is 
+     * {@link #DEFAULT_PROJ_DIST}, higher numbers flatten out the perspective 
+     * and reduce distortion in the projected image.
+     * 
+     * @return The projection distance.
+     * 
+     * @since 1.1
+     */
+    @Override
+    public float getProjDistance() {
+        return this.projDist;
+    }
+    
+    /**
+     * Sets the projection distance.  
+     * 
+     * @param dist  the distance.
+     * 
+     * @since 1.1
+     */
+    @Override
+    public void setProjDistance(float dist) {
+        this.projDist = dist;
+    }
+
     @Override
     public Offset2D getTranslate2D() {
         return this.offset;
@@ -117,7 +154,7 @@ public class DefaultDrawable3D implements Drawable3D {
         Point3D[] eyePts = this.world.calculateEyeCoordinates(this.viewPoint);
 
         Point2D[] pts = this.world.calculateProjectedPoints(this.viewPoint,
-                    1000f);
+                    this.projDist);
         List<Face> facesInPaintOrder = new ArrayList<Face>(
                 this.world.getFaces());
 

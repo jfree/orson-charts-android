@@ -94,6 +94,13 @@ import com.orsoncharts.android.util.TextUtils;
  */
 public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
     
+    /** 
+     * The default projection distance. 
+     * 
+     * @since 1.1
+     */
+    public static final float DEFAULT_PROJ_DIST = 1500f;
+
     /** A background rectangle painter, if any. */
     private RectanglePainter background;
     
@@ -117,6 +124,9 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
     
     /** The view point. */
     private ViewPoint3D viewPoint;
+
+    /** The projection distance. */
+    private float projDist;    
 
     /** The chart box color (never <code>null</code>). */
     private int chartBoxColor;
@@ -162,6 +172,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         Dimension3D dim = this.plot.getDimensions();
         float distance = (float) dim.getDiagonalLength() * 3.0f;
         this.viewPoint = ViewPoint3D.createAboveViewPoint(distance);
+        this.projDist = DEFAULT_PROJ_DIST;
         this.chartBoxColor = Color.WHITE;
         this.translate2D = new Offset2D();
         this.notify = true;
@@ -355,6 +366,32 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         fireChangeEvent();
     }    
     
+    /** 
+     * Returns the projection distance.  The default value is 
+     * {@link #DEFAULT_PROJ_DIST}, higher numbers flatten out the perspective 
+     * and reduce distortion in the projected image.
+     * 
+     * @return The projection distance.
+     * 
+     * @since 1.1
+     */
+    @Override
+    public float getProjDistance() {
+        return this.projDist;
+    }
+    
+    /**
+     * Sets the projection distance.  
+     * 
+     * @param dist  the distance.
+     * 
+     * @since 1.1
+     */
+    @Override
+    public void setProjDistance(float dist) {
+        this.projDist = dist;
+    }
+
     /**
      * Sets the offset in 2D-space for the rendering of the chart.  The 
      * default value is <code>(0, 0)</code> but the user can modify it via
@@ -530,7 +567,8 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         canvas.translate(bounds.width() / 2.0f + this.translate2D.getDX(), 
                 bounds.height() / 2.0f + this.translate2D.getDY());
         Point3D[] eyePts = world.calculateEyeCoordinates(this.viewPoint);
-        Point2D[] pts = world.calculateProjectedPoints(this.viewPoint, 1000f);
+        Point2D[] pts = world.calculateProjectedPoints(this.viewPoint, 
+                this.projDist);
         List<Face> facesInPaintOrder = new ArrayList<Face>(world.getFaces());
 
         // sort faces by z-order
@@ -950,8 +988,8 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
         for (Object3D obj : objs) {
             labelOverlay.add(obj);
         }
-        Point2D[] ppts = labelOverlay.calculateProjectedPoints(
-                this.viewPoint, 1000f);
+        Point2D[] ppts = labelOverlay.calculateProjectedPoints(this.viewPoint, 
+                this.projDist);
         for (int i = 0; i < p.getDataset().getItemCount() * 2; i++) {
             Face f = labelOverlay.getFaces().get(i);
             if (Utils2D.area2(ppts[f.getVertexIndex(0)], 
@@ -987,7 +1025,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
                 -depth / 2.0, Color.WHITE);
         axisOverlay.add(chartBox.getObject3D());
         Point2D[] axisPts2D = axisOverlay.calculateProjectedPoints(
-                this.viewPoint, 1000f);
+                this.viewPoint, this.projDist);
 
         // vertices
         Point2D v0 = axisPts2D[0];
