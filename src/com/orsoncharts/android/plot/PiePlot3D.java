@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -33,7 +37,7 @@ import com.orsoncharts.android.util.ArgChecks;
  * <code>createPieChart()</code> method in the {@link Chart3DFactory} class.  
  * A typical pie chart will look like this:  
  * <div>
- * <object id="ABC" data="../../../doc-files/PieChart3DDemo1.svg"  
+ * <object id="PieChart3DDemo1" data="../../../doc-files/PieChart3DDemo1.svg"  
  * type="image/svg+xml" width="500" height="359"> 
  * </object>
  * </div>
