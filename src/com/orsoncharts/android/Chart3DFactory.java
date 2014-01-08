@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -53,7 +57,7 @@ public class Chart3DFactory {
      * <br><br>
      * For reference, here is a sample pie chart:
      * <div>
-     * <object id="ABC" data="../../doc-files/PieChart3DDemo1.svg"  
+     * <object id="PieChart3DDemo1" data="../../doc-files/PieChart3DDemo1.svg"  
      * type="image/svg+xml" width="500" height="359"> 
      * </object>
      * </div>
@@ -79,7 +83,7 @@ public class Chart3DFactory {
      * <br><br>
      * For reference, here is a sample bar chart:
      * <div>
-     * <object id="ABC" data="../../doc-files/BarChart3DDemo1.svg"  
+     * <object id="BarChart3DDemo1" data="../../doc-files/BarChart3DDemo1.svg"  
      * type="image/svg+xml" width="500" height="359"> 
      * </object>
      * </div>
@@ -117,7 +121,7 @@ public class Chart3DFactory {
      * <br><br>
      * For reference, here is a sample stacked bar chart:
      * <div>
-     * <object id="ABC" data="../../doc-files/StackedBarChart3DDemo1.svg"  
+     * <object id="StackedBarChart3DDemo1" data="../../doc-files/StackedBarChart3DDemo1.svg"  
      * type="image/svg+xml" width="500" height="359"> 
      * </object>
      * </div>
@@ -155,7 +159,7 @@ public class Chart3DFactory {
      * <br><br>
      * For reference, here is a sample area chart:
      * <div>
-     * <object id="ABC" data="../../doc-files/AreaChart3DDemo1.svg"  
+     * <object id="AreaChart3DDemo1" data="../../doc-files/AreaChart3DDemo1.svg"  
      * type="image/svg+xml" width="500" height="359"> 
      * </object>
      * </div>
@@ -197,7 +201,7 @@ public class Chart3DFactory {
      * <br><br>
      * For reference, here is a sample line chart:
      * <div>
-     * <object id="ABC" data="../../doc-files/LineChart3DDemo1.svg"  
+     * <object id="LineChart3DDemo1" data="../../doc-files/LineChart3DDemo1.svg"  
      * type="image/svg+xml" width="500" height="359"> 
      * </object>
      * </div>
@@ -239,7 +243,7 @@ public class Chart3DFactory {
      * <br><br>
      * For reference, here is a sample scatter chart:
      * <div>
-     * <object id="ABC" data="../../doc-files/ScatterPlot3DDemo1.svg"  
+     * <object id="ScatterPlot3DDemo1" data="../../doc-files/ScatterPlot3DDemo1.svg"  
      * type="image/svg+xml" width="564" height="351"> 
      * </object>
      * </div>
@@ -306,7 +310,7 @@ public class Chart3DFactory {
      * <br><br>
      * For reference, here is a sample XYZ bar chart:
      * <div>
-     * <object id="ABC" data="../../doc-files/XYZBarChart3DDemo1.svg"  
+     * <object id="XYZBarChart3DDemo1" data="../../doc-files/XYZBarChart3DDemo1.svg"  
      * type="image/svg+xml" width="500" height="359"> 
      * </object>
      * </div>

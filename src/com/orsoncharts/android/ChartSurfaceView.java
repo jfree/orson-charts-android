@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -42,7 +46,7 @@ public class ChartSurfaceView extends SurfaceView
     private float minViewingDistance;
     
     /** Margin for chart resizing. */
-    private float margin = 0.15f;
+    private float margin = 0.25f;
 
     /** A reusable rectangle that holds the chart bounds. */
     private RectF bounds;
@@ -154,12 +158,28 @@ public class ChartSurfaceView extends SurfaceView
     }
     
     /**
-     * Returns the margin.
+     * Returns the margin.  The default value is <code>0.25f</code>.
      * 
      * @return The margin.
+     * 
+     * @see #setMargin(float)
      */
     public float getMargin() {
         return this.margin;
+    }
+    
+    /**
+     * Sets the margin.  This is the percentage that is subtracted from the
+     * width and height to determine the target bounds
+     * for the zoom-to-fit operation.
+     * 
+     * @param margin  the margin.
+     * 
+     * @see #setMargin(float)
+     * @see #zoomToFit(Dimension2D)
+     */
+    public void setMargin(float margin) {
+        this.margin = margin;
     }
     
     /**

@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -642,7 +646,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             XYZPlot xp = (XYZPlot) plot;
             return xp.getXAxis().generateTickData(tickUnit);
         }
-        return new ArrayList<TickData>(); 
+        return Collections.emptyList(); 
     }
 
     /**
@@ -665,7 +669,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             XYZPlot xp = (XYZPlot) plot;
             return xp.getYAxis().generateTickData(tickUnit);
         }
-        return new ArrayList<TickData>(); 
+        return Collections.emptyList(); 
     }
 
     /**
@@ -689,7 +693,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             XYZPlot xp = (XYZPlot) plot;
             return xp.getZAxis().generateTickData(tickUnit);
         }
-        return new ArrayList<TickData>(); 
+        return Collections.emptyList(); 
     }
     
     /**
