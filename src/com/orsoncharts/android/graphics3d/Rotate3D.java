@@ -14,13 +14,16 @@ package com.orsoncharts.android.graphics3d;
 
 import java.io.Serializable;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Performs rotations about along an arbitrary axis (defined by two 
  * {@link Point3D} instances).  This file is derived from code published in 
  * "Computer Graphics for Java Programmers (Second Edition)" by Leen Ammeraal 
  * and Kang Zhang.
  */
-public class Rotate3D implements Serializable {
+public class Rotate3D implements Parcelable, Serializable {
 
     /** The first point defining the axis of rotation. */
     Point3D a;
@@ -180,4 +183,40 @@ public class Rotate3D implements Serializable {
         result[2] = x * this.r13 + y * this.r23 + z * this.r33 + this.r43;
         return result;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.a, 0);
+        dest.writeParcelable(this.b, 0);
+        dest.writeDouble(this.angle);
+    }
+    
+    /**
+     * Provides support for parcelling.
+     * 
+     * @since 1.1
+     */
+    public static final Parcelable.Creator<Rotate3D> CREATOR 
+            = new Parcelable.Creator<Rotate3D>() {
+
+        @Override
+        public Rotate3D createFromParcel(Parcel source) {
+            Point3D a = source.readParcelable(null);
+            Point3D b = source.readParcelable(null);
+            double angle = source.readDouble();
+            return new Rotate3D(a, b, angle);
+        }
+
+        @Override
+        public Rotate3D[] newArray(int size) {
+            return new Rotate3D[size];
+        }
+
+    };
+
 }

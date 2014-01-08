@@ -15,6 +15,8 @@ package com.orsoncharts.android.graphics3d;
 import java.io.Serializable;
 
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Specifies the location and orientation of the view point in 3D space.  
@@ -32,7 +34,7 @@ import android.graphics.Color;
  *     the center of the 3D scene (zoom in and out).</li>
  * </ul>
  */
-public class ViewPoint3D implements Serializable {
+public class ViewPoint3D implements Parcelable, Serializable {
 
     /**
      * Creates and returns a view point for looking at a chart from the 
@@ -114,7 +116,7 @@ public class ViewPoint3D implements Serializable {
         this.phi = phi;
         this.rho = rho;
         updateMatrixElements();
-        this.rotation = new Rotate3D( Point3D.ORIGIN, Point3D.UNIT_Z, 
+        this.rotation = new Rotate3D(Point3D.ORIGIN, Point3D.UNIT_Z, 
                 orientation);
         this.up = this.rotation.applyRotation(Point3D.createPoint3D(this.theta, 
                 this.phi - Math.PI / 2, this.rho));
@@ -334,10 +336,12 @@ public class ViewPoint3D implements Serializable {
      * @param target  the target dimension (<code>null</code> not permitted).
      * @param dim3D  the dimensions of the 3D content (<code>null</code> not 
      *     permitted).
+     * @param projDist  the projection distance.
      * 
      * @return The optimal viewing distance. 
      */
-    public float optimalDistance(Dimension2D target, Dimension3D dim3D) {
+    public float optimalDistance(Dimension2D target, Dimension3D dim3D,
+            float projDist) {
         
         ViewPoint3D vp = new ViewPoint3D(this.theta, this.phi, this.rho, 
                 calcRollAngle());
@@ -352,11 +356,11 @@ public class ViewPoint3D implements Serializable {
                
         while (true) {
             vp.setRho(near);
-            Point2D[] nearpts = w.calculateProjectedPoints(vp, 1000f);
+            Point2D[] nearpts = w.calculateProjectedPoints(vp, projDist);
             Dimension2D neardim = Utils2D.findDimension(nearpts);
             double nearcover = coverage(neardim, target);
             vp.setRho(far);
-            Point2D[] farpts = w.calculateProjectedPoints(vp, 1000f);
+            Point2D[] farpts = w.calculateProjectedPoints(vp, projDist);
             Dimension2D fardim = Utils2D.findDimension(farpts);
             double farcover = coverage(fardim, target);
             if (nearcover <= 1.0) {
@@ -369,7 +373,7 @@ public class ViewPoint3D implements Serializable {
             // dimension
             float mid = (near + far) / 2.0f;
             vp.setRho(mid);
-            Point2D[] midpts = w.calculateProjectedPoints(vp, 1000f);
+            Point2D[] midpts = w.calculateProjectedPoints(vp, projDist);
             Dimension2D middim = Utils2D.findDimension(midpts);
             double midcover = coverage(middim, target);
             if (midcover >= 1.0) {
@@ -481,5 +485,42 @@ public class ViewPoint3D implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(this.theta);
+        dest.writeDouble(this.phi);
+        dest.writeDouble(this.rho);
+        dest.writeDouble(this.rotation.getAngle());
+    }
+ 
+    /**
+     * Provides support for parcelling.
+     * 
+     * @since 1.1
+     */
+    public static final Parcelable.Creator<ViewPoint3D> CREATOR 
+            = new Parcelable.Creator<ViewPoint3D>() {
+
+        @Override
+        public ViewPoint3D createFromParcel(Parcel source) {
+            double theta = source.readDouble();
+            double phi = source.readDouble();
+            double rho = source.readDouble();
+            double orientation = source.readDouble();
+            return new ViewPoint3D(theta, phi, rho, orientation);
+        }
+
+        @Override
+        public ViewPoint3D[] newArray(int size) {
+            return new ViewPoint3D[size];
+        }
+        
+    };
 
 }

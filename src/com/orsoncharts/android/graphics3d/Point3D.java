@@ -14,11 +14,14 @@ package com.orsoncharts.android.graphics3d;
 
 import java.io.Serializable;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * A point in 3D space (this class is also used to represent vectors in 3D
  * space).  Instances of this class are immutable.
  */
-public final class Point3D implements Serializable {
+public final class Point3D implements Parcelable, Serializable {
 
     /** The origin <code>(0, 0, 0)</code>. */
     public static final Point3D ORIGIN = new Point3D(0, 0, 0);
@@ -162,5 +165,39 @@ public final class Point3D implements Serializable {
     public String toString() {
         return "[" + this.x + ", " + this.y + ", " + this.z + "]";
     }
-  
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(this.x);
+        dest.writeDouble(this.y);
+        dest.writeDouble(this.z);
+    }
+    
+    /**
+     * Provides support for parcelling.
+     * 
+     * @since 1.1
+     */
+    public static final Parcelable.Creator<Point3D> CREATOR 
+            = new Parcelable.Creator<Point3D>() {
+
+        @Override
+        public Point3D createFromParcel(Parcel source) {
+            double x = source.readDouble();
+            double y = source.readDouble();
+            double z = source.readDouble();
+            return new Point3D(x, y, z);
+        }
+
+        @Override
+        public Point3D[] newArray(int size) {
+            return new Point3D[size];
+        }
+
+    };
 }
