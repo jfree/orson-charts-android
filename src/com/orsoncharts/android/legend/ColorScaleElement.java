@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -10,6 +14,7 @@ package com.orsoncharts.android.legend;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +33,7 @@ import com.orsoncharts.android.table.ElementDimension;
 import com.orsoncharts.android.table.Insets;
 import com.orsoncharts.android.table.TableElement;
 import com.orsoncharts.android.util.ArgChecks;
+import com.orsoncharts.android.util.Fit2D;
 import com.orsoncharts.android.util.Orientation;
 import com.orsoncharts.android.util.TextAnchor;
 import com.orsoncharts.android.util.TextUtils;
@@ -130,19 +136,6 @@ public class ColorScaleElement extends AbstractTableElement
     public TextStyle getFont() {
         return this.font;
     }
-    
-    /**
-     * Returns the preferred size for this element.
-     * 
-     * @param g2  the graphics target.
-     * @param bounds  the available drawing space.
-     * 
-     * @return The preferred size (never <code>null</code>). 
-     */
-    @Override
-    public Dimension2D preferredSize(Canvas g2, Paint paint, RectF bounds) {
-        return preferredSize(g2, paint, bounds, null); 
-    }
 
     /**
      * Returns the preferred size for this element.
@@ -183,23 +176,44 @@ public class ColorScaleElement extends AbstractTableElement
         return new ElementDimension(w, h);
     }
 
+    /**
+     * Performs a layout of this table element, returning a list containing
+     * a single item (the bounding rectangles for the element).
+     * 
+     * @param canvas  the graphics target.
+     * @param paint  the paint (contains font settings).
+     * @param bounds  the bounds.
+     * @param constraints  the constraints (if any).
+     * 
+     * @return A list containing the bounding rectangle. 
+     */    
     @Override
-    public List<RectF> layoutElements(Canvas g2, Paint paint, RectF bounds, 
+    public List<RectF> layoutElements(Canvas canvas, Paint paint, RectF bounds, 
             Map<String, Object> constraints) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<RectF> result = new ArrayList<RectF>(1);
+        Dimension2D prefDim = preferredSize(canvas, paint, bounds);
+        Fit2D fitter = Fit2D.getNoScalingFitter(getRefPoint());
+        RectF dest = fitter.fit(prefDim, bounds);
+        result.add(dest);
+        return result;
     }
 
     /**
      * Draws the element within the specified bounds.
      * 
-     * @param canvas  the graphics target.
-     * @param bounds  the bounds.
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
+     * @param bounds  the bounds (<code>null</code> not permitted).
      */
     @Override
     public void draw(Canvas canvas, Paint paint, RectF bounds) {
+        List<RectF> layoutInfo = layoutElements(canvas, paint, bounds, null);
+        RectF dest = layoutInfo.get(0);
+        
         paint.setColor(getBackgroundPaint());
         paint.setStyle(Style.FILL);
-        canvas.drawRect(bounds, paint);
+        canvas.drawRect(dest, paint);
+   
         paint.setColor(getForegroundPaint());
         this.font.applyToPaint(paint);
         Range r = this.scale.getRange();
@@ -209,15 +223,15 @@ public class ColorScaleElement extends AbstractTableElement
         RectF maxStrBounds = TextUtils.getTextBounds(maxStr, paint);
         Insets insets = getInsets();
         if (this.orientation == Orientation.HORIZONTAL) {
-            float x0 = bounds.left + insets.left 
+            float x0 = dest.left + insets.left 
                     + minStrBounds.width() / 2.0f;
-            float x1 = bounds.right - insets.right 
+            float x1 = dest.right - insets.right 
                     - maxStrBounds.width() / 2.0f;
-            float y0 = bounds.top + insets.top;
+            float y0 = dest.top + insets.top;
             float y1 = y0 + this.barWidth;
             
             drawHorizontalScale(this.scale, canvas, paint, new RectF(
-                    (int) x0, (int) y0, (int) (x1 - x0), (int) this.barWidth));
+                    (int) x0, (int) y0, (int) x1, (int) (y0 + this.barWidth)));
             // fill the bar with the color scale
             paint.setColor(getForegroundPaint());
             TextUtils.drawAlignedString(minStr, canvas, paint, x0, 
@@ -228,15 +242,15 @@ public class ColorScaleElement extends AbstractTableElement
         } else { // VERTICAL
             double maxStrWidth = Math.max(minStrBounds.width(), 
                     maxStrBounds.width());
-            double x1 = bounds.right - insets.right - maxStrWidth 
+            double x1 = dest.right - insets.right - maxStrWidth 
                     - this.textOffset;
             double x0 = x1 - this.barWidth;
-            double y0 = bounds.top + insets.top 
+            double y0 = dest.top + insets.top 
                     + maxStrBounds.height() / 2.0f;
             double y1 = y0 + this.barLength;            
             
             drawVerticalScale(this.scale, canvas, paint, new RectF(
-                    (int) x0, (int) y0, (int) (x1 - x0), (int) this.barLength));
+                    (int) x0, (int) y0, (int) x1, (int) (y0 + this.barLength)));
             paint.setColor(getForegroundPaint());
             TextUtils.drawAlignedString(minStr, canvas, paint,
                     (float) (x1 + this.textOffset), (float) y1, 
@@ -250,8 +264,10 @@ public class ColorScaleElement extends AbstractTableElement
     /**
      * Draws the color scale horizontally within the specified bounds.
      * 
-     * @param g2
-     * @param bounds 
+     * @param colorScale  the color scale.
+     * @param canvas  the canvas.
+     * @param paint  the paint.
+     * @param bounds  the bounds.
      */
     private void drawHorizontalScale(ColorScale colorScale, Canvas canvas, 
             Paint paint, RectF bounds) {

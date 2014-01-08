@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -172,25 +176,54 @@ public class ColorScaleLegendBuilder implements LegendBuilder, Serializable {
                 renderer = (ColorScaleRenderer) r;
             }
         }
+        if (renderer == null) {
+            return null;
+        }
         // it doesn't make much sense to display a color scale legend for a
         // FixedColorScale so we check for that and ignore it (unless the
         // developer switched the ignoreFixedColorScale flag, in which case
         // you can have your legend)...
-        if (this.ignoreFixedColorScale && renderer instanceof FixedColorScale) {
+        if (this.ignoreFixedColorScale 
+                && renderer.getColorScale() instanceof FixedColorScale) {
             return null;
         }
-        if (renderer != null) {
-            return createColorScaleLegend(renderer, orientation);  
-        } else {
-            return null;
-        }
+        return createColorScaleLegend(renderer, orientation, anchor);  
     }
 
     private TableElement createColorScaleLegend(ColorScaleRenderer r, 
-            Orientation orientation) {
+            Orientation orientation, Anchor2D anchor) {
         ColorScale scale = r.getColorScale();
-        return new ColorScaleElement(scale, orientation, this.barWidth, 
-                this.barLength, this.itemFont);
+        ColorScaleElement element = new ColorScaleElement(scale, orientation, 
+                this.barWidth, this.barLength, this.itemFont);
+        element.setRefPoint(anchor.getRefPt());
+        return element;
     }
 
+    /**
+     * Tests this builder for equality with an arbitrary object.
+     * 
+     * @param obj  the object (<code>null</code> permitted).
+     * 
+     * @return A boolean. 
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof ColorScaleLegendBuilder)) {
+            return false;
+        }
+        ColorScaleLegendBuilder that = (ColorScaleLegendBuilder) obj;
+        if (this.barWidth != that.barWidth) {
+            return false;
+        }
+        if (this.barLength != that.barLength) {
+            return false;
+        }
+        if (!this.itemFont.equals(that.itemFont)) {
+            return false;
+        }
+        return true;
+    }
 }
