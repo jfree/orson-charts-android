@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -274,11 +278,11 @@ public class Object3D {
     /**
      * Creates a tetrahedron.
      * 
-     * @param size
-     * @param xOffset
-     * @param yOffset
-     * @param zOffset
-     * @param color
+     * @param size  the size.
+     * @param xOffset  the x-offset.
+     * @param yOffset  the y-offset.
+     * @param zOffset  the z-offset.
+     * @param color  the color.
      * 
      * @return A tetrahedron.
      */
@@ -299,11 +303,11 @@ public class Object3D {
     /**
      * Creates an octahedron.
      * 
-     * @param size
-     * @param xOffset
-     * @param yOffset
-     * @param zOffset
-     * @param color
+     * @param size  the size.
+     * @param xOffset  the x-offset.
+     * @param yOffset  the y-offset.
+     * @param zOffset  the z-offset.
+     * @param color  the color.
      * 
      * @return An octahedron.
      */
