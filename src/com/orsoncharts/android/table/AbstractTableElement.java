@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -17,11 +21,15 @@ import android.graphics.RectF;
 
 import com.orsoncharts.android.graphics3d.Dimension2D;
 import com.orsoncharts.android.util.ArgChecks;
+import com.orsoncharts.android.util.RefPt2D;
 
 /**
  * A base class that can be used to implement a {@link TableElement}.
  */
 public abstract class AbstractTableElement {
+    
+    /** The reference point used to align the element when rendering. */
+    private RefPt2D refPt;
     
     /** The insets. */
     private Insets insets;
@@ -36,9 +44,35 @@ public abstract class AbstractTableElement {
      * Creates a new instance.
      */
     public AbstractTableElement() {
+        this.refPt = RefPt2D.CENTER;
         this.insets = new Insets(2, 2, 2, 2);
         this.foregroundPaint = Color.BLACK;
         this.backgroundPaint = Color.argb(127, 255, 255, 255);
+    }
+
+    /**
+     * Returns the anchor point used to align the element with the bounding
+     * rectangle within which it is drawn.  The default value is 
+     * {@link RefPt2D#CENTER}.
+     * 
+     * @return The anchor point (never <code>null</code>). 
+     * 
+     * @since 1.1
+     */
+    public RefPt2D getRefPoint() {
+        return this.refPt;
+    }
+    
+    /**
+     * Sets the reference point.
+     * 
+     * @param refPt  the reference point (<code>null</code> not permitted).
+     * 
+     * @since 1.1
+     */
+    public void setRefPoint(RefPt2D refPt) {
+        ArgChecks.nullNotPermitted(refPt, "refPt");
+        this.refPt = refPt;
     }
 
     /**

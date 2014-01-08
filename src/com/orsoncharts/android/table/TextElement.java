@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -70,7 +74,7 @@ public class TextElement extends AbstractTableElement
     
     /**
      * Returns the font.  The default is 
-     * <code>Font("Dialog", Font.PLAIN, 12)</code>.
+     * <code>TextStyle(Typeface.SANS_SERIF, 12)</code>.
      * 
      * @return The font (never <code>null</code>). 
      */
@@ -89,8 +93,8 @@ public class TextElement extends AbstractTableElement
     }
     
     /**
-     * Returns the horizontal alignment.  The default value is 
-     * <code>LEFT</code>.
+     * Returns the horizontal alignment that will be used when rendering the
+     * text.  The default value is <code>LEFT</code>.
      * 
      * @return The horizontal alignment (never <code>null</code>). 
      */
@@ -138,7 +142,8 @@ public class TextElement extends AbstractTableElement
      * @param bounds  the bounds.
      * @param constraints  the constraints (if any).
      * 
-     * @return A list of bounding rectangles. 
+     * @return A list containing the bounding rectangle for the text (as the
+     *     only item in the list). 
      */
     @Override
     public List<RectF> layoutElements(Canvas g2, Paint paint, RectF bounds, 

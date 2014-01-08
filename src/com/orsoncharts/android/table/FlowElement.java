@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -19,6 +23,7 @@ import android.graphics.RectF;
 
 import com.orsoncharts.android.graphics3d.Dimension2D;
 import com.orsoncharts.android.util.ArgChecks;
+import com.orsoncharts.android.util.Fit2D;
 
 /**
  * A table element that displays a list of sub-elements in a flow layout.
@@ -268,7 +273,16 @@ public class FlowElement extends AbstractTableElement implements TableElement,
     
     @Override
     public void draw(Canvas canvas, Paint paint, RectF bounds) {
-        List<RectF> layoutInfo = layoutElements(canvas, paint, bounds, null);
+        // find the preferred size of the flow layout
+        Dimension2D prefDim = preferredSize(canvas, paint, bounds);
+        
+        // fit a rectangle of this dimension to the bounds according to the 
+        // element anchor
+        Fit2D fitter = Fit2D.getNoScalingFitter(getRefPoint());
+        RectF dest = fitter.fit(prefDim, bounds);
+        
+        // perform layout within this bounding rectangle
+        List<RectF> layoutInfo = layoutElements(canvas, paint, dest, null);
         for (int i = 0; i < this.elements.size(); i++) {
             RectF rect = layoutInfo.get(i);
             TableElement element = this.elements.get(i);

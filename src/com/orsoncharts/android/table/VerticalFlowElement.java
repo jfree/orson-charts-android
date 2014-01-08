@@ -2,7 +2,11 @@
  * Orson Charts for Android
  * ========================
  * 
- * (C)opyright 2013, by Object Refinery Limited.
+ * (C)opyright 2013, 2014, by Object Refinery Limited.
+ * 
+ * http://www.object-refinery.com/orsoncharts/android/index.html
+ * 
+ * Redistribution of this source file is prohibited.
  * 
  */
 
@@ -19,6 +23,7 @@ import android.graphics.RectF;
 
 import com.orsoncharts.android.graphics3d.Dimension2D;
 import com.orsoncharts.android.util.ArgChecks;
+import com.orsoncharts.android.util.Fit2D;
 
 /**
  * A table element that displays a list of sub-elements in a vertical flow 
@@ -253,18 +258,26 @@ public class VerticalFlowElement extends AbstractTableElement
      * Draws the element and all of its subelements within the specified
      * bounds.
      * 
-     * @param g2  the graphics target (<code>null</code> not permitted).
+     * @param canvas  the graphics target (<code>null</code> not permitted).
+     * @param paint  the paint (<code>null</code> not permitted).
      * @param bounds  the bounds (<code>null</code> not permitted).
      */
     @Override
-    public void draw(Canvas g2, Paint paint, RectF bounds) {
-        //Shape savedClip = g2.getClip();
-        //g2.clip(bounds);
-        List<RectF> layoutInfo = layoutElements(g2, paint, bounds, null);
+    public void draw(Canvas canvas, Paint paint, RectF bounds) {
+        // find the preferred size of the flow layout
+        Dimension2D prefDim = preferredSize(canvas, paint, bounds);
+        
+        // fit a rectangle of this dimension to the bounds according to the 
+        // element anchor
+        Fit2D fitter = Fit2D.getNoScalingFitter(getRefPoint());
+        RectF dest = fitter.fit(prefDim, bounds);
+        
+        // perform layout within this bounding rectangle
+        List<RectF> layoutInfo = layoutElements(canvas, paint, dest, null);
         for (int i = 0; i < this.elements.size(); i++) {
             RectF rect = layoutInfo.get(i);
             TableElement element = this.elements.get(i);
-            element.draw(g2, paint, rect);
+            element.draw(canvas, paint, rect);
         }
         //g2.setClip(savedClip);
     }
