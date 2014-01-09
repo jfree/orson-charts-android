@@ -1002,7 +1002,9 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
                 Point2D pt = Utils2D.centerPoint(ppts[f.getVertexIndex(0)], 
                         ppts[f.getVertexIndex(1)], ppts[f.getVertexIndex(2)],
                         ppts[f.getVertexIndex(3)]);
-                TextUtils.drawAlignedString(key.toString(), canvas, paint,
+                String label = p.getSectionLabelGenerator().generateLabel(
+                        p.getDataset(), key);
+                TextUtils.drawAlignedString(label, canvas, paint,
                         pt.getX(), pt.getY(), TextAnchor.CENTER);
             }
         }
@@ -1281,6 +1283,12 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             return false;
         }
         if (!ObjectUtils.equals(this.legendBuilder, that.legendBuilder)) {
+            return false;
+        }
+        if (!this.legendAnchor.equals(that.legendAnchor)) {
+            return false;
+        }
+        if (this.legendOrientation != that.legendOrientation) {
             return false;
         }
         return true;
