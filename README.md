@@ -1,7 +1,7 @@
 Orson Charts for Android
 ========================
 
-(C)opyright 2013, by Object Refinery Limited
+(C)opyright 2013, 2014, by Object Refinery Limited
 
 Overview
 --------
@@ -25,6 +25,10 @@ If you have any questions, don't hesitate to send a mail to info@object-refinery
 
 History
 -------
-20-Dec-2013 : Version 1.1
 
-This is the first public release of Orson Charts for Android, which is based on the Java version of the library.  We welcome your feedback and suggestions.
+9-Jan-2014 : Version 1.1
+In this maintenance release, we've parameterised the projection distance allowing control over the chart depth, implemented Parcelable for ViewPoint3D and related classes, and fixed some minor Javadoc and packaging issues.
+
+23-Dec-2013 : Version 1.0
+
+This is the first public release of Orson Charts for Android, which is based on the Java version of the library (Orson Charts 1.1).  We welcome your feedback and suggestions.
