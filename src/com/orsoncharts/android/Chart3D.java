@@ -641,7 +641,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
             if (false) { // eval
                 GridElement legend2 = new GridElement();
                 legend2.setElement(legend, "R1", "C1");
-                TextElement te = new TextElement("Orson Charts for Android (c) 2013, by Object Refinery Limited", 
+                TextElement te = new TextElement("Orson Charts for Android (c) 2013, 2014, by Object Refinery Limited", 
                         new TextStyle(Typeface.SANS_SERIF, 10));
                 te.setHorizontalAligment(HAlign.RIGHT);
                 legend2.setElement(te, "R2", "C1");
@@ -678,7 +678,8 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
     private List<TickData> fetchXTickData(Plot3D plot, double tickUnit) {
         if (plot instanceof CategoryPlot3D) {
             CategoryPlot3D cp = (CategoryPlot3D) plot;
-            return cp.getColumnAxis().generateTickData();
+            return cp.getColumnAxis().generateTickDataForColumns(
+                    cp.getDataset());
         }
         if (plot instanceof XYZPlot) {
             XYZPlot xp = (XYZPlot) plot;
@@ -725,7 +726,7 @@ public class Chart3D implements Drawable3D, Plot3DChangeListener, Serializable {
     private List<TickData> fetchZTickData(Plot3D plot, double tickUnit) {
         if (plot instanceof CategoryPlot3D) {
             CategoryPlot3D cp = (CategoryPlot3D) plot;
-            return cp.getRowAxis().generateTickData();
+            return cp.getRowAxis().generateTickDataForRows(cp.getDataset());
         }
         if (plot instanceof XYZPlot) {
             XYZPlot xp = (XYZPlot) plot;

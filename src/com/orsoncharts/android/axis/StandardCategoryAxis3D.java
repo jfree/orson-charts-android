@@ -22,9 +22,12 @@ import android.graphics.Paint;
 
 import com.orsoncharts.android.LineStyle;
 import com.orsoncharts.android.Range;
+import com.orsoncharts.android.data.category.CategoryDataset3D;
 import com.orsoncharts.android.graphics3d.Line2D;
 import com.orsoncharts.android.graphics3d.Point2D;
 import com.orsoncharts.android.graphics3d.Utils2D;
+import com.orsoncharts.android.label.CategoryLabelGenerator;
+import com.orsoncharts.android.label.StandardCategoryLabelGenerator;
 import com.orsoncharts.android.plot.CategoryPlot3D;
 import com.orsoncharts.android.renderer.category.AreaRenderer3D;
 import com.orsoncharts.android.util.ArgChecks;
@@ -84,6 +87,9 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
     /** The tick mark paint (never <code>null</code>). */
     private int tickMarkPaint;
     
+    /** The tick label generator. */
+    private CategoryLabelGenerator tickLabelGenerator;
+    
     /** 
      * The tick label offset.  This is the gap between the
      * tick marks and their associated labels.
@@ -114,6 +120,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
         this.tickMarkLength = 3.0;
         this.tickMarkPaint = Color.GRAY;
         this.tickMarkStroke = new LineStyle(0.5f);
+        this.tickLabelGenerator = new StandardCategoryLabelGenerator();
         this.tickLabelOffset = 5.0;
     }
     
@@ -346,6 +353,34 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
     }
     
     /**
+     * Returns the tick label generator for the axis.  This is an object that
+     * is responsible for creating the category labels on the axis.  You can
+     * plug in your own instance to take full control over the generation
+     * of category labels.
+     * 
+     * @return The tick label generator for the axis (never <code>null</code>). 
+     * 
+     * @since 1.2
+     */
+    public CategoryLabelGenerator getTickLabelGenerator() {
+        return this.tickLabelGenerator;
+    }
+    
+    /**
+     * Sets the tick label generator for the axis and sends an 
+     * {@link Axis3DChangeEvent} to all registered listeners.
+     * 
+     * @param generator  the generator (<code>null</code> not permitted).
+     * 
+     * @since 1.2
+     */
+    public void setTickLabelGenerator(CategoryLabelGenerator generator) {
+        ArgChecks.nullNotPermitted(generator, "generator");
+        this.tickLabelGenerator = generator;
+        fireChangeEvent();
+    }
+    
+    /**
      * Returns the offset between the tick marks and the tick labels.  The
      * default value is <code>5.0</code>.
      * 
@@ -464,6 +499,8 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
      * @param opposingPt  a point on the opposite side of the line from the 
      *         labels.
      * @param labels  display labels? 
+     * @param tickData  the tick data (contains positioning anchors calculated 
+     *     by the 3D engine).
      */
     @Override
     public void draw(Canvas canvas, Paint paint, Point2D pt0, Point2D pt1, 
@@ -507,7 +544,7 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
                 }
                 getTickLabelFont().applyToPaint(paint);
                 paint.setColor(getTickLabelPaint());
-                String tickLabel = t.getKey().toString();
+                String tickLabel = t.getKeyLabel();
                 maxTickLabelWidth = Math.max(maxTickLabelWidth, 
                         paint.measureText(tickLabel));
                 TextUtils.drawRotatedString(tickLabel, canvas, paint,
@@ -535,6 +572,59 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
                     labelPosLine.getX2(), labelPosLine.getY2(), 
                     TextAnchor.CENTER, theta, TextAnchor.CENTER);
         }
+    }
+
+    /**
+     * Generates the tick data for the axis (assumes the axis is being used
+     * as the row axis).  The dataset is passed as an argument to provide the 
+     * opportunity to incorporate dataset-specific info into tick labels (for 
+     * example, a row label might show the total for that row in the dataset)
+     * ---whether or not this is used depends on the axis implementation.
+     * 
+     * @param dataset  the dataset (<code>null</code> not permitted).
+     * 
+     * @return The tick data.
+     * 
+     * @since 1.2
+     */
+    @Override
+    public List<TickData> generateTickDataForRows(CategoryDataset3D dataset) {
+        ArgChecks.nullNotPermitted(dataset, "dataset");
+        List<TickData> result = new ArrayList<TickData>(this.categories.size());
+        for (Comparable<?> key : this.categories) {
+            double pos = this.range.percent(getCategoryValue(key));
+            String label = this.tickLabelGenerator.generateRowLabel(dataset, 
+                    key);
+            result.add(new TickData(pos, key, label));
+        }
+        return result;
+    }
+
+    /**
+     * Generates the tick data for the axis (assumes the axis is being used
+     * as the row axis).  The dataset is passed as an argument to provide the 
+     * opportunity to incorporate dataset-specific info into tick labels (for 
+     * example, a row label might show the total for that row in the dataset)
+     * ---whether or not this is used depends on the axis implementation.
+     * 
+     * @param dataset  the dataset (<code>null</code> not permitted).
+     * 
+     * @return The tick data.
+     * 
+     * @since 1.2
+     */
+    @Override
+    public List<TickData> generateTickDataForColumns(
+            CategoryDataset3D dataset) {
+        ArgChecks.nullNotPermitted(dataset, "dataset");
+        List<TickData> result = new ArrayList<TickData>(this.categories.size());
+        for (Comparable<?> key : this.categories) {
+            double pos = this.range.percent(getCategoryValue(key));
+            String label = this.tickLabelGenerator.generateColumnLabel(dataset, 
+                    key);
+            result.add(new TickData(pos, key, label));
+        }
+        return result;
     }
 
     /**
@@ -578,21 +668,6 @@ public class StandardCategoryAxis3D extends AbstractAxis3D
             return false;
         }
         return super.equals(obj);
-    }
-
-    /**
-     * Generates the tick data for the axis.
-     * 
-     * @return The tick data.
-     */
-    @Override
-    public List<TickData> generateTickData() {
-        List<TickData> result = new ArrayList<TickData>(this.categories.size());
-        for (Comparable<?> key : this.categories) {
-            double pos = this.range.percent(getCategoryValue(key));
-            result.add(new TickData(pos, key));
-        }
-        return result;
     }
 
 }

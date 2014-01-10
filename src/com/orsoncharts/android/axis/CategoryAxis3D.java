@@ -13,6 +13,8 @@
 package com.orsoncharts.android.axis;
 
 import java.util.List;
+
+import com.orsoncharts.android.data.category.CategoryDataset3D;
 import com.orsoncharts.android.plot.CategoryPlot3D;
 
 /**
@@ -69,10 +71,33 @@ public interface CategoryAxis3D extends Axis3D {
     double getCategoryValue(Comparable<?> category);
     
     /** 
-     * Returns the tick data for the axis.
+     * Generates the tick data for the axis (assumes the axis is being used
+     * as the row axis).  The dataset is passed as an argument to provide the 
+     * opportunity to incorporate dataset-specific info into tick labels (for 
+     * example, a row label might show the total for that row in the dataset)
+     * ---whether or not this is used depends on the axis implementation.
      * 
-     * @return The tick data for the axis.
+     * @param dataset  the dataset (<code>null</code> not permitted).
+     * 
+     * @return The tick data.
+     * 
+     * @since 1.2
      */
-    List<TickData> generateTickData();
+    List<TickData> generateTickDataForRows(CategoryDataset3D dataset);
+
+    /**
+     * Generates the tick data for the axis (assumes the axis is being used
+     * as the row axis).  The dataset is passed as an argument to provide the 
+     * opportunity to incorporate dataset-specific info into tick labels (for 
+     * example, a row label might show the total for that row in the dataset)
+     * ---whether or not this is used depends on the axis implementation.
+     * 
+     * @param dataset  the dataset (<code>null</code> not permitted).
+     * 
+     * @return The tick data.
+     * 
+     * @since 1.2
+     */
+    List<TickData> generateTickDataForColumns(CategoryDataset3D dataset);
 
 }
