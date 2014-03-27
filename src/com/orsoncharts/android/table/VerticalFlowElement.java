@@ -243,7 +243,7 @@ public class VerticalFlowElement extends AbstractTableElement
             }
             for (ElementInfo elementInfo : elementsInColumn) {
                 Dimension2D dim = elementInfo.getDimension();
-                RectF position = new RectF(x, y, width, dim.getHeight());
+                RectF position = new RectF(x, y, x + width, y + dim.getHeight());
                 result.add(position);
                 y += position.height() + this.vgap;
             }
