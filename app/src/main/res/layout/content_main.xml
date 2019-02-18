@@ -1,0 +1,10 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:context=".MainActivity" tools:showIn="@layout/activity_main">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" tools:layout_editor_absoluteX="8dp" tools:layout_editor_absoluteY="8dp">
+        <RadioGroup android:layout_width="match_parent" android:layout_height="wrap_content">
+            <RadioButton android:id="@+id/button1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:onClick="onRadioButtonClicked" android:text="Pie Chart"/>
+            <RadioButton android:id="@+id/button2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:onClick="onRadioButtonClicked" android:text="Bar Chart"/>
+            <RadioButton android:id="@+id/button3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:onClick="onRadioButtonClicked" android:text="Scatter Chart"/>
+        </RadioGroup>
+        <com.orsoncharts.android.ChartSurfaceView android:id="@+id/chartView" android:layout_width="match_parent" android:layout_height="match_parent"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
